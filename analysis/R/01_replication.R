@@ -1,6 +1,9 @@
 # 01_replication.R -----------------------------------------------------------
 # Replica fedele delle analisi della tesi 2023 (ANOVA + 9 regressioni OLS),
-# con due sole correzioni tecniche rispetto a original/code/thesis_analysis_2023.R:
+# Lo script originale non e' versionato qui: vive nel repository del lavoro 2023,
+#   github.com/lucabnt/mobile-app-download-determinants
+#   -> "Data and Code/Determinants of Download on Mobile App Stores - An Empirical Analysis.r"
+# Rispetto a quello, qui ci sono due sole correzioni tecniche:
 #   1. summary(M4_rep) / summary(M4_pop)  ->  summary(M2_rep) / summary(M2_pop)
 #      (nell'originale sono riferimenti a oggetti inesistenti, lo script si
 #       interrompe con "object 'M4_rep' not found").

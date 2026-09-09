@@ -10,9 +10,11 @@ Il documento di revisione del lavoro originale è
 
 ## 0. Principi di lavoro
 
-1. **`original/` non si tocca.** È lo snapshot immutabile della tesi 2023: dati, codice,
-   sorgenti LaTeX, PDF finali. Ogni correzione vive in `analysis/` e viene documentata
-   qui, mai applicata retroattivamente all'originale.
+1. **Il materiale 2023 si referenzia, non si duplica.** Vive nel suo repository
+   ([lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants)).
+   Qui è versionato solo `original/data/`, perché gli script lo leggono e senza di esso un
+   clone non è riproducibile. Ogni correzione vive in `analysis/` e viene documentata qui,
+   mai applicata retroattivamente all'originale.
 2. **Ogni numero citato in un documento deve essere prodotto da uno script versionato.**
    Niente valori copiati a mano. I log in `analysis/outputs/logs/` sono la prova.
 3. **Le correzioni si dichiarano, non si nascondono.** Dove la revisione contraddice la
@@ -283,13 +285,34 @@ cluster-robust CR2, il che è sufficiente per le conclusioni attuali.
 
 ## 6. Registro delle modifiche
 
+### 2026-09-09 — Materiale originale referenziato invece che duplicato
+
+**Modificato**
+
+- `original/` non contiene più una copia integrale della tesi 2023. Sono stati rimossi
+  dal versionamento `original/pdf/` (8,1 MB), `original/figures/` (20 MB, di cui 18,8 in
+  quattro PNG quasi identici), `original/tex/`, `original/code/` e
+  `original/README.original.md`: tutti referenziabili a
+  [lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants).
+  I file restano sul disco locale, semplicemente non sono tracciati (`.gitignore`).
+- `original/data/` resta versionato: 428 KB letti da ogni script della pipeline. Senza,
+  un clone pulito non è riproducibile.
+- Aggiunto `original/README.md` con la mappa dei percorsi fra i due repository.
+- Aggiornati i riferimenti in `README.md` e `docs/01-revisione-lavoro-2023.md`: i link a
+  file non più versionati puntano ora all'upstream.
+
+**Metodo di rimozione.** `git rm --cached` più nuovo commit, scelta non distruttiva: la
+storia non è stata riscritta e `main` non è stato forzato. **Conseguenza da tenere
+presente:** il commit `ae798f9` era già stato pubblicato su GitHub, quindi i ~28 MB
+restano raggiungibili nella storia e `git clone` continua a scaricarli. Renderli
+irraggiungibili richiederebbe una riscrittura della storia con force-push su un branch
+già pubblicato — deliberatamente non fatta.
+
 ### 2026-09-09 — Impianto del repository e Fase 1
 
 **Aggiunto**
 
 - Struttura del repository: `original/`, `analysis/`, `data/derived/`, `docs/`.
-- Snapshot integrale del materiale 2023 in `original/` (codice, 11 dataset, sorgenti
-  LaTeX, bibliografia, figure, PDF finali nelle varianti Pavia/Tübingen e da stampa).
 - `analysis/R/00_setup.R` — percorsi, lettura CSV con gestione del BOM, helper.
 - `analysis/R/01_replication.R` — replica delle 9 regressioni e dell'ANOVA originali.
 - `analysis/R/02_data_audit.R` — verifica di integrità e confronto con la Tabella 3.1.
@@ -325,5 +348,5 @@ cluster-robust CR2, il che è sufficiente per le conclusioni attuali.
 
 **Non modificato**
 
-- Nessun file in `original/`.
-- Nessun dato: tutti i CSV sono bit-identici a quelli del pacchetto 2023.
+- Nessun contenuto del lavoro 2023: i CSV in `original/data/` sono bit-identici a quelli
+  del pacchetto originale, e nessun altro file originale è stato alterato.

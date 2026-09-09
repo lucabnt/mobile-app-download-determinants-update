@@ -3,9 +3,12 @@
 **Oggetto:** *Determinants of Download on Mobile App Stores — An Empirical Analysis*
 (tesi magistrale, Chair of Marketing, Universität Tübingen / Università di Pavia, 14/02/2023)
 
-**Stato:** revisione completata sul materiale originale invariato in [`original/`](../original/).
-Tutti i numeri citati sono riproducibili con gli script in [`analysis/R/`](../analysis/R/);
-i log completi sono in [`analysis/outputs/logs/`](../analysis/outputs/logs/).
+**Stato:** revisione completata sul materiale originale invariato, pubblicato in
+[github.com/lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants).
+Gli 11 dataset sono versionati anche qui in [`original/data/`](../original/data/) perché
+gli script li leggono direttamente. Tutti i numeri citati sono riproducibili con gli
+script in [`analysis/R/`](../analysis/R/); i log completi sono in
+[`analysis/outputs/logs/`](../analysis/outputs/logs/).
 
 ---
 
@@ -348,8 +351,9 @@ effettuati che conferma il lavoro originale senza riserve.
 
 ## 8. Errori nel codice pubblicato
 
-[`original/code/thesis_analysis_2023.R`](../original/code/thesis_analysis_2023.R), righe
-64 e 73:
+Nello script originale
+([`Data and Code/Determinants of Download on Mobile App Stores - An Empirical Analysis.r`](https://github.com/lucabnt/mobile-app-download-determinants/blob/main/Data%20and%20Code/Determinants%20of%20Download%20on%20Mobile%20App%20Stores%20-%20An%20Empirical%20Analysis.r)),
+righe 64 e 73:
 
 ```r
 M2_rep <- lm(y_rep_3 ~ ..., data=data1)

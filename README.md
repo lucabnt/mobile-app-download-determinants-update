@@ -5,13 +5,14 @@ Revisione, validazione ed estensione dell'analisi empirica della tesi magistrale
 (Luca Bontempi, Chair of Marketing, Eberhard Karls Universität Tübingen e Università di
 Pavia, 14 febbraio 2023).
 
-Il lavoro originale è conservato integralmente e senza modifiche in
-[`original/`](original/). Tutto ciò che è nuovo vive in [`analysis/`](analysis/) e
-[`docs/`](docs/).
+Questo repository contiene solo il lavoro nuovo. Il materiale del 2023 è
+**referenziato, non duplicato**: l'unica eccezione sono gli 11 dataset CSV in
+[`original/data/`](original/data/), che gli script leggono direttamente.
 
-**Lavoro originale pubblicato:**
+**Lavoro originale:**
+[github.com/lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants)
+· pubblicato su
 [lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/](https://lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/)
-· repository originale: `mobile-app-download-determinants`
 
 ---
 
@@ -42,13 +43,9 @@ Motivazioni e numeri completi: [`docs/01-revisione-lavoro-2023.md`](docs/01-revi
 ## Struttura del repository
 
 ```
-original/            snapshot immutabile del lavoro 2023 — non modificare
-  code/              script R originale + note dell'autore
-  data/              gli 11 dataset CSV, bit-identici al pacchetto 2023
-  tex/               sorgenti LaTeX, bibliografia, frontespizi
-  figures/           figure della tesi
-  pdf/               PDF finali (Pavia, Tübingen, versioni da stampa)
-  README.original.md README del repository originale
+original/
+  data/              gli 11 dataset CSV, bit-identici al pacchetto 2023 — non modificare
+  README.md          cosa è versionato qui e cosa è referenziato all'upstream
 
 analysis/
   R/                 script della revisione, numerati in ordine di esecuzione
@@ -107,15 +104,22 @@ documento di `docs/`, il log corrispondente lo contiene.
 
 ## Sul rapporto con il lavoro originale
 
-`original/` è uno snapshot in sola lettura. Le correzioni al codice del 2023 — inclusi
-due riferimenti a oggetti inesistenti che ne interrompono l'esecuzione — sono
-**riprodotte in `analysis/`, non applicate all'originale**, e documentate in
-[`docs/02-piano-di-lavoro.md`](docs/02-piano-di-lavoro.md) §6.
+Il materiale del 2023 vive nel suo repository:
+[**lucabnt/mobile-app-download-determinants**](https://github.com/lucabnt/mobile-app-download-determinants).
+Qui non viene duplicato. Script R originale, sorgenti LaTeX, figure e PDF finali sono
+referenziati; la mappa completa dei percorsi è in
+[`original/README.md`](original/README.md).
 
-I dataset in `original/data/` sono bit-identici a quelli distribuiti nel 2023. Nessuna
-analisi di questo repository modifica un dato: `data/derived/` contiene ricostruzioni
-ottenute per sola riorganizzazione, verificate contro i file di partenza in
-`02_data_audit.R`.
+L'unica eccezione è `original/data/`: gli 11 CSV sono versionati perché ogni script li
+legge, e senza di essi un clone pulito non sarebbe riproducibile. Sono bit-identici a
+quelli distribuiti nel 2023.
+
+**Nessun file originale viene modificato.** Le correzioni al codice del 2023 — inclusi
+due riferimenti a oggetti inesistenti che ne interrompono l'esecuzione — sono
+**riprodotte in `analysis/`, non applicate a monte**, e documentate in
+[`docs/02-piano-di-lavoro.md`](docs/02-piano-di-lavoro.md) §6. Nessuna analisi di questo
+repository modifica un dato: `data/derived/` contiene ricostruzioni ottenute per sola
+riorganizzazione, verificate contro i file di partenza in `02_data_audit.R`.
 
 ---
 
@@ -149,13 +153,13 @@ Per la revisione, indicare questo repository e la data del commit.
 
 [`LICENSE.md`](LICENSE.md) è ripreso dal repository originale e distingue tre regimi:
 
-| Materiale | In questo repository | Licenza |
+| Materiale | Licenza | Dove si trova |
 |---|---|---|
-| Codice R e sorgenti LaTeX | `original/code/`, `original/tex/`, `analysis/R/` | MIT |
-| Dataset CSV | `original/data/`, `data/derived/` | CC BY 4.0 |
-| Testo della tesi e PDF | `original/pdf/`, testo dei `.tex` | © 2023 Luca Bontempi, tutti i diritti riservati |
+| Dataset CSV | CC BY 4.0 | `original/data/`, `data/derived/` — versionati qui |
+| Codice R e sorgenti LaTeX del 2023 | MIT | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
+| Testo della tesi e PDF | © 2023 Luca Bontempi, tutti i diritti riservati | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
 
 Gli script in `analysis/` e i documenti in `docs/` sono materiale nuovo e seguono la
-licenza MIT. Nel repository originale i percorsi erano `Data and Code/`, `Figure/` e
-`Final Thesis PDFs/`; qui corrispondono rispettivamente a `original/data/` più
-`original/code/`, `original/figures/` e `original/pdf/`.
+licenza MIT. La CC BY 4.0 sui dati richiede attribuzione e l'indicazione delle modifiche
+apportate: `data/derived/` è materiale derivato, e le trasformazioni che lo producono sono
+documentate in [`analysis/R/03_build_derived.R`](analysis/R/03_build_derived.R).

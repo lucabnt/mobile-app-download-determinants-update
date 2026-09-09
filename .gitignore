@@ -1,3 +1,16 @@
+# --- Materiale originale referenziato, non duplicato -------------------------
+# Il lavoro 2023 e' pubblicato in
+#   https://github.com/lucabnt/mobile-app-download-determinants
+# Qui viene versionato solo cio' che gli script di analisi leggono davvero
+# (original/data/): duplicare PDF, figure e sorgenti LaTeX aggiungerebbe ~28 MB
+# senza aggiungere nulla che non sia gia' referenziabile a monte.
+# I file restano sul disco locale, semplicemente non sono tracciati.
+original/pdf/
+original/figures/
+original/tex/
+original/code/
+original/README.original.md
+
 # R
 .Rhistory
 .RData
