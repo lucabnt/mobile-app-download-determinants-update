@@ -1,14 +1,15 @@
 # 01_replication.R -----------------------------------------------------------
-# Replica fedele delle analisi della tesi 2023 (ANOVA + 9 regressioni OLS),
-# Lo script originale non e' versionato qui: vive nel repository del lavoro 2023,
+# Faithful replication of the 2023 thesis analyses (ANOVA + 9 OLS regressions).
+#
+# The original script is not versioned here: it lives in the 2023 repository,
 #   github.com/lucabnt/mobile-app-download-determinants
 #   -> "Data and Code/Determinants of Download on Mobile App Stores - An Empirical Analysis.r"
-# Rispetto a quello, qui ci sono due sole correzioni tecniche:
+# Relative to that file there are only two technical fixes:
 #   1. summary(M4_rep) / summary(M4_pop)  ->  summary(M2_rep) / summary(M2_pop)
-#      (nell'originale sono riferimenti a oggetti inesistenti, lo script si
-#       interrompe con "object 'M4_rep' not found").
-#   2. lettura dei CSV con fileEncoding = "UTF-8-BOM".
-# Nessuna specifica di modello e nessun dato sono stati modificati.
+#      (in the original these reference objects that do not exist, so the script
+#       aborts with "object 'M4_rep' not found").
+#   2. CSVs are read with fileEncoding = "UTF-8-BOM".
+# No model specification and no data were changed.
 #
 # Output: analysis/outputs/tables/01_replication_coefficients.csv
 #         analysis/outputs/tables/01_replication_modelfit.csv
@@ -21,24 +22,24 @@ con <- file(file.path(DIR_LOG, "01_replication.log"), open = "wt")
 sink(con, split = TRUE)
 sink(con, type = "message")
 
-cat("=== REPLICA TESI 2023 ===\n")
+cat("=== REPLICATION OF THE 2023 THESIS ===\n")
 cat("R version:", R.version.string, "\n")
-cat("Data esecuzione:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
+cat("Run date:", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n\n")
 
-# --- ANOVA a misure ripetute ------------------------------------------------
+# --- Repeated-measures ANOVA ------------------------------------------------
 anova_dat <- read_orig("M ANOVA_RM.csv")
 cat("--- M ANOVA_RM.csv ---\n")
-cat("Osservazioni:", nrow(anova_dat), " | soggetti:", length(unique(anova_dat$lfdn)), "\n\n")
+cat("Observations:", nrow(anova_dat), " | subjects:", length(unique(anova_dat$lfdn)), "\n\n")
 
 ANOVA.aov <- aov(y_i ~ i_name * x_i_name * n_name + Error(lfdn), data = anova_dat)
-cat("--- aov(y_i ~ i_name*x_i_name*n_name + Error(lfdn)) [come da tesi] ---\n")
+cat("--- aov(y_i ~ i_name*x_i_name*n_name + Error(lfdn)) [as in the thesis] ---\n")
 print(summary(ANOVA.aov))
 
 regression.aov <- lm(y_i ~ i_name * x_i_name * n_name, data = anova_dat)
-cat("\n--- lm equivalente ---\n")
+cat("\n--- Equivalent lm ---\n")
 print(summary(regression.aov))
 
-# --- Regressioni ------------------------------------------------------------
+# --- Regressions ------------------------------------------------------------
 specs <- list(
   list(label = "M1_rep",   file = "M1_rep.csv",
        f = y_rep_1   ~ x_rep   + x_rep*inv_app_mc   + x_rep*inv_dl_mc   + x_rep*inv_cat_mc),
@@ -71,12 +72,12 @@ fit_tab  <- list()
 for (sp in specs) {
   d <- read_orig(sp$file)
   m <- lm(sp$f, data = d)
-  cat("\n\n=== ", sp$label, " (", sp$file, ", N righe file = ", nrow(d), ") ===\n", sep = "")
+  cat("\n\n=== ", sp$label, " (", sp$file, ", rows in file = ", nrow(d), ") ===\n", sep = "")
   print(summary(m))
 
   coef_tab[[sp$label]] <- tidy_lm(m, sp$label)
 
-  # manipulation check: quota di rispondenti che ha superato il check
+  # manipulation check: share of respondents who ticked the relevant box
   mc_col <- grep("^man_check_", names(d), value = TRUE)
   mc <- if (length(mc_col) == 1) 100 * mean(d[[mc_col]], na.rm = TRUE) else NA_real_
 
@@ -101,12 +102,12 @@ fits  <- do.call(rbind, fit_tab)
 write.csv(coefs, file.path(DIR_TAB, "01_replication_coefficients.csv"), row.names = FALSE)
 write.csv(fits,  file.path(DIR_TAB, "01_replication_modelfit.csv"),     row.names = FALSE)
 
-cat("\n\n=== SINTESI FIT ===\n")
+cat("\n\n=== FIT SUMMARY ===\n")
 print(fits, digits = 4)
 
-cat("\n\n=== COEFFICIENTI FOCALI (x_i) ===\n")
+cat("\n\n=== FOCAL COEFFICIENTS (x_i) ===\n")
 focal <- coefs[coefs$term %in% c("x_rep", "x_pop", "x_brand"), ]
 print(focal[, c("model", "term", "estimate", "se", "p_value", "sig")], digits = 4)
 
 sink(type = "message"); sink(); close(con)
-cat("Fatto. Log in analysis/outputs/logs/01_replication.log\n")
+cat("Done. Log in analysis/outputs/logs/01_replication.log\n")

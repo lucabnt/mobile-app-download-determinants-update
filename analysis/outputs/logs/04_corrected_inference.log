@@ -1,6 +1,6 @@
-=== (A) ANOVA A MISURE RIPETUTE ===
+=== (A) REPEATED-MEASURES ANOVA ===
 
---- A.1 Specifica originale della tesi: Error(lfdn) con lfdn intero ---
+--- A.1 The thesis specification: Error(lfdn) with lfdn as an integer ---
 
 Error: subject
     Df Sum Sq Mean Sq
@@ -19,12 +19,12 @@ Residuals          1454   3587    2.47
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-NOTA: lo strato 'Error: subject' ha 1 df e nessun residuo. La struttura
-a misure ripetute non e' modellata; i test dello strato 'Within' sono
-quelli di una ANOVA fra osservazioni indipendenti su 1454 df residui.
-Il testo della tesi riporta invece df = 4 al denominatore.
+NOTE: the 'Error: subject' stratum has 1 df and no residuals. The repeated-
+measures structure is not modelled; the 'Within' tests are those of an ANOVA
+over independent observations on 1454 residual df.
+The thesis text instead reports df = 4 in the denominator.
 
---- A.2 Specifica corretta: soggetto come fattore ---
+--- A.2 Correct specification: subject as a factor ---
 
 Error: subj_f
                     Df Sum Sq Mean Sq F value Pr(>F)  
@@ -50,7 +50,7 @@ Residuals          965 1358.0    1.41
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
---- A.3 Modello lineare a effetti misti, intercetta casuale per soggetto ---
+--- A.3 Linear mixed model, random intercept by subject ---
 Linear mixed model fit by REML ['lmerMod']
 Formula: y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 |      subj_f)
    Data: long
@@ -96,10 +96,10 @@ Use print(summary(m_mix), correlation=TRUE)  or
     vcov(summary(m_mix))        if you need it
 
 
-Varianza fra soggetti / totale (ICC):
-  ICC = 0.4108 (var soggetto = 0.9842, residuo = 1.4117)
+Between-subject variance / total (ICC):
+  ICC = 0.4108 (subject var = 0.9842, residual = 1.4117)
 
---- A.4 Anova di tipo II sul modello misto (Wald chi-quadro) ---
+--- A.4 Type II Anova on the mixed model (Wald chi-square) ---
 Analysis of Deviance Table (Type II Wald chisquare tests)
 
 Response: y
@@ -117,7 +117,7 @@ focal:x_f:position   6.0094  4  0.1984456
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
---- A.5 OLS con errori standard cluster-robust per soggetto (CR2) ---
+--- A.5 OLS with cluster-robust standard errors by subject (CR2) ---
 Alternative hypothesis: two-sided 
                            Coef. Estimate    SE Null value  t-stat d.f. (Satt) p-val (Satt) Sig.
                      (Intercept)   4.1304 0.204          0 20.2181          68      < 0.001  ***
@@ -140,11 +140,11 @@ Alternative hypothesis: two-sided
   focalpop:x_fhigh:positionthird   0.7424 0.511          0  1.4522         414      0.14720     
 
 
-=== (B) TEST FORMALE DELLA GRADUATORIA FRA VARIABILI FOCALI ===
+=== (B) FORMAL TEST OF THE RANKING BETWEEN FOCAL VARIABLES ===
 
-Modello pooled: y ~ focal * x + posizione + involvement + (1|soggetto)
-su tutte le 1473 osservazioni. L'interazione focal:x quantifica di quanto
-l'effetto della manipolazione differisce fra brand, reputation e popularity.
+Pooled model: y ~ focal * x + position + involvement + (1|subject)
+on all 1473 observations. The focal:x interaction quantifies how much the
+manipulation effect differs across brand, reputation and popularity.
 
 Linear mixed model fit by maximum likelihood  ['lmerMod']
 Formula: y ~ focal * x_f + position + inv_app + inv_dl + inv_cat + (1 |      subj_f)
@@ -190,7 +190,7 @@ inv_cat      0.037  0.003  0.005  0.001  0.000  0.000 -0.211  0.010
 fclrp:x_fhg  0.426 -0.750 -0.394 -0.703 -0.013  0.003 -0.006 -0.001 -0.005       
 fclpp:x_fhg  0.435 -0.395 -0.760 -0.711 -0.012 -0.018 -0.007 -0.014 -0.007  0.510
 
---- B.1 L'interazione focal x manipolazione e' necessaria? (LRT) ---
+--- B.1 Is the focal x manipulation interaction needed? (LRT) ---
 Data: long
 Models:
 m_pool0: y ~ focal + x_f + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
@@ -201,7 +201,7 @@ m_pool    13 5266.4 5335.2 -2620.2   5240.4 25.021  2  3.687e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
---- B.2 Effetto della manipolazione (alto vs basso) entro ciascuna focale ---
+--- B.2 Manipulation effect (high vs low) within each focal variable ---
 focal = brand:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low    1.053 0.122 1267   0.8126    1.293   8.600 <0.0001
@@ -218,8 +218,8 @@ Results are averaged over the levels of: position
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 
 
---- B.3 Confronto a coppie fra gli effetti (correzione di Holm) ---
-Questo e' il test che la tesi non svolge: brand batte davvero reputation?
+--- B.3 Pairwise comparison of the effects (Holm correction) ---
+This is the test the thesis never runs: does brand really beat reputation?
  x_f_revpairwise focal_revpairwise estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low      rep - brand         -0.210 0.172 1254   -0.623    0.202  -1.222  0.2218
  high - low      pop - brand         -0.835 0.174 1280   -1.252   -0.418  -4.797 <0.0001
@@ -231,15 +231,15 @@ Confidence level used: 0.95
 Conf-level adjustment: bonferroni method for 3 estimates 
 P value adjustment: holm method for 3 tests 
 
---- B.4 Dimensioni dell'effetto in unita' di deviazione standard ---
-  brand   beta = +1.0528  (SD di y = 1.5879)  d = +0.663
-  rep     beta = +0.8425  (SD di y = 1.7095)  d = +0.493
-  pop     beta = +0.2181  (SD di y = 1.5691)  d = +0.139
+--- B.4 Effect sizes in standard-deviation units ---
+  brand   beta = +1.0528  (s.d. of y = 1.5879)  d = +0.663
+  rep     beta = +0.8425  (s.d. of y = 1.7095)  d = +0.493
+  pop     beta = +0.2181  (s.d. of y = 1.5691)  d = +0.139
 
 
-=== (C) EFFETTO DEL CONFRONTO (posizione) SULLA GRADUATORIA ===
-Interazione a tre vie focale x manipolazione x confronto, stimata su un
-unico modello anziche' su sottocampioni separati (M1 vs M2 della tesi).
+=== (C) EFFECT OF COMPARISON (POSITION) ON THE RANKING ===
+Three-way focal x manipulation x comparison interaction, estimated on a
+single model rather than on separate subsamples (the thesis M1 vs M2).
 
 Analysis of Deviance Table (Type III Wald chisquare tests)
 
@@ -259,28 +259,28 @@ focal:x_f:comp_f   4.4003  2  0.1107886
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Effetto della manipolazione per focale e posizione di confronto:
-focal = brand, comp_f = prima:
+Manipulation effect by focal variable and comparison position:
+focal = brand, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   1.4072 0.220 1271   0.9757    1.839   6.398 <0.0001
 
-focal = rep, comp_f = prima:
+focal = rep, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   0.6910 0.222 1273   0.2560    1.126   3.117  0.0019
 
-focal = pop, comp_f = prima:
+focal = pop, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   0.4615 0.197 1271   0.0753    0.848   2.344  0.0192
 
-focal = brand, comp_f = dopo:
+focal = brand, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   0.9015 0.147 1273   0.6127    1.190   6.125 <0.0001
 
-focal = rep, comp_f = dopo:
+focal = rep, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   0.9122 0.147 1273   0.6247    1.200   6.226 <0.0001
 
-focal = pop, comp_f = dopo:
+focal = pop, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
  high - low   0.0585 0.156 1275  -0.2471    0.364   0.376  0.7072
 

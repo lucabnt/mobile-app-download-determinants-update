@@ -1,47 +1,47 @@
-# Materiale originale (2023)
+# Original material (2023)
 
-Il lavoro originale è pubblicato per intero qui:
+The original work is published in full here:
 
 **https://github.com/lucabnt/mobile-app-download-determinants**
 
-Questa cartella non lo duplica. Contiene soltanto ciò che gli script in
-[`../analysis/R/`](../analysis/R/) leggono direttamente; tutto il resto è
-referenziato all'upstream.
+This folder does not duplicate it. It holds only what the scripts in
+[`../analysis/R/`](../analysis/R/) read directly; everything else is referenced upstream.
 
-## Cosa è versionato qui
+## What is versioned here
 
-| Percorso | Contenuto | Perché è qui |
+| Path | Contents | Why it is here |
 |---|---|---|
-| `data/` | Gli 11 dataset CSV, bit-identici al pacchetto 2023 | Ogni script della revisione li legge. Senza di essi un clone pulito non è riproducibile. 428 KB. |
+| `data/` | The 11 CSV datasets, bit-identical to the 2023 package | Every script in the review reads them. Without them a clean clone is not reproducible. 428 KB. |
 
-I file in `data/` non vanno modificati: sono lo snapshot di riferimento contro cui
-`../analysis/R/02_data_audit.R` verifica ogni ricostruzione.
+The files in `data/` must not be modified: they are the reference snapshot against which
+[`../analysis/R/02_data_audit.R`](../analysis/R/02_data_audit.R) verifies every
+reconstruction.
 
-## Cosa è referenziato, non copiato
+## What is referenced, not copied
 
-| Materiale | Upstream |
+| Material | Upstream |
 |---|---|
-| Script R originale | [`Data and Code/Determinants of Download on Mobile App Stores - An Empirical Analysis.r`](https://github.com/lucabnt/mobile-app-download-determinants/blob/main/Data%20and%20Code/Determinants%20of%20Download%20on%20Mobile%20App%20Stores%20-%20An%20Empirical%20Analysis.r) |
-| Sorgenti LaTeX e bibliografia | [file `.tex` e `.bib` nella root](https://github.com/lucabnt/mobile-app-download-determinants) |
-| Figure della tesi | [`Figure/`](https://github.com/lucabnt/mobile-app-download-determinants/tree/main/Figure) |
-| PDF finali (Pavia, Tübingen, versioni da stampa) | [`Final Thesis PDFs/`](https://github.com/lucabnt/mobile-app-download-determinants/tree/main/Final%20Thesis%20PDFs) |
-| README del repository originale | [`README.md`](https://github.com/lucabnt/mobile-app-download-determinants/blob/main/README.md) |
+| Original R script | [`Data and Code/Determinants of Download on Mobile App Stores - An Empirical Analysis.r`](https://github.com/lucabnt/mobile-app-download-determinants/blob/main/Data%20and%20Code/Determinants%20of%20Download%20on%20Mobile%20App%20Stores%20-%20An%20Empirical%20Analysis.r) |
+| LaTeX sources and bibliography | [`.tex` and `.bib` files in the root](https://github.com/lucabnt/mobile-app-download-determinants) |
+| Thesis figures | [`Figure/`](https://github.com/lucabnt/mobile-app-download-determinants/tree/main/Figure) |
+| Final PDFs (Pavia, Tübingen, print versions) | [`Final Thesis PDFs/`](https://github.com/lucabnt/mobile-app-download-determinants/tree/main/Final%20Thesis%20PDFs) |
+| Original repository README | [`README.md`](https://github.com/lucabnt/mobile-app-download-determinants/blob/main/README.md) |
 
-Questi percorsi sono elencati in [`../.gitignore`](../.gitignore). Se li hai sul disco
-locale restano dove sono: semplicemente non vengono tracciati.
+These paths are listed in [`../.gitignore`](../.gitignore). If you have them on your local
+disk they stay where they are: they are simply not tracked.
 
-## Per ottenere il materiale completo
+## Getting the complete material
 
 ```bash
 git clone https://github.com/lucabnt/mobile-app-download-determinants.git
 ```
 
-Corrispondenza dei percorsi fra i due repository:
+Path mapping between the two repositories:
 
-| Upstream | Qui |
+| Upstream | Here |
 |---|---|
 | `Data and Code/*.csv` | `original/data/` |
-| `Data and Code/*.r` | non tracciato |
-| `Figure/` | non tracciato |
-| `Final Thesis PDFs/` | non tracciato |
-| `*.tex`, `*.bib` | non tracciato |
+| `Data and Code/*.r` | not tracked |
+| `Figure/` | not tracked |
+| `Final Thesis PDFs/` | not tracked |
+| `*.tex`, `*.bib` | not tracked |

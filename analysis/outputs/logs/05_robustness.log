@@ -1,36 +1,39 @@
-=== D.1 ROBUSTEZZA AL MANIPULATION CHECK ===
+=== D.1 ROBUSTNESS TO THE SLIDE-6 CHECK ===
 
-Nella tesi le quote di superamento sono riportate in Tabella 3.2 ma mai
-usate. Per popularity la quota e' 60.5% complessiva e 55.9% nel
-sottocampione M2, non distinguibile dal 50% atteso per caso (p = 0.18):
-il risultato nullo su popularity potrebbe riflettere una manipolazione
-inefficace piu' che un'assenza di effetto.
+The thesis reports the tick rates in Table 3.2 but never uses them. For
+popularity the rate is 60.5% overall and 55.9% in the M2 subsample, not
+distinguishable from the 50% expected by chance (p = 0.18).
+CAUTION: slide 6 is not a perception check. It is a single multiple-choice
+question asked at the end about which cues the respondent SAYS they used, so
+it is post-treatment and plausibly affected by the treatment itself.
+What follows describes how fragile the popularity null is; it does not
+overturn it. See docs/01-review-of-2023-work.md section 3.3.
 
-Osservazioni per esito del manipulation check:
-       check_superato
-focale    0   1
+Observations by check outcome:
+       box_ticked
+focal     0   1
   brand 160 331
   rep   112 379
   pop   194 297
 
-Soggetti che superano tutti e tre i check: 163 su 491
+Subjects ticking all three boxes: 163 of 491
 
-                         campione focal estimate     SE lower.CL upper.CL   p.value
-1  tutte le osservazioni (N=1473) brand   1.0528 0.1224  0.81260   1.2929 2.322e-17
-2  tutte le osservazioni (N=1473)   rep   0.8425 0.1224  0.60238   1.0826 9.135e-12
-3  tutte le osservazioni (N=1473)   pop   0.2181 0.1223 -0.02184   0.4580 7.478e-02
-4    solo check superato (N=1007) brand   1.3812 0.1566  1.07388   1.6885 5.731e-18
-5    solo check superato (N=1007)   rep   1.0983 0.1445  0.81474   1.3819 7.457e-14
-6    solo check superato (N=1007)   pop   0.5067 0.1618  0.18919   0.8242 1.794e-03
-7 solo soggetti 3/3 check (N=489) brand   1.3441 0.2080  0.93533   1.7530 2.866e-10
-8 solo soggetti 3/3 check (N=489)   rep   1.2420 0.2071  0.83492   1.6490 4.341e-09
-9 solo soggetti 3/3 check (N=489)   pop   0.5166 0.2064  0.11093   0.9223 1.269e-02
+                        sample focal estimate     SE lower.CL upper.CL   p.value
+1    all observations (N=1473) brand   1.0528 0.1224  0.81260   1.2929 2.322e-17
+2    all observations (N=1473)   rep   0.8425 0.1224  0.60238   1.0826 9.135e-12
+3    all observations (N=1473)   pop   0.2181 0.1223 -0.02184   0.4580 7.478e-02
+4     box ticked only (N=1007) brand   1.3812 0.1566  1.07388   1.6885 5.731e-18
+5     box ticked only (N=1007)   rep   1.0983 0.1445  0.81474   1.3819 7.457e-14
+6     box ticked only (N=1007)   pop   0.5067 0.1618  0.18919   0.8242 1.794e-03
+7 subjects ticking 3/3 (N=489) brand   1.3441 0.2080  0.93533   1.7530 2.866e-10
+8 subjects ticking 3/3 (N=489)   rep   1.2420 0.2071  0.83492   1.6490 4.341e-09
+9 subjects ticking 3/3 (N=489)   pop   0.5166 0.2064  0.11093   0.9223 1.269e-02
 
 
-=== D.2 MODELLO LOGIT ORDINALE A EFFETTI MISTI ===
+=== D.2 MIXED-EFFECTS ORDINAL LOGIT ===
 
-La ITD e' misurata su scala Likert 1-7: OLS ne assume intervalli uguali e
-supporto illimitato. Qui la stessa specifica come logit ordinale cumulativo.
+ITD is measured on a 1-7 Likert scale: OLS assumes equal intervals and
+unbounded support. Here the same specification as a cumulative ordinal logit.
 
 Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -69,23 +72,23 @@ Threshold coefficients:
 5|6   1.1379     0.1747   6.514
 6|7   3.0653     0.2000  15.323
 
-Odds ratio dell'effetto della manipolazione, per variabile focale:
+Odds ratios of the manipulation effect, by focal variable:
   brand   log-odds = +1.7115   OR = 5.537
   rep     log-odds = +1.2974   OR = 3.660
   pop     log-odds = +0.3737   OR = 1.453
 
-Gli OR > 1 indicano maggiore probabilita' di ITD elevata con il livello alto.
+ORs > 1 mean a higher probability of high ITD under the high level.
 
 
-=== D.3 CORREZIONE PER TEST MULTIPLI SULLE 9 REGRESSIONI ORIGINALI ===
+=== D.3 MULTIPLICITY CORRECTION OVER THE 9 ORIGINAL REGRESSIONS ===
 
-Coefficienti stimati (intercette escluse): 81 
-Significativi a p<0.10 senza correzione: 23 
-Significativi a p<0.05 senza correzione: 13 
-Sopravvivono a Holm (p<0.05):           2 
-Sopravvivono a Benjamini-Hochberg (FDR<0.05): 4 
+Estimated coefficients (intercepts excluded): 81 
+Significant at p<0.10 uncorrected: 23 
+Significant at p<0.05 uncorrected: 13 
+Surviving Holm (p<0.05):           2 
+Surviving Benjamini-Hochberg (FDR<0.05): 4 
 
-Primi 15 coefficienti per p-value grezzo:
+Top 15 coefficients by raw p-value:
     model               term estimate      se   p_value    p_holm      p_bh
  M3_brand            x_brand   1.5028 0.24095 9.772e-10 7.915e-08 5.131e-08
  M1_brand            x_brand   1.5289 0.23554 1.267e-09 1.013e-07 5.131e-08
@@ -104,11 +107,11 @@ Primi 15 coefficienti per p-value grezzo:
    M1_rep              x_rep   0.4986 0.26259 5.963e-02 1.000e+00 3.220e-01
 
 
-=== D.4 POTENZA: QUALE EFFETTO ERA RILEVABILE? ===
+=== D.4 POWER: WHAT EFFECT WAS DETECTABLE? ===
 
-La tesi conclude che non esistono interazioni a due vie fra le variabili
-focali. Con i campioni del Modello 2 si puo' calcolare l'effetto minimo
-rilevabile (MDE) con potenza 80% e alpha 0.05: MDE = (t_crit + t_pow) * SE.
+The thesis concludes there are no two-way interactions between the focal
+variables. With the Model 2 samples we can compute the minimum detectable
+effect (MDE) at 80% power and alpha 0.05: MDE = (t_crit + t_pow) * SE.
 
     model          term estimate    se p_value  mde mde_sd
    M2_rep x_rep:x_brand    0.166 0.467   0.723 1.31  0.766
@@ -118,15 +121,15 @@ rilevabile (MDE) con potenza 80% e alpha 0.05: MDE = (t_crit + t_pow) * SE.
  M2_brand x_brand:x_rep    0.251 0.507   0.621 1.42  0.895
  M2_brand x_brand:x_pop   -0.677 0.511   0.188 1.43  0.902
 
-Interpretazione: il disegno poteva rilevare solo interazioni dell'ordine di
-1.29-1.53 punti Likert (0.75-0.98 deviazioni standard). L'assenza di
-evidenza non e' evidenza di assenza: i risultati sono inconcludenti, non nulli.
+Reading: the design could only detect interactions on the order of
+1.29-1.53 Likert points (0.75-0.98 standard deviations). Absence of
+evidence is not evidence of absence: these results are inconclusive, not null.
 
 
-=== D.5 MODERAZIONE DELL'INVOLVEMENT, MODELLO POOLED ===
+=== D.5 INVOLVEMENT MODERATION, POOLED MODEL ===
 
-Nella tesi le moderazioni sono lette da 9 regressioni separate. Qui sono
-stimate in un unico modello con struttura a misure ripetute.
+The thesis reads the moderations off 9 separate regressions. Here they are
+estimated in a single model with the repeated-measures structure.
 
 Analysis of Deviance Table (Type III Wald chisquare tests)
 
@@ -152,20 +155,20 @@ focal:x_f:inv_cat    2.3832  2    0.30373
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Pendenza dell'effetto della manipolazione rispetto a ciascun involvement
-(variazione dell'effetto alto-vs-basso per +1 SD di involvement):
- moderatore focal estimate    SE lower.CL upper.CL p.value
-    inv_app brand    0.119 0.108  -0.0933    0.332 0.27124
-    inv_app   rep    0.260 0.108   0.0487    0.472 0.01595
-    inv_app   pop    0.324 0.108   0.1121    0.536 0.00276
+Slope of the manipulation effect against each involvement measure
+(change in the high-vs-low effect per +1 s.d. of involvement):
+ moderator focal estimate    SE lower.CL upper.CL p.value
+   inv_app brand    0.119 0.108  -0.0933    0.332 0.27124
+   inv_app   rep    0.260 0.108   0.0487    0.472 0.01595
+   inv_app   pop    0.324 0.108   0.1121    0.536 0.00276
 
- moderatore focal estimate     SE lower.CL upper.CL p.value
-     inv_dl brand  -0.0335 0.0922   -0.214    0.147   0.716
-     inv_dl   rep  -0.0655 0.0918   -0.246    0.115   0.476
-     inv_dl   pop   0.0795 0.0920   -0.101    0.260   0.388
+ moderator focal estimate     SE lower.CL upper.CL p.value
+    inv_dl brand  -0.0335 0.0922   -0.214    0.147   0.716
+    inv_dl   rep  -0.0655 0.0918   -0.246    0.115   0.476
+    inv_dl   pop   0.0795 0.0920   -0.101    0.260   0.388
 
- moderatore focal estimate     SE lower.CL upper.CL p.value
-    inv_cat brand   0.0894 0.0995  -0.1058    0.285  0.3689
-    inv_cat   rep   0.1725 0.1000  -0.0236    0.369  0.0846
-    inv_cat   pop  -0.0404 0.0995  -0.2357    0.155  0.6845
+ moderator focal estimate     SE lower.CL upper.CL p.value
+   inv_cat brand   0.0894 0.0995  -0.1058    0.285  0.3689
+   inv_cat   rep   0.1725 0.1000  -0.0236    0.369  0.0846
+   inv_cat   pop  -0.0404 0.0995  -0.2357    0.155  0.6845
 

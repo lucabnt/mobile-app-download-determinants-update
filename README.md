@@ -1,170 +1,170 @@
-# Determinants of Download on Mobile App Stores — revisione ed estensione
+# Determinants of Download on Mobile App Stores — review and extension
 
-Revisione, validazione ed estensione dell'analisi empirica della tesi magistrale
+Review, validation and extension of the empirical analysis in the master's thesis
 *Determinants of Download on Mobile App Stores — An Empirical Analysis*
-(Luca Bontempi, Chair of Marketing, Eberhard Karls Universität Tübingen e Università di
-Pavia, 14 febbraio 2023).
+(Luca Bontempi, Chair of Marketing, Eberhard Karls Universität Tübingen and Università di
+Pavia, 14 February 2023).
 
-Questo repository contiene solo il lavoro nuovo. Il materiale del 2023 è
-**referenziato, non duplicato**: l'unica eccezione sono gli 11 dataset CSV in
-[`original/data/`](original/data/), che gli script leggono direttamente.
+This repository holds only the new work. The 2023 material is **referenced, not
+duplicated**: the sole exception is the 11 CSV datasets in
+[`original/data/`](original/data/), which the scripts read directly.
 
-**Lavoro originale:**
+**Original work:**
 [github.com/lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants)
-· pubblicato su
+· published at
 [lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/](https://lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/)
 
 ---
 
-## In breve
+## In short
 
-La tesi chiedeva quale segnale sulla pagina di uno store — **reputazione** (rating medio),
-**popolarità** (numero di download) o **brand dello sviluppatore** — predica meglio
-l'intenzione di scaricare un'app. 491 rispondenti, disegno sperimentale a misure ripetute,
-tre manipolazioni binarie.
+The thesis asked which cue on an app store listing — **reputation** (average rating),
+**popularity** (download count) or **developer brand** — best predicts the intention to
+download an app. 491 respondents, a repeated-measures experimental design, three binary
+manipulations.
 
-La replica dei risultati del 2023 è **esatta** e i dati sono **internamente coerenti**.
-Ciò che non regge è l'inferenza condotta su quei dati — e, in un caso, la costruzione
-dello stimolo:
+The 2023 results **replicate exactly** and the data is **internally consistent**. What does
+not hold up is the inference drawn from it — and, in one case, the construction of a
+stimulus:
 
-| Conclusione 2023 | Dopo la revisione |
+| 2023 conclusion | After the review |
 |---|---|
-| Il brand è il predittore più efficace | Brand e reputazione **non sono distinguibili** (p = 0,22); entrambi ≫ popolarità |
-| La popolarità è inefficace in tutti i modelli | **Nullo non solido**: sparisce fra chi dichiara di aver guardato i download (β = 0,51; p = 0,002), e lo stimolo a bassa popolarità mostrava 10K+ download con 84K recensioni |
-| Con il confronto la reputazione supera il brand | **Convergono**, non si invertono (1,41 → 0,90 vs 0,69 → 0,91) |
-| Interazione a tre vie significativa | **Non confermata** (p = 0,63) con misure ripetute correttamente specificate |
-| Nessuna interazione fra variabili focali | **Inconcludente**, non nulla: il disegno era cieco a effetti < 0,76 s.d. |
+| Brand is the most effective predictor | Brand and reputation are **indistinguishable** (p = 0.22); both ≫ popularity |
+| Popularity is ineffective in all models | **Not a solid null**: it vanishes among respondents who say they looked at downloads (β = 0.51, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews |
+| Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.41 → 0.90 vs 0.69 → 0.91) |
+| Three-way interaction significant | **Not confirmed** (p = 0.63) once repeated measures are specified correctly |
+| No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. |
 
-Motivazioni e numeri completi: [`docs/01-revisione-lavoro-2023.md`](docs/01-revisione-lavoro-2023.md).
+Full reasoning and figures: [`docs/01-review-of-2023-work.md`](docs/01-review-of-2023-work.md).
 
-![Effetto della manipolazione per variabile focale, sull'intero campione e nel sottogruppo che dichiara di aver usato quel segnale](analysis/outputs/figures/fig_02_manipulation_check.png)
+![Manipulation effect by focal variable, on the full sample and within the subgroup that reports using the cue](analysis/outputs/figures/fig_02_slide6_subgroup.png)
 
-A questi si aggiungono due difetti nella costruzione dei dati, emersi leggendo le
-appendici: lo stimolo a bassa popolarità è internamente impossibile, e 18 rispondenti
-hanno punteggi di involvement imputati con la media senza che sia documentato.
+Two further defects concern how the data was built, and surfaced by reading the appendices:
+the low-popularity stimulus is internally impossible, and 18 respondents have mean-imputed
+involvement scores with no documentation of the fact.
 
 ---
 
-## Struttura del repository
+## Repository structure
 
 ```
 original/
-  data/              gli 11 dataset CSV, bit-identici al pacchetto 2023 — non modificare
-  README.md          cosa è versionato qui e cosa è referenziato all'upstream
+  data/              the 11 CSV datasets, bit-identical to the 2023 package — do not modify
+  README.md          what is versioned here and what is referenced upstream
 
 analysis/
-  R/                 script della revisione, numerati in ordine di esecuzione
+  R/                 review scripts, numbered in execution order
   outputs/
-    tables/          risultati in CSV
-    figures/         figure generate dalle stime corrette
-    logs/            output integrale di ogni script — la prova di ogni numero citato
+    tables/          results as CSV
+    figures/         figures generated from the corrected estimates
+    logs/            full output of every script — the evidence behind every number quoted
 
 data/
-  derived/           dataset ricostruiti in formato long e wide
+  derived/           datasets rebuilt in long and wide format
 
 docs/
-  01-revisione-lavoro-2023.md   revisione: cosa regge, cosa no, perché
-  02-piano-di-lavoro.md         piano delle analisi successive + changelog
-  blog/                         bozze del post per lucabontempi.com
+  01-review-of-2023-work.md   the review: what holds, what does not, why
+  02-work-plan.md             plan for further analysis + change log
+  blog/                       drafts for the lucabontempi.com post
 ```
 
 ---
 
-## Come eseguire l'analisi
+## Running the analysis
 
-**Requisiti:** R ≥ 4.2 con `lme4`, `emmeans`, `ordinal`, `car`, `clubSandwich`, `ggplot2`.
+**Requirements:** R ≥ 4.2 with `lme4`, `emmeans`, `ordinal`, `car`, `clubSandwich`,
+`ggplot2`.
 
 ```bash
 Rscript -e 'install.packages(c("lme4","emmeans","ordinal","car","clubSandwich","ggplot2"), repos="https://cloud.r-project.org")'
 ```
 
-Gli script vanno eseguiti **dalla root del repository**, nell'ordine indicato: `03`
-produce i dataset che `04`, `05` e `06` consumano.
+Scripts must be run **from the repository root**, in the order shown: `03` produces the
+datasets that `04`, `05` and `06` consume.
 
 ```bash
-Rscript analysis/R/01_replication.R        # replica esatta della Tabella 3.2 della tesi
-Rscript analysis/R/02_data_audit.R         # integrità dei dati e confronto con la Tabella 3.1
-Rscript analysis/R/03_build_derived.R      # costruisce data/derived/
-Rscript analysis/R/04_corrected_inference.R # ANOVA corretta + test della graduatoria
-Rscript analysis/R/05_robustness.R         # manipulation check, ordinale, test multipli, potenza
-Rscript analysis/R/06_figures.R            # figure
+Rscript analysis/R/01_replication.R         # exact replication of Table 3.2 of the thesis
+Rscript analysis/R/02_data_audit.R          # data integrity and comparison against Table 3.1
+Rscript analysis/R/03_build_derived.R       # builds data/derived/
+Rscript analysis/R/04_corrected_inference.R # correct ANOVA + test of the ranking
+Rscript analysis/R/05_robustness.R          # slide-6 check, ordinal model, multiplicity, power
+Rscript analysis/R/06_figures.R             # figures
 ```
 
-Ogni script scrive un log completo in `analysis/outputs/logs/`. Se un numero compare in un
-documento di `docs/`, il log corrispondente lo contiene.
+Every script writes a complete log to `analysis/outputs/logs/`. If a number appears in a
+document under `docs/`, the corresponding log contains it.
 
-### Cosa fa ciascuno script
+### What each script does
 
-| Script | Cosa produce | Perché esiste |
+| Script | What it produces | Why it exists |
 |---|---|---|
-| `00_setup.R` | percorsi e helper condivisi | i CSV originali hanno un BOM UTF-8 che va gestito in lettura |
-| `01_replication.R` | replica delle 9 regressioni e dell'ANOVA | verificare che il lavoro 2023 sia riproducibile prima di criticarlo |
-| `02_data_audit.R` | struttura, coerenza fra file, descrittive, imputazioni, ridondanze | distinguere problemi di dati da problemi di analisi |
-| `03_build_derived.R` | `long_measures.csv` (1.473 × 19), `wide_subjects.csv` (491 × 17) | i file originali sono frammentati per modello; il formato long abilita l'analisi pooled |
-| `04_corrected_inference.R` | ANOVA a misure ripetute corretta, modello misto, contrasti | la specifica originale non modella le misure ripetute e la graduatoria non è mai testata |
-| `05_robustness.R` | controlli su manipulation check, scala ordinale, molteplicità, potenza | quattro verifiche che il lavoro originale non contiene |
-| `06_figures.R` | tre figure | comunicare le stime corrette |
+| `00_setup.R` | shared paths and helpers | the original CSVs carry a UTF-8 BOM that must be handled on read |
+| `01_replication.R` | replication of the 9 regressions and the ANOVA | verify the 2023 work is reproducible before criticising it |
+| `02_data_audit.R` | structure, cross-file consistency, descriptives, imputations, redundancies | separate data problems from analysis problems |
+| `03_build_derived.R` | `long_measures.csv` (1,473 × 19), `wide_subjects.csv` (491 × 17) | the original files are fragmented per model; long format enables pooled analysis |
+| `04_corrected_inference.R` | correct repeated-measures ANOVA, mixed model, contrasts | the original specification does not model repeated measures, and the ranking is never tested |
+| `05_robustness.R` | checks on slide 6, ordinal scale, multiplicity, power | four checks the original work does not contain |
+| `06_figures.R` | three figures | communicating the corrected estimates |
 
 ---
 
-## Sul rapporto con il lavoro originale
+## Relationship to the original work
 
-Il materiale del 2023 vive nel suo repository:
+The 2023 material lives in its own repository:
 [**lucabnt/mobile-app-download-determinants**](https://github.com/lucabnt/mobile-app-download-determinants).
-Qui non viene duplicato. Script R originale, sorgenti LaTeX, figure e PDF finali sono
-referenziati; la mappa completa dei percorsi è in
-[`original/README.md`](original/README.md).
+It is not duplicated here. The original R script, LaTeX sources, figures and final PDFs are
+referenced; the full path mapping is in [`original/README.md`](original/README.md).
 
-L'unica eccezione è `original/data/`: gli 11 CSV sono versionati perché ogni script li
-legge, e senza di essi un clone pulito non sarebbe riproducibile. Sono bit-identici a
-quelli distribuiti nel 2023.
+The one exception is `original/data/`: the 11 CSVs are versioned because every script reads
+them, and without them a clean clone would not be reproducible. They are bit-identical to
+those distributed in 2023.
 
-**Nessun file originale viene modificato.** Le correzioni al codice del 2023 — inclusi
-due riferimenti a oggetti inesistenti che ne interrompono l'esecuzione — sono
-**riprodotte in `analysis/`, non applicate a monte**, e documentate in
-[`docs/02-piano-di-lavoro.md`](docs/02-piano-di-lavoro.md) §6. Nessuna analisi di questo
-repository modifica un dato: `data/derived/` contiene ricostruzioni ottenute per sola
-riorganizzazione, verificate contro i file di partenza in `02_data_audit.R`.
+**No original file is modified.** Fixes to the 2023 code — including two references to
+non-existent objects that abort its execution — are **reproduced in `analysis/`, not applied
+upstream**, and documented in [`docs/02-work-plan.md`](docs/02-work-plan.md) §6. No analysis
+in this repository alters any data: `data/derived/` contains reconstructions obtained purely
+by reorganisation, verified against the source files in `02_data_audit.R`.
 
 ---
 
-## Stato del lavoro
+## Status
 
-- [x] **Fase 1** — replica, audit, correzione dell'inferenza, robustezza
-- [ ] **Fase 2** — effetti sequenziali, eterogeneità fra rispondenti, test di equivalenza,
-      curva di specificazione
-- [ ] **Fase 3** — **bloccata**: richiede l'export grezzo del questionario (demografia,
-      item delle scale, codifica del check sul brand)
-- [ ] **Fase 4** — post di aggiornamento su lucabontempi.com
+- [x] **Phase 1** — replication, audit, corrected inference, robustness
+- [ ] **Phase 2** — sequence effects, between-respondent heterogeneity, equivalence testing,
+      specification curve
+- [ ] **Phase 3** — **blocked**: requires the raw questionnaire export (demographics, scale
+      items, coding of the brand check)
+- [ ] **Phase 4** — update post on lucabontempi.com
 
-Backlog dettagliato con priorità e criteri di accettazione:
-[`docs/02-piano-di-lavoro.md`](docs/02-piano-di-lavoro.md).
+Detailed backlog with priorities and acceptance criteria:
+[`docs/02-work-plan.md`](docs/02-work-plan.md).
 
 ---
 
-## Citazione
+## Citation
 
-Per il lavoro originale:
+For the original work:
 
 > Bontempi, L. (2023). *Determinants of Download on Mobile App Stores — An Empirical
-> Analysis*. Tesi di laurea magistrale, Chair of Marketing, Eberhard Karls Universität
-> Tübingen / Università di Pavia.
+> Analysis*. Master's thesis, Chair of Marketing, Eberhard Karls Universität Tübingen /
+> Università di Pavia.
 
-Per la revisione, indicare questo repository e la data del commit.
+For the review, cite this repository and the commit date.
 
 ---
 
-## Licenza
+## Licence
 
-[`LICENSE.md`](LICENSE.md) è ripreso dal repository originale e distingue tre regimi:
+[`LICENSE.md`](LICENSE.md) is carried over from the original repository and distinguishes
+three regimes:
 
-| Materiale | Licenza | Dove si trova |
+| Material | Licence | Where it lives |
 |---|---|---|
-| Dataset CSV | CC BY 4.0 | `original/data/`, `data/derived/` — versionati qui |
-| Codice R e sorgenti LaTeX del 2023 | MIT | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
-| Testo della tesi e PDF | © 2023 Luca Bontempi, tutti i diritti riservati | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
+| CSV datasets | CC BY 4.0 | `original/data/`, `data/derived/` — versioned here |
+| 2023 R code and LaTeX sources | MIT | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
+| Thesis text and PDFs | © 2023 Luca Bontempi, all rights reserved | [upstream](https://github.com/lucabnt/mobile-app-download-determinants) |
 
-Gli script in `analysis/` e i documenti in `docs/` sono materiale nuovo e seguono la
-licenza MIT. La CC BY 4.0 sui dati richiede attribuzione e l'indicazione delle modifiche
-apportate: `data/derived/` è materiale derivato, e le trasformazioni che lo producono sono
-documentate in [`analysis/R/03_build_derived.R`](analysis/R/03_build_derived.R).
+The scripts in `analysis/` and the documents in `docs/` are new material under the same MIT
+licence. CC BY 4.0 on the data requires attribution and an indication of changes made:
+`data/derived/` is derived material, and the transformations producing it are documented in
+[`analysis/R/03_build_derived.R`](analysis/R/03_build_derived.R).

@@ -1,10 +1,10 @@
-# --- Materiale originale referenziato, non duplicato -------------------------
-# Il lavoro 2023 e' pubblicato in
+# --- Original material: referenced, not duplicated ---------------------------
+# The 2023 work is published at
 #   https://github.com/lucabnt/mobile-app-download-determinants
-# Qui viene versionato solo cio' che gli script di analisi leggono davvero
-# (original/data/): duplicare PDF, figure e sorgenti LaTeX aggiungerebbe ~28 MB
-# senza aggiungere nulla che non sia gia' referenziabile a monte.
-# I file restano sul disco locale, semplicemente non sono tracciati.
+# Only what the analysis scripts actually read is versioned here
+# (original/data/): duplicating the PDFs, figures and LaTeX sources would add
+# ~28 MB without adding anything that is not already referenceable upstream.
+# The files stay on the local disk, they are simply untracked.
 original/pdf/
 original/figures/
 original/tex/

@@ -1,15 +1,15 @@
-=== AUDIT DATI ORIGINALI ===
+=== AUDIT OF THE ORIGINAL DATA ===
 
-## 1. Struttura del file a misure ripetute
-righe: 1473 | soggetti unici: 491 
-righe per soggetto:
+## 1. Structure of the repeated-measures file
+rows: 1473 | unique subjects: 491 
+rows per subject:
 
   3 
 491 
 
-classe di lfdn nel file: integer  <- rilevante per Error(lfdn)
+class of lfdn in the file: integer  <- this is what breaks Error(lfdn)
 
-crosstab i x n (ogni soggetto deve vedere ogni i una volta e ogni n una volta):
+crosstab i x n (each subject must see each i once and each n once):
        
           1   2   3
   brand 153 186 152
@@ -23,63 +23,63 @@ crosstab i x x_i:
   pop   244 247
   rep   253 238
 
-quadrato latino? soggetti con i duplicati: 0 
-soggetti con n duplicati: 0 
+Latin square? subjects with duplicated i: 0 
+subjects with duplicated n: 0 
 
-## 2. y_i_mc e' davvero il mean-centering di y_i?
+## 2. Is y_i_mc really y_i mean-centred?
   rep    mean(y_i)=4.0468  mean(y_i_mc)=+0.0000  max|y_i - mean - y_mc|=0.000000
   pop    mean(y_i)=4.5255  mean(y_i_mc)=+0.0000  max|y_i - mean - y_mc|=0.000000
   brand  mean(y_i)=4.9674  mean(y_i_mc)=-0.0000  max|y_i - mean - y_mc|=0.000000
-  globale: mean(y_i)= 4.5132  max|y_i-mean-y_mc| = 0.466395 
+  overall: mean(y_i)= 4.5132  max|y_i-mean-y_mc| = 0.466395 
 
-## 3. Statistiche descrittive vs Tabella 3.1 della tesi
-       var mean_tesi sd_tesi   mean_dati sd_dati d_mean    d_sd
-1   comp_i    0.6667  0.4714  6.9654e-01 0.46022 0.0298 -0.0112
-2  inv_app    0.0000  1.0523 -5.6412e-11 1.05333 0.0000  0.0010
-3  inv_cat    0.0000  1.0629  3.1840e-10 1.06402 0.0000  0.0011
-4   inv_dl    0.0000  1.2974 -6.2702e-11 1.29869 0.0000  0.0013
-5  x_brand    0.5214  0.4995  5.2138e-01 0.50005 0.0000  0.0006
-6    x_pop    0.5031  0.5000  5.0305e-01 0.50050 0.0000  0.0005
-7    x_rep    0.4847  0.4998  4.8473e-01 0.50028 0.0000  0.0005
-8  y_brand    4.9674  1.5863  4.9674e+00 1.58789 0.0000  0.0016
-9    y_pop    4.5255  1.5675  4.5255e+00 1.56911 0.0000  0.0016
-10   y_rep    4.0468  1.7077  4.0468e+00 1.70947 0.0000  0.0018
+## 3. Descriptive statistics vs Table 3.1 of the thesis
+       var mean_thesis sd_thesis   mean_data sd_data d_mean    d_sd
+1   comp_i      0.6667    0.4714  6.9654e-01 0.46022 0.0298 -0.0112
+2  inv_app      0.0000    1.0523 -5.6412e-11 1.05333 0.0000  0.0010
+3  inv_cat      0.0000    1.0629  3.1840e-10 1.06402 0.0000  0.0011
+4   inv_dl      0.0000    1.2974 -6.2702e-11 1.29869 0.0000  0.0013
+5  x_brand      0.5214    0.4995  5.2138e-01 0.50005 0.0000  0.0006
+6    x_pop      0.5031    0.5000  5.0305e-01 0.50050 0.0000  0.0005
+7    x_rep      0.4847    0.4998  4.8473e-01 0.50028 0.0000  0.0005
+8  y_brand      4.9674    1.5863  4.9674e+00 1.58789 0.0000  0.0016
+9    y_pop      4.5255    1.5675  4.5255e+00 1.56911 0.0000  0.0016
+10   y_rep      4.0468    1.7077  4.0468e+00 1.70947 0.0000  0.0018
 
-## 4. Coerenza tra i file dei modelli e il file ANOVA
-  rep    merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
-  pop    merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
-  brand  merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
+## 4. Consistency between the model files and the ANOVA file
+  rep    merged n=491 | y mismatches=0 | x mismatches=0 | comp!=(n>1)=0
+  pop    merged n=491 | y mismatches=0 | x mismatches=0 | comp!=(n>1)=0
+  brand  merged n=491 | y mismatches=0 | x mismatches=0 | comp!=(n>1)=0
 
-## 5. Sottocampioni M1 (n=1) e M2 (n=3): numerosita' attese vs effettive
-  rep     n=1 attesi 149 / file M1 149 ok |  n=3 attesi 196 / file M2 196 ok
-  pop     n=1 attesi 189 / file M1 189 ok |  n=3 attesi 143 / file M2 143 ok
-  brand   n=1 attesi 153 / file M1 153 ok |  n=3 attesi 152 / file M2 152 ok
+## 5. M1 (n=1) and M2 (n=3) subsamples: expected vs actual sizes
+  rep     n=1 expected 149 / file M1 149 ok |  n=3 expected 196 / file M2 196 ok
+  pop     n=1 expected 189 / file M1 189 ok |  n=3 expected 143 / file M2 143 ok
+  brand   n=1 expected 153 / file M1 153 ok |  n=3 expected 152 / file M2 152 ok
 
-## 6. Manipulation check: quote di superamento
-  M1_rep    75.84%  (n=149, IC95% 68.2-82.5%, p vs 50% = 0.0000)
-  M1_pop    62.43%  (n=189, IC95% 55.1-69.4%, p vs 50% = 0.0008)
-  M1_brand  68.63%  (n=153, IC95% 60.6-75.9%, p vs 50% = 0.0000)
-  M2_rep    79.08%  (n=196, IC95% 72.7-84.6%, p vs 50% = 0.0000)
-  M2_pop    55.94%  (n=143, IC95% 47.4-64.2%, p vs 50% = 0.1807)
-  M2_brand  63.16%  (n=152, IC95% 55.0-70.8%, p vs 50% = 0.0015)
-  M3_rep    77.19%  (n=491, IC95% 73.2-80.8%, p vs 50% = 0.0000)
-  M3_pop    60.49%  (n=491, IC95% 56.0-64.8%, p vs 50% = 0.0000)
-  M3_brand  67.41%  (n=491, IC95% 63.1-71.5%, p vs 50% = 0.0000)
+## 6. Manipulation check: tick rates
+  M1_rep    75.84%  (n=149, 95% CI 68.2-82.5%, p vs 50% = 0.0000)
+  M1_pop    62.43%  (n=189, 95% CI 55.1-69.4%, p vs 50% = 0.0008)
+  M1_brand  68.63%  (n=153, 95% CI 60.6-75.9%, p vs 50% = 0.0000)
+  M2_rep    79.08%  (n=196, 95% CI 72.7-84.6%, p vs 50% = 0.0000)
+  M2_pop    55.94%  (n=143, 95% CI 47.4-64.2%, p vs 50% = 0.1807)
+  M2_brand  63.16%  (n=152, 95% CI 55.0-70.8%, p vs 50% = 0.0015)
+  M3_rep    77.19%  (n=491, 95% CI 73.2-80.8%, p vs 50% = 0.0000)
+  M3_pop    60.49%  (n=491, 95% CI 56.0-64.8%, p vs 50% = 0.0000)
+  M3_brand  67.41%  (n=491, 95% CI 63.1-71.5%, p vs 50% = 0.0000)
 
-## 7. Valori mancanti e range
-  M ANOVA_RM.csv   righe=1473 colonne=13 NA=0
-  M plots.csv      righe=1473 colonne=11 NA=0
-  M1_brand.csv     righe= 153 colonne=10 NA=0
-  M1_pop.csv       righe= 189 colonne=10 NA=0
-  M1_rep.csv       righe= 149 colonne=10 NA=0
-  M2_brand.csv     righe= 152 colonne=18 NA=0
-  M2_pop.csv       righe= 143 colonne=18 NA=0
-  M2_rep.csv       righe= 196 colonne=18 NA=0
-  M3_brand.csv     righe= 491 colonne=11 NA=0
-  M3_pop.csv       righe= 491 colonne=11 NA=0
-  M3_rep.csv       righe= 491 colonne=11 NA=0
+## 7. Missing values and file dimensions
+  M ANOVA_RM.csv   rows=1473 cols=13 NA=0
+  M plots.csv      rows=1473 cols=11 NA=0
+  M1_brand.csv     rows= 153 cols=10 NA=0
+  M1_pop.csv       rows= 189 cols=10 NA=0
+  M1_rep.csv       rows= 149 cols=10 NA=0
+  M2_brand.csv     rows= 152 cols=18 NA=0
+  M2_pop.csv       rows= 143 cols=18 NA=0
+  M2_rep.csv       rows= 196 cols=18 NA=0
+  M3_brand.csv     rows= 491 cols=11 NA=0
+  M3_pop.csv       rows= 491 cols=11 NA=0
+  M3_rep.csv       rows= 491 cols=11 NA=0
 
-## 8. Distribuzione della variabile dipendente (scala Likert 1-7)
+## 8. Distribution of the dependent variable (1-7 Likert)
   y_rep    
   1   2   3   4   5   6   7 
  35  85  61  96 103  77  34 
@@ -90,54 +90,54 @@ soggetti con n duplicati: 0
   1   2   3   4   5   6   7 
  16  28  41  88 103 128  87 
 
-## 9. Imputazione con la media nelle scale di involvement
-Le scale hanno 3 item (inv_app, inv_dl) e 8 item (inv_cat) su scala 1-7: le
-medie devono quindi essere multipli di 1/3 e di 1/8. Un valore che non lo e'
-e che coincide con la media della scala indica imputazione.
+## 9. Mean imputation in the involvement scales
+The scales have 3 items (inv_app, inv_dl) and 8 items (inv_cat) on a 1-7
+range, so the scale means must be multiples of 1/3 and 1/8. A value that is
+not, and that equals the scale mean, is the signature of mean imputation.
 
-  inv_app  (3 item) media = 5.328532 | punteggio ottenibile dalla scala? NO  | casi pari alla media:  5 (1.0%)
-           s.d. inclusi = 1.0533 | s.d. esclusi = 1.0587 | scarto = +0.0054
-  inv_dl   (3 item) media = 4.693306 | punteggio ottenibile dalla scala? NO  | casi pari alla media:  3 (0.6%)
-           s.d. inclusi = 1.2987 | s.d. esclusi = 1.3027 | scarto = +0.0040
-  inv_cat  (8 item) media = 4.480208 | punteggio ottenibile dalla scala? NO  | casi pari alla media: 11 (2.2%)
-           s.d. inclusi = 1.0640 | s.d. esclusi = 1.0762 | scarto = +0.0121
+  inv_app  (3 items) mean = 5.328532 | attainable score on the scale? NO  | cases equal to the mean:  5 (1.0%)
+           s.d. including = 1.0533 | s.d. excluding = 1.0587 | difference = +0.0054
+  inv_dl   (3 items) mean = 4.693306 | attainable score on the scale? NO  | cases equal to the mean:  3 (0.6%)
+           s.d. including = 1.2987 | s.d. excluding = 1.3027 | difference = +0.0040
+  inv_cat  (8 items) mean = 4.480208 | attainable score on the scale? NO  | cases equal to the mean: 11 (2.2%)
+           s.d. including = 1.0640 | s.d. excluding = 1.0762 | difference = +0.0121
 
-  soggetti con almeno una scala imputata: 18 su 491 (3.7%)
-n_scale_imputate
+  subjects with at least one imputed scale: 18 of 491 (3.7%)
+n_scales_imputed
   0   1   2 
 473  17   1 
 
-## 10. 'M plots.csv' e' ridondante rispetto a 'M ANOVA_RM.csv'?
-  colonne presenti solo in M ANOVA_RM: n_name, x_i_name 
-  colonne presenti solo in M plots:    nessuna 
-  identici sulle colonne comuni?       TRUE 
-  -> M plots.csv e' un sottoinsieme di colonne di M ANOVA_RM.csv, non aggiunge dati.
+## 10. Is 'M plots.csv' redundant given 'M ANOVA_RM.csv'?
+  columns only in M ANOVA_RM: n_name, x_i_name 
+  columns only in M plots:    none 
+  identical on the shared columns?    TRUE 
+  -> M plots.csv is a column subset of M ANOVA_RM.csv; it adds no data.
 
-## 11. Colonne dei file M2 non usate da alcun modello
-  ITD_pop e' la dicotomizzazione top-3-box di y_pop_1e2 (y >= 5)?   TRUE 
-  ITD_brand idem su y_brand_1e2?                                   TRUE 
-  ITD_pop_2 = y_pop_1e2 centrata sulla media di y_pop?  scarto max = 4.73e-10 
-  ITD_brand_2 = y_brand_1e2 centrata?                   scarto max = 4.48e-11 
-  -> residui di esplorazioni abbandonate: nessuna entra nei modelli della tesi.
+## 11. Columns in the M2 files that no model uses
+  ITD_pop is the top-3-box dichotomisation of y_pop_1e2 (y >= 5)?   TRUE 
+  ITD_brand likewise on y_brand_1e2?                               TRUE 
+  ITD_pop_2 = y_pop_1e2 centred on mean(y_pop)?   max deviation = 4.73e-10 
+  ITD_brand_2 = y_brand_1e2 centred?              max deviation = 4.48e-11 
+  -> leftovers from abandoned exploration: none enters the thesis models.
 
-## 12. Struttura del 'manipulation check' (slide 6 del questionario)
-Non e' un controllo di percezione della manipolazione: e' una singola domanda
-a scelta multipla posta una volta alla fine ('quali fattori hai preso in
-considerazione'), con 9 caselle. man_check_i = 1 se la casella corrispondente
-e' spuntata. Due conseguenze verificabili nei dati:
+## 12. What the 'manipulation check' actually is (questionnaire slide 6)
+It is not a check that the manipulation was perceived. It is a single
+multiple-choice question asked once at the end ('which factors did you take
+into consideration'), with 9 tick boxes. man_check_i = 1 if the matching box
+was ticked. Two consequences are visible in the data:
 
-  (a) e' una misura compositiva: spuntare una casella va a scapito delle altre.
-      Correlazioni fra gli esiti dei tre check sullo stesso soggetto:
+  (a) it is a compositional measure: ticking one box comes at the expense of others.
+      Correlations between the three outcomes within subject:
                   man_check_i.rep man_check_i.pop man_check_i.brand
 man_check_i.rep             1.000           0.305            -0.067
 man_check_i.pop             0.305           1.000            -0.091
 man_check_i.brand          -0.067          -0.091             1.000
-      Con una misura di attenzione ci si aspetterebbero correlazioni positive.
+      An attention measure would show uniformly positive correlations.
 
-  (b) essendo una domanda unica e globale, non puo' variare per posizione:
-         check
-posizione     0     1
-        1 0.316 0.684
-        2 0.308 0.692
-        3 0.326 0.674
-      La piattezza non e' evidenza contro il decadimento mnemonico: e' strutturale.
+  (b) being a single global question, it cannot vary by presentation position:
+        check
+position     0     1
+       1 0.316 0.684
+       2 0.308 0.692
+       3 0.326 0.674
+      That flatness is structural, not evidence against memory decay.

@@ -1,7 +1,8 @@
 # 02_data_audit.R ------------------------------------------------------------
-# Verifica di integrita' dei dataset originali: coerenza tra file, corrispondenza
-# con le statistiche descrittive pubblicate (Tabella 3.1) e con i numeri
-# riportati nel testo della tesi.
+# Integrity audit of the original datasets: consistency across files, agreement
+# with the published descriptive statistics (Table 3.1) and with the figures
+# reported in the thesis text. Sections 9-12 document data-construction issues
+# found while reading Appendix A and B.
 # Output: analysis/outputs/logs/02_data_audit.log
 # ----------------------------------------------------------------------------
 
@@ -10,34 +11,34 @@ source("analysis/R/00_setup.R")
 con <- file(file.path(DIR_LOG, "02_data_audit.log"), open = "wt")
 sink(con, split = TRUE); sink(con, type = "message")
 
-cat("=== AUDIT DATI ORIGINALI ===\n\n")
+cat("=== AUDIT OF THE ORIGINAL DATA ===\n\n")
 
 anv <- read_orig("M ANOVA_RM.csv")
 plt <- read_orig("M plots.csv")
 
-cat("## 1. Struttura del file a misure ripetute\n")
-cat("righe:", nrow(anv), "| soggetti unici:", length(unique(anv$lfdn)), "\n")
-cat("righe per soggetto:\n"); print(table(table(anv$lfdn)))
-cat("\nclasse di lfdn nel file:", class(anv$lfdn), " <- rilevante per Error(lfdn)\n")
-cat("\ncrosstab i x n (ogni soggetto deve vedere ogni i una volta e ogni n una volta):\n")
+cat("## 1. Structure of the repeated-measures file\n")
+cat("rows:", nrow(anv), "| unique subjects:", length(unique(anv$lfdn)), "\n")
+cat("rows per subject:\n"); print(table(table(anv$lfdn)))
+cat("\nclass of lfdn in the file:", class(anv$lfdn), " <- this is what breaks Error(lfdn)\n")
+cat("\ncrosstab i x n (each subject must see each i once and each n once):\n")
 print(table(anv$i_name, anv$n))
 cat("\ncrosstab i x x_i:\n"); print(table(anv$i_name, anv$x_i))
-cat("\nquadrato latino? soggetti con i duplicati:",
+cat("\nLatin square? subjects with duplicated i:",
     sum(tapply(anv$i_name, anv$lfdn, function(z) any(duplicated(z)))), "\n")
-cat("soggetti con n duplicati:",
+cat("subjects with duplicated n:",
     sum(tapply(anv$n, anv$lfdn, function(z) any(duplicated(z)))), "\n")
 
-cat("\n## 2. y_i_mc e' davvero il mean-centering di y_i?\n")
+cat("\n## 2. Is y_i_mc really y_i mean-centred?\n")
 for (v in unique(anv$i_name)) {
   s <- anv[anv$i_name == v, ]
   cat(sprintf("  %-6s mean(y_i)=%.4f  mean(y_i_mc)=%+.4f  max|y_i - mean - y_mc|=%.6f\n",
               v, mean(s$y_i), mean(s$y_i_mc), max(abs(s$y_i - mean(s$y_i) - s$y_i_mc))))
 }
-cat("  globale: mean(y_i)=", round(mean(anv$y_i),4),
+cat("  overall: mean(y_i)=", round(mean(anv$y_i),4),
     " max|y_i-mean-y_mc| =", round(max(abs(anv$y_i - mean(anv$y_i) - anv$y_i_mc)), 6), "\n")
 
-cat("\n## 3. Statistiche descrittive vs Tabella 3.1 della tesi\n")
-tesi <- data.frame(
+cat("\n## 3. Descriptive statistics vs Table 3.1 of the thesis\n")
+thesis <- data.frame(
   var  = c("y_rep","y_pop","y_brand","x_rep","x_pop","x_brand",
            "inv_app","inv_dl","inv_cat","comp_i"),
   mean = c(4.0468,4.5255,4.9674,0.4847,0.5031,0.5214,0,0,0,0.6667),
@@ -56,111 +57,111 @@ emp <- rbind(
   data.frame(var="inv_cat", mean=mean(m3$rep$inv_cat_mc),sd=sd(m3$rep$inv_cat_mc)),
   data.frame(var="comp_i",  mean=mean(m3$rep$comp_rep),  sd=sd(m3$rep$comp_rep))
 )
-cmp <- merge(tesi, emp, by = "var", suffixes = c("_tesi", "_dati"))
-cmp$d_mean <- round(cmp$mean_dati - cmp$mean_tesi, 4)
-cmp$d_sd   <- round(cmp$sd_dati   - cmp$sd_tesi,   4)
+cmp <- merge(thesis, emp, by = "var", suffixes = c("_thesis", "_data"))
+cmp$d_mean <- round(cmp$mean_data - cmp$mean_thesis, 4)
+cmp$d_sd   <- round(cmp$sd_data   - cmp$sd_thesis,   4)
 print(cmp, digits = 5)
 
-cat("\n## 4. Coerenza tra i file dei modelli e il file ANOVA\n")
+cat("\n## 4. Consistency between the model files and the ANOVA file\n")
 for (v in c("rep","pop","brand")) {
   d  <- m3[[v]]
   a  <- anv[anv$i_name == v, ]
   k  <- merge(d[, c("lfdn", paste0("y_", v), paste0("x_", v), paste0("comp_", v))],
               a[, c("lfdn","y_i","x_i","n")], by = "lfdn")
-  cat(sprintf("  %-6s merge n=%d | y discordanti=%d | x discordanti=%d | comp!=(n>1)=%d\n",
+  cat(sprintf("  %-6s merged n=%d | y mismatches=%d | x mismatches=%d | comp!=(n>1)=%d\n",
               v, nrow(k), sum(k[[paste0("y_", v)]] != k$y_i),
               sum(k[[paste0("x_", v)]] != k$x_i),
               sum(k[[paste0("comp_", v)]] != as.integer(k$n > 1))))
 }
 
-cat("\n## 5. Sottocampioni M1 (n=1) e M2 (n=3): numerosita' attese vs effettive\n")
+cat("\n## 5. M1 (n=1) and M2 (n=3) subsamples: expected vs actual sizes\n")
 for (v in c("rep","pop","brand")) {
   a  <- anv[anv$i_name == v, ]
   n1 <- sum(a$n == 1); n3 <- sum(a$n == 3)
   d1 <- nrow(read_orig(paste0("M1_", v, ".csv")))
   d2 <- nrow(read_orig(paste0("M2_", v, ".csv")))
-  cat(sprintf("  %-6s  n=1 attesi %3d / file M1 %3d %s |  n=3 attesi %3d / file M2 %3d %s\n",
-              v, n1, d1, ifelse(n1 == d1, "ok", "!! DIVERGENZA"),
-              n3, d2, ifelse(n3 == d2, "ok", "!! DIVERGENZA")))
+  cat(sprintf("  %-6s  n=1 expected %3d / file M1 %3d %s |  n=3 expected %3d / file M2 %3d %s\n",
+              v, n1, d1, ifelse(n1 == d1, "ok", "!! MISMATCH"),
+              n3, d2, ifelse(n3 == d2, "ok", "!! MISMATCH")))
 }
 
-cat("\n## 6. Manipulation check: quote di superamento\n")
+cat("\n## 6. Manipulation check: tick rates\n")
 for (mod in c("M1","M2","M3")) for (v in c("rep","pop","brand")) {
   d <- read_orig(sprintf("%s_%s.csv", mod, v))
   mc <- d[[paste0("man_check_", v)]]
   bt <- binom.test(sum(mc), length(mc), p = 0.5)
-  cat(sprintf("  %s_%-6s %5.2f%%  (n=%3d, IC95%% %.1f-%.1f%%, p vs 50%% = %.4f)\n",
+  cat(sprintf("  %s_%-6s %5.2f%%  (n=%3d, 95%% CI %.1f-%.1f%%, p vs 50%% = %.4f)\n",
               mod, v, 100*mean(mc), length(mc),
               100*bt$conf.int[1], 100*bt$conf.int[2], bt$p.value))
 }
 
-cat("\n## 7. Valori mancanti e range\n")
+cat("\n## 7. Missing values and file dimensions\n")
 for (f in list.files(DIR_ORIG, pattern = "[.]csv$")) {
   d <- read_orig(f)
-  cat(sprintf("  %-16s righe=%4d colonne=%2d NA=%d\n", f, nrow(d), ncol(d), sum(is.na(d))))
+  cat(sprintf("  %-16s rows=%4d cols=%2d NA=%d\n", f, nrow(d), ncol(d), sum(is.na(d))))
 }
 
-cat("\n## 8. Distribuzione della variabile dipendente (scala Likert 1-7)\n")
+cat("\n## 8. Distribution of the dependent variable (1-7 Likert)\n")
 for (v in c("rep","pop","brand")) {
   y <- m3[[v]][[paste0("y_", v)]]
   cat(sprintf("  y_%-6s ", v)); print(table(factor(y, levels = 1:7)))
 }
 
-cat("\n## 9. Imputazione con la media nelle scale di involvement\n")
-cat("Le scale hanno 3 item (inv_app, inv_dl) e 8 item (inv_cat) su scala 1-7: le\n")
-cat("medie devono quindi essere multipli di 1/3 e di 1/8. Un valore che non lo e'\n")
-cat("e che coincide con la media della scala indica imputazione.\n\n")
+cat("\n## 9. Mean imputation in the involvement scales\n")
+cat("The scales have 3 items (inv_app, inv_dl) and 8 items (inv_cat) on a 1-7\n")
+cat("range, so the scale means must be multiples of 1/3 and 1/8. A value that is\n")
+cat("not, and that equals the scale mean, is the signature of mean imputation.\n\n")
 n_item <- c(inv_app = 3, inv_dl = 3, inv_cat = 8)
 imput <- sapply(names(n_item), function(v) {
   x <- m3$rep[[v]]; abs(x - mean(x)) < 1e-9
 })
 for (v in names(n_item)) {
   x <- m3$rep[[v]]; mu <- mean(x); k <- n_item[[v]]
-  ottenibile <- abs(mu * k - round(mu * k)) < 1e-6
-  cat(sprintf("  %-8s (%d item) media = %.6f | punteggio ottenibile dalla scala? %-3s | casi pari alla media: %2d (%.1f%%)\n",
-              v, k, mu, ifelse(ottenibile, "si", "NO"), sum(imput[, v]), 100 * mean(imput[, v])))
-  cat(sprintf("           s.d. inclusi = %.4f | s.d. esclusi = %.4f | scarto = %+.4f\n",
+  attainable <- abs(mu * k - round(mu * k)) < 1e-6
+  cat(sprintf("  %-8s (%d items) mean = %.6f | attainable score on the scale? %-3s | cases equal to the mean: %2d (%.1f%%)\n",
+              v, k, mu, ifelse(attainable, "yes", "NO"), sum(imput[, v]), 100 * mean(imput[, v])))
+  cat(sprintf("           s.d. including = %.4f | s.d. excluding = %.4f | difference = %+.4f\n",
               sd(x), sd(x[!imput[, v]]), sd(x[!imput[, v]]) - sd(x)))
 }
-cat(sprintf("\n  soggetti con almeno una scala imputata: %d su %d (%.1f%%)\n",
+cat(sprintf("\n  subjects with at least one imputed scale: %d of %d (%.1f%%)\n",
             sum(rowSums(imput) > 0), nrow(imput), 100 * mean(rowSums(imput) > 0)))
-print(table(n_scale_imputate = rowSums(imput)))
+print(table(n_scales_imputed = rowSums(imput)))
 
-cat("\n## 10. 'M plots.csv' e' ridondante rispetto a 'M ANOVA_RM.csv'?\n")
+cat("\n## 10. Is 'M plots.csv' redundant given 'M ANOVA_RM.csv'?\n")
 com <- intersect(names(anv), names(plt))
 a2 <- anv[order(anv$lfdn, anv$i), com]; p2 <- plt[order(plt$lfdn, plt$i), com]
-cat("  colonne presenti solo in M ANOVA_RM:", paste(setdiff(names(anv), names(plt)), collapse = ", "), "\n")
-cat("  colonne presenti solo in M plots:   ",
-    ifelse(length(setdiff(names(plt), names(anv))) == 0, "nessuna",
+cat("  columns only in M ANOVA_RM:", paste(setdiff(names(anv), names(plt)), collapse = ", "), "\n")
+cat("  columns only in M plots:   ",
+    ifelse(length(setdiff(names(plt), names(anv))) == 0, "none",
            paste(setdiff(names(plt), names(anv)), collapse = ", ")), "\n")
-cat("  identici sulle colonne comuni?      ", isTRUE(all.equal(a2, p2, check.attributes = FALSE)), "\n")
-cat("  -> M plots.csv e' un sottoinsieme di colonne di M ANOVA_RM.csv, non aggiunge dati.\n")
+cat("  identical on the shared columns?   ", isTRUE(all.equal(a2, p2, check.attributes = FALSE)), "\n")
+cat("  -> M plots.csv is a column subset of M ANOVA_RM.csv; it adds no data.\n")
 
-cat("\n## 11. Colonne dei file M2 non usate da alcun modello\n")
+cat("\n## 11. Columns in the M2 files that no model uses\n")
 m2r <- read_orig("M2_rep.csv")
-cat("  ITD_pop e' la dicotomizzazione top-3-box di y_pop_1e2 (y >= 5)?  ",
+cat("  ITD_pop is the top-3-box dichotomisation of y_pop_1e2 (y >= 5)?  ",
     all(m2r$ITD_pop == as.integer(m2r$y_pop_1e2 >= 5)), "\n")
-cat("  ITD_brand idem su y_brand_1e2?                                  ",
+cat("  ITD_brand likewise on y_brand_1e2?                              ",
     all(m2r$ITD_brand == as.integer(m2r$y_brand_1e2 >= 5)), "\n")
-cat("  ITD_pop_2 = y_pop_1e2 centrata sulla media di y_pop?  scarto max =",
+cat("  ITD_pop_2 = y_pop_1e2 centred on mean(y_pop)?   max deviation =",
     signif(max(abs(m2r$ITD_pop_2 - (m2r$y_pop_1e2 - mean(m3$pop$y_pop)))), 3), "\n")
-cat("  ITD_brand_2 = y_brand_1e2 centrata?                   scarto max =",
+cat("  ITD_brand_2 = y_brand_1e2 centred?              max deviation =",
     signif(max(abs(m2r$ITD_brand_2 - (m2r$y_brand_1e2 - mean(m3$brand$y_brand)))), 3), "\n")
-cat("  -> residui di esplorazioni abbandonate: nessuna entra nei modelli della tesi.\n")
+cat("  -> leftovers from abandoned exploration: none enters the thesis models.\n")
 
-cat("\n## 12. Struttura del 'manipulation check' (slide 6 del questionario)\n")
-cat("Non e' un controllo di percezione della manipolazione: e' una singola domanda\n")
-cat("a scelta multipla posta una volta alla fine ('quali fattori hai preso in\n")
-cat("considerazione'), con 9 caselle. man_check_i = 1 se la casella corrispondente\n")
-cat("e' spuntata. Due conseguenze verificabili nei dati:\n\n")
+cat("\n## 12. What the 'manipulation check' actually is (questionnaire slide 6)\n")
+cat("It is not a check that the manipulation was perceived. It is a single\n")
+cat("multiple-choice question asked once at the end ('which factors did you take\n")
+cat("into consideration'), with 9 tick boxes. man_check_i = 1 if the matching box\n")
+cat("was ticked. Two consequences are visible in the data:\n\n")
 mc_wide <- reshape(anv[, c("lfdn", "i_name", "man_check_i")], idvar = "lfdn",
                    timevar = "i_name", direction = "wide")
-cat("  (a) e' una misura compositiva: spuntare una casella va a scapito delle altre.\n")
-cat("      Correlazioni fra gli esiti dei tre check sullo stesso soggetto:\n")
+cat("  (a) it is a compositional measure: ticking one box comes at the expense of others.\n")
+cat("      Correlations between the three outcomes within subject:\n")
 print(round(cor(mc_wide[, -1]), 3))
-cat("      Con una misura di attenzione ci si aspetterebbero correlazioni positive.\n\n")
-cat("  (b) essendo una domanda unica e globale, non puo' variare per posizione:\n")
-print(round(prop.table(table(posizione = anv$n, check = anv$man_check_i), 1), 3))
-cat("      La piattezza non e' evidenza contro il decadimento mnemonico: e' strutturale.\n")
+cat("      An attention measure would show uniformly positive correlations.\n\n")
+cat("  (b) being a single global question, it cannot vary by presentation position:\n")
+print(round(prop.table(table(position = anv$n, check = anv$man_check_i), 1), 3))
+cat("      That flatness is structural, not evidence against memory decay.\n")
 
 sink(type="message"); sink(); close(con)

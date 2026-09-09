@@ -1,11 +1,11 @@
-=== REPLICA TESI 2023 ===
+=== REPLICATION OF THE 2023 THESIS ===
 R version: R version 4.2.2 (2022-10-31 ucrt) 
-Data esecuzione: 2026-09-09 15:18:59 
+Run date: 2026-09-09 19:45:55 
 
 --- M ANOVA_RM.csv ---
-Osservazioni: 1473  | soggetti: 491 
+Observations: 1473  | subjects: 491 
 
---- aov(y_i ~ i_name*x_i_name*n_name + Error(lfdn)) [come da tesi] ---
+--- aov(y_i ~ i_name*x_i_name*n_name + Error(lfdn)) [as in the thesis] ---
 
 Error: lfdn
          Df Sum Sq Mean Sq
@@ -24,7 +24,7 @@ Residuals              1454   3587    2.47
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
---- lm equivalente ---
+--- Equivalent lm ---
 
 Call:
 lm(formula = y_i ~ i_name * x_i_name * n_name, data = anova_dat)
@@ -62,7 +62,7 @@ F-statistic: 11.53 on 17 and 1455 DF,  p-value: < 2.2e-16
 
 
 
-=== M1_rep (M1_rep.csv, N righe file = 149) ===
+=== M1_rep (M1_rep.csv, rows in file = 149) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -90,7 +90,7 @@ F-statistic:  2.12 on 7 and 141 DF,  p-value: 0.04518
 
 
 
-=== M1_pop (M1_pop.csv, N righe file = 189) ===
+=== M1_pop (M1_pop.csv, rows in file = 189) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -118,7 +118,7 @@ F-statistic: 4.174 on 7 and 181 DF,  p-value: 0.0002763
 
 
 
-=== M1_brand (M1_brand.csv, N righe file = 153) ===
+=== M1_brand (M1_brand.csv, rows in file = 153) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -146,7 +146,7 @@ F-statistic:   8.4 on 7 and 145 DF,  p-value: 1.332e-08
 
 
 
-=== M2_rep (M2_rep.csv, N righe file = 196) ===
+=== M2_rep (M2_rep.csv, rows in file = 196) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -178,7 +178,7 @@ F-statistic: 3.858 on 11 and 184 DF,  p-value: 5.093e-05
 
 
 
-=== M2_pop (M2_pop.csv, N righe file = 143) ===
+=== M2_pop (M2_pop.csv, rows in file = 143) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -210,7 +210,7 @@ F-statistic: 1.965 on 11 and 131 DF,  p-value: 0.03681
 
 
 
-=== M2_brand (M2_brand.csv, N righe file = 152) ===
+=== M2_brand (M2_brand.csv, rows in file = 152) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -242,7 +242,7 @@ F-statistic: 2.305 on 11 and 140 DF,  p-value: 0.01258
 
 
 
-=== M3_rep (M3_rep.csv, N righe file = 491) ===
+=== M3_rep (M3_rep.csv, rows in file = 491) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -272,7 +272,7 @@ F-statistic: 5.807 on 9 and 481 DF,  p-value: 1.092e-07
 
 
 
-=== M3_pop (M3_pop.csv, N righe file = 491) ===
+=== M3_pop (M3_pop.csv, rows in file = 491) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -302,7 +302,7 @@ F-statistic: 6.309 on 9 and 481 DF,  p-value: 1.84e-08
 
 
 
-=== M3_brand (M3_brand.csv, N righe file = 491) ===
+=== M3_brand (M3_brand.csv, rows in file = 491) ===
 
 Call:
 lm(formula = sp$f, data = d)
@@ -332,7 +332,7 @@ F-statistic: 9.843 on 9 and 481 DF,  p-value: 6.803e-14
 
 
 
-=== SINTESI FIT ===
+=== FIT SUMMARY ===
             model n_rows_file n_used      r2  adj_r2 f_stat df1 df2  f_pvalue sigma manip_check_pct
 M1_rep     M1_rep         149    149 0.09523 0.05031  2.120   7 141 4.518e-02 1.591           75.84
 M1_pop     M1_pop         189    189 0.13898 0.10568  4.174   7 181 2.763e-04 1.468           62.43
@@ -345,7 +345,7 @@ M3_pop     M3_pop         491    491 0.10558 0.08885  6.309   9 481 1.840e-08 1.
 M3_brand M3_brand         491    491 0.15552 0.13972  9.843   9 481 6.803e-14 1.473           67.41
 
 
-=== COEFFICIENTI FOCALI (x_i) ===
+=== FOCAL COEFFICIENTS (x_i) ===
               model    term estimate     se   p_value sig
 M1_rep.2     M1_rep   x_rep   0.4986 0.2626 5.963e-02   *
 M1_pop.2     M1_pop   x_pop   0.3611 0.2148 9.444e-02   *

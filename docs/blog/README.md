@@ -1,9 +1,9 @@
-# Bozze del blog post
+# Blog post drafts
 
-Destinazione: aggiornamento del post su
+Destination: an update to the post on
 [lucabontempi.com](https://lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/).
 
-Angolo, struttura, requisiti e precondizioni sono definiti in
-[`../02-piano-di-lavoro.md`](../02-piano-di-lavoro.md) §4.
+Angle, structure, requirements and preconditions are set out in
+[`../02-work-plan.md`](../02-work-plan.md) §4.
 
-Le bozze vanno qui una volta chiuse le attività 2.1, 2.3 e 2.5 della Fase 2.
+Drafts go here once tasks 2.1, 2.3 and 2.5 of Phase 2 are closed.

@@ -1,6 +1,6 @@
 # 00_setup.R -----------------------------------------------------------------
-# Percorsi, helper e opzioni condivise da tutti gli script di analisi.
-# Eseguire gli script dalla root del repository:
+# Shared paths, helpers and options for every analysis script.
+# Run scripts from the repository root:
 #   Rscript analysis/R/01_replication.R
 # ----------------------------------------------------------------------------
 
@@ -18,13 +18,13 @@ for (d in c(DIR_DERIV, DIR_TAB, DIR_FIG, DIR_LOG)) {
   if (!dir.exists(d)) dir.create(d, recursive = TRUE)
 }
 
-# I CSV originali hanno un BOM UTF-8: senza fileEncoding la prima colonna
-# viene letta come "ï..lfdn".
+# The original CSVs carry a UTF-8 BOM: without fileEncoding the first column
+# is read as "i..lfdn".
 read_orig <- function(file) {
   read.csv(file.path(DIR_ORIG, file), header = TRUE, fileEncoding = "UTF-8-BOM")
 }
 
-# Estrae coefficiente, SE, t e p da un lm in un data.frame ordinato.
+# Extract coefficient, SE, t and p from an lm into a tidy data.frame.
 tidy_lm <- function(model, label) {
   s <- summary(model)
   cf <- as.data.frame(coef(s))
