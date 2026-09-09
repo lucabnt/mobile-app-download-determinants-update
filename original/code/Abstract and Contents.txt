@@ -1,0 +1,22 @@
+Determinants of Download on Mobile App Stores - An Empirical Analysis
+Luca Bontempi
+
+Master Thesis, Chair of Marketing, Eberhard Karl University of Tübingen, 14/02/2023.
+
+
+ABSTRACT
+After providing an extensive background on the mobile ecosystem, its participants and its dynamics, this research aims to establish which characteristic out of reputation, popularity and developer's brand, reflected in some elements in the presentation page on app stores, is the most effective in predicting user's choice to download an app. 
+Experimental results show how developer's brand is generally the most decisive element, but, when comparison between apps is introduced in the model, it loses its effectiveness and reputation becomes more relevant. 
+Popularity and peer influence, in the context of low network effects, appear to be unexpectedly ineffective in driving users' decisions across all models. 
+Moreover, users' involvement in the download process reinforces the effect of reputation, while, when customers are more involved with the specific app category and perceive a higher risk, apps from established brands are more likely to benefit. 
+Finally, it was not possible to find clear evidence of any two-way interaction between reputation, popularity and brand.
+
+
+CONTENTS
+This .zip file includes all datasets and the .r file necessary to replicate the results obtained in this research.
+Code: Determinants of Download on Mobile App Stores - An Empirical Analysis.r
+ANOVA: M ANOVA_RM.csv
+Model 1: M1_rep.csv, M1_pop.csv, M1_brand.csv
+Model 2: M2_rep.csv, M2_pop.csv, M2_brand.csv
+Model 3: M3_rep.csv, M3_pop.csv, M3_brand.csv
+Figures: M plots.csv

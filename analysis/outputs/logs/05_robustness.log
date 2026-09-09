@@ -1,0 +1,171 @@
+=== D.1 ROBUSTEZZA AL MANIPULATION CHECK ===
+
+Nella tesi le quote di superamento sono riportate in Tabella 3.2 ma mai
+usate. Per popularity la quota e' 60.5% complessiva e 55.9% nel
+sottocampione M2, non distinguibile dal 50% atteso per caso (p = 0.18):
+il risultato nullo su popularity potrebbe riflettere una manipolazione
+inefficace piu' che un'assenza di effetto.
+
+Osservazioni per esito del manipulation check:
+       check_superato
+focale    0   1
+  brand 160 331
+  rep   112 379
+  pop   194 297
+
+Soggetti che superano tutti e tre i check: 163 su 491
+
+                         campione focal estimate     SE lower.CL upper.CL   p.value
+1  tutte le osservazioni (N=1473) brand   1.0528 0.1224  0.81260   1.2929 2.322e-17
+2  tutte le osservazioni (N=1473)   rep   0.8425 0.1224  0.60238   1.0826 9.135e-12
+3  tutte le osservazioni (N=1473)   pop   0.2181 0.1223 -0.02184   0.4580 7.478e-02
+4    solo check superato (N=1007) brand   1.3812 0.1566  1.07388   1.6885 5.731e-18
+5    solo check superato (N=1007)   rep   1.0983 0.1445  0.81474   1.3819 7.457e-14
+6    solo check superato (N=1007)   pop   0.5067 0.1618  0.18919   0.8242 1.794e-03
+7 solo soggetti 3/3 check (N=489) brand   1.3441 0.2080  0.93533   1.7530 2.866e-10
+8 solo soggetti 3/3 check (N=489)   rep   1.2420 0.2071  0.83492   1.6490 4.341e-09
+9 solo soggetti 3/3 check (N=489)   pop   0.5166 0.2064  0.11093   0.9223 1.269e-02
+
+
+=== D.2 MODELLO LOGIT ORDINALE A EFFETTI MISTI ===
+
+La ITD e' misurata su scala Likert 1-7: OLS ne assume intervalli uguali e
+supporto illimitato. Qui la stessa specifica come logit ordinale cumulativo.
+
+Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: y_ord ~ focal * x_f + position + inv_app + inv_dl + inv_cat +      (1 | subj_f)
+data:    long
+
+ link  threshold nobs logLik   AIC     niter       max.grad cond.H 
+ logit flexible  1473 -2496.39 5026.78 2532(12525) 2.13e-03 1.5e+02
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ subj_f (Intercept) 2.727    1.651   
+Number of groups:  subj_f 491 
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+focalrep         -1.18901    0.18396  -6.463 1.02e-10 ***
+focalpop         -0.06508    0.18097  -0.360  0.71911    
+x_fhigh           1.71154    0.19915   8.594  < 2e-16 ***
+positionsecond   -0.18442    0.11851  -1.556  0.11969    
+positionthird    -0.29510    0.11935  -2.473  0.01342 *  
+inv_app           0.32739    0.07916   4.136 3.54e-05 ***
+inv_dl           -0.13325    0.06796  -1.961  0.04993 *  
+inv_cat           0.21211    0.07303   2.904  0.00368 ** 
+focalrep:x_fhigh -0.41415    0.27223  -1.521  0.12817    
+focalpop:x_fhigh -1.33779    0.27410  -4.881 1.06e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -4.4433     0.2351 -18.897
+2|3  -2.6760     0.1907 -14.031
+3|4  -1.6864     0.1787  -9.436
+4|5  -0.2988     0.1714  -1.743
+5|6   1.1379     0.1747   6.514
+6|7   3.0653     0.2000  15.323
+
+Odds ratio dell'effetto della manipolazione, per variabile focale:
+  brand   log-odds = +1.7115   OR = 5.537
+  rep     log-odds = +1.2974   OR = 3.660
+  pop     log-odds = +0.3737   OR = 1.453
+
+Gli OR > 1 indicano maggiore probabilita' di ITD elevata con il livello alto.
+
+
+=== D.3 CORREZIONE PER TEST MULTIPLI SULLE 9 REGRESSIONI ORIGINALI ===
+
+Coefficienti stimati (intercette escluse): 81 
+Significativi a p<0.10 senza correzione: 23 
+Significativi a p<0.05 senza correzione: 13 
+Sopravvivono a Holm (p<0.05):           2 
+Sopravvivono a Benjamini-Hochberg (FDR<0.05): 4 
+
+Primi 15 coefficienti per p-value grezzo:
+    model               term estimate      se   p_value    p_holm      p_bh
+ M3_brand            x_brand   1.5028 0.24095 9.772e-10 7.915e-08 5.131e-08
+ M1_brand            x_brand   1.5289 0.23554 1.267e-09 1.013e-07 5.131e-08
+   M2_rep              x_rep   1.3351 0.41115 1.385e-03 1.094e-01 3.614e-02
+   M3_pop         inv_cat_mc   0.2905 0.09247 1.785e-03 1.392e-01 3.614e-02
+   M2_pop         inv_cat_mc   0.5185 0.19119 7.590e-03 5.844e-01 1.230e-01
+ M3_brand x_brand:comp_brand  -0.7454 0.28985 1.042e-02 7.921e-01 1.407e-01
+ M2_brand            x_brand   1.0347 0.43226 1.801e-02 1.000e+00 2.084e-01
+ M3_brand         comp_brand   0.4736 0.21180 2.581e-02 1.000e+00 2.189e-01
+   M3_pop   x_pop:inv_app_mc   0.2972 0.13356 2.654e-02 1.000e+00 2.189e-01
+   M1_pop         inv_app_mc   0.3581 0.16063 2.702e-02 1.000e+00 2.189e-01
+   M3_pop          inv_dl_mc  -0.1630 0.07627 3.312e-02 1.000e+00 2.359e-01
+   M2_pop   x_pop:inv_app_mc   0.5731 0.26890 3.494e-02 1.000e+00 2.359e-01
+ M2_brand x_brand:inv_app_mc   0.5409 0.26061 3.976e-02 1.000e+00 2.477e-01
+   M3_rep   x_rep:inv_app_mc   0.2782 0.14658 5.827e-02 1.000e+00 3.220e-01
+   M1_rep              x_rep   0.4986 0.26259 5.963e-02 1.000e+00 3.220e-01
+
+
+=== D.4 POTENZA: QUALE EFFETTO ERA RILEVABILE? ===
+
+La tesi conclude che non esistono interazioni a due vie fra le variabili
+focali. Con i campioni del Modello 2 si puo' calcolare l'effetto minimo
+rilevabile (MDE) con potenza 80% e alpha 0.05: MDE = (t_crit + t_pow) * SE.
+
+    model          term estimate    se p_value  mde mde_sd
+   M2_rep x_rep:x_brand    0.166 0.467   0.723 1.31  0.766
+   M2_rep   x_rep:x_pop   -0.371 0.461   0.422 1.29  0.755
+   M2_pop x_pop:x_brand    0.392 0.546   0.475 1.53  0.976
+   M2_pop   x_pop:x_rep   -0.744 0.539   0.170 1.51  0.963
+ M2_brand x_brand:x_rep    0.251 0.507   0.621 1.42  0.895
+ M2_brand x_brand:x_pop   -0.677 0.511   0.188 1.43  0.902
+
+Interpretazione: il disegno poteva rilevare solo interazioni dell'ordine di
+1.29-1.53 punti Likert (0.75-0.98 deviazioni standard). L'assenza di
+evidenza non e' evidenza di assenza: i risultati sono inconcludenti, non nulli.
+
+
+=== D.5 MODERAZIONE DELL'INVOLVEMENT, MODELLO POOLED ===
+
+Nella tesi le moderazioni sono lette da 9 regressioni separate. Qui sono
+stimate in un unico modello con struttura a misure ripetute.
+
+Analysis of Deviance Table (Type III Wald chisquare tests)
+
+Response: y
+                      Chisq Df Pr(>Chisq)    
+(Intercept)       1894.0419  1  < 2.2e-16 ***
+focal               62.7578  2  2.357e-14 ***
+x_f                 79.1307  1  < 2.2e-16 ***
+inv_app              2.8205  1    0.09306 .  
+inv_dl               1.6206  1    0.20300    
+inv_cat              0.3333  1    0.56375    
+position             8.8681  2    0.01187 *  
+focal:x_f           26.0329  2  2.223e-06 ***
+focal:inv_app        1.8119  2    0.40416    
+x_f:inv_app          1.2374  1    0.26598    
+focal:inv_dl         6.3436  2    0.04193 *  
+x_f:inv_dl           0.1348  1    0.71346    
+focal:inv_cat        2.6255  2    0.26907    
+x_f:inv_cat          0.8253  1    0.36365    
+focal:x_f:inv_app    1.7959  2    0.40741    
+focal:x_f:inv_dl     1.4094  2    0.49426    
+focal:x_f:inv_cat    2.3832  2    0.30373    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Pendenza dell'effetto della manipolazione rispetto a ciascun involvement
+(variazione dell'effetto alto-vs-basso per +1 SD di involvement):
+ moderatore focal estimate    SE lower.CL upper.CL p.value
+    inv_app brand    0.119 0.108  -0.0933    0.332 0.27124
+    inv_app   rep    0.260 0.108   0.0487    0.472 0.01595
+    inv_app   pop    0.324 0.108   0.1121    0.536 0.00276
+
+ moderatore focal estimate     SE lower.CL upper.CL p.value
+     inv_dl brand  -0.0335 0.0922   -0.214    0.147   0.716
+     inv_dl   rep  -0.0655 0.0918   -0.246    0.115   0.476
+     inv_dl   pop   0.0795 0.0920   -0.101    0.260   0.388
+
+ moderatore focal estimate     SE lower.CL upper.CL p.value
+    inv_cat brand   0.0894 0.0995  -0.1058    0.285  0.3689
+    inv_cat   rep   0.1725 0.1000  -0.0236    0.369  0.0846
+    inv_cat   pop  -0.0404 0.0995  -0.2357    0.155  0.6845
+

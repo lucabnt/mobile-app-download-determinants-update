@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# I dataset originali sono lo snapshot 2023: nessuna normalizzazione
+original/data/*.csv -text
+
+# Binari
+*.pdf binary
+*.png binary

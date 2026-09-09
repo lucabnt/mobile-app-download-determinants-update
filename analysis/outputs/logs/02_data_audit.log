@@ -1,0 +1,91 @@
+=== AUDIT DATI ORIGINALI ===
+
+## 1. Struttura del file a misure ripetute
+righe: 1473 | soggetti unici: 491 
+righe per soggetto:
+
+  3 
+491 
+
+classe di lfdn nel file: integer  <- rilevante per Error(lfdn)
+
+crosstab i x n (ogni soggetto deve vedere ogni i una volta e ogni n una volta):
+       
+          1   2   3
+  brand 153 186 152
+  pop   189 159 143
+  rep   149 146 196
+
+crosstab i x x_i:
+       
+          0   1
+  brand 235 256
+  pop   244 247
+  rep   253 238
+
+quadrato latino? soggetti con i duplicati: 0 
+soggetti con n duplicati: 0 
+
+## 2. y_i_mc e' davvero il mean-centering di y_i?
+  rep    mean(y_i)=4.0468  mean(y_i_mc)=+0.0000  max|y_i - mean - y_mc|=0.000000
+  pop    mean(y_i)=4.5255  mean(y_i_mc)=+0.0000  max|y_i - mean - y_mc|=0.000000
+  brand  mean(y_i)=4.9674  mean(y_i_mc)=-0.0000  max|y_i - mean - y_mc|=0.000000
+  globale: mean(y_i)= 4.5132  max|y_i-mean-y_mc| = 0.466395 
+
+## 3. Statistiche descrittive vs Tabella 3.1 della tesi
+       var mean_tesi sd_tesi   mean_dati sd_dati d_mean    d_sd
+1   comp_i    0.6667  0.4714  6.9654e-01 0.46022 0.0298 -0.0112
+2  inv_app    0.0000  1.0523 -5.6412e-11 1.05333 0.0000  0.0010
+3  inv_cat    0.0000  1.0629  3.1840e-10 1.06402 0.0000  0.0011
+4   inv_dl    0.0000  1.2974 -6.2702e-11 1.29869 0.0000  0.0013
+5  x_brand    0.5214  0.4995  5.2138e-01 0.50005 0.0000  0.0006
+6    x_pop    0.5031  0.5000  5.0305e-01 0.50050 0.0000  0.0005
+7    x_rep    0.4847  0.4998  4.8473e-01 0.50028 0.0000  0.0005
+8  y_brand    4.9674  1.5863  4.9674e+00 1.58789 0.0000  0.0016
+9    y_pop    4.5255  1.5675  4.5255e+00 1.56911 0.0000  0.0016
+10   y_rep    4.0468  1.7077  4.0468e+00 1.70947 0.0000  0.0018
+
+## 4. Coerenza tra i file dei modelli e il file ANOVA
+  rep    merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
+  pop    merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
+  brand  merge n=491 | y discordanti=0 | x discordanti=0 | comp!=(n>1)=0
+
+## 5. Sottocampioni M1 (n=1) e M2 (n=3): numerosita' attese vs effettive
+  rep     n=1 attesi 149 / file M1 149 ok |  n=3 attesi 196 / file M2 196 ok
+  pop     n=1 attesi 189 / file M1 189 ok |  n=3 attesi 143 / file M2 143 ok
+  brand   n=1 attesi 153 / file M1 153 ok |  n=3 attesi 152 / file M2 152 ok
+
+## 6. Manipulation check: quote di superamento
+  M1_rep    75.84%  (n=149, IC95% 68.2-82.5%, p vs 50% = 0.0000)
+  M1_pop    62.43%  (n=189, IC95% 55.1-69.4%, p vs 50% = 0.0008)
+  M1_brand  68.63%  (n=153, IC95% 60.6-75.9%, p vs 50% = 0.0000)
+  M2_rep    79.08%  (n=196, IC95% 72.7-84.6%, p vs 50% = 0.0000)
+  M2_pop    55.94%  (n=143, IC95% 47.4-64.2%, p vs 50% = 0.1807)
+  M2_brand  63.16%  (n=152, IC95% 55.0-70.8%, p vs 50% = 0.0015)
+  M3_rep    77.19%  (n=491, IC95% 73.2-80.8%, p vs 50% = 0.0000)
+  M3_pop    60.49%  (n=491, IC95% 56.0-64.8%, p vs 50% = 0.0000)
+  M3_brand  67.41%  (n=491, IC95% 63.1-71.5%, p vs 50% = 0.0000)
+
+## 7. Valori mancanti e range
+  M ANOVA_RM.csv   righe=1473 colonne=13 NA=0
+  M plots.csv      righe=1473 colonne=11 NA=0
+  M1_brand.csv     righe= 153 colonne=10 NA=0
+  M1_pop.csv       righe= 189 colonne=10 NA=0
+  M1_rep.csv       righe= 149 colonne=10 NA=0
+  M2_brand.csv     righe= 152 colonne=18 NA=0
+  M2_pop.csv       righe= 143 colonne=18 NA=0
+  M2_rep.csv       righe= 196 colonne=18 NA=0
+  M3_brand.csv     righe= 491 colonne=11 NA=0
+  M3_pop.csv       righe= 491 colonne=11 NA=0
+  M3_rep.csv       righe= 491 colonne=11 NA=0
+
+## 8. Distribuzione della variabile dipendente (scala Likert 1-7)
+  y_rep    
+  1   2   3   4   5   6   7 
+ 35  85  61  96 103  77  34 
+  y_pop    
+  1   2   3   4   5   6   7 
+ 19  41  57 116 114  92  52 
+  y_brand  
+  1   2   3   4   5   6   7 
+ 16  28  41  88 103 128  87 

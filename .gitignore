@@ -1,0 +1,14 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Scratch
+scratch/
+*.tmp
