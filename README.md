@@ -23,20 +23,25 @@ La tesi chiedeva quale segnale sulla pagina di uno store — **reputazione** (ra
 l'intenzione di scaricare un'app. 491 rispondenti, disegno sperimentale a misure ripetute,
 tre manipolazioni binarie.
 
-La replica dei risultati del 2023 è **esatta** e i dati sono **integri**. L'inferenza
-condotta su quei dati, però, presenta tre difetti che cambiano le conclusioni:
+La replica dei risultati del 2023 è **esatta** e i dati sono **internamente coerenti**.
+Ciò che non regge è l'inferenza condotta su quei dati — e, in un caso, la costruzione
+dello stimolo:
 
 | Conclusione 2023 | Dopo la revisione |
 |---|---|
 | Il brand è il predittore più efficace | Brand e reputazione **non sono distinguibili** (p = 0,22); entrambi ≫ popolarità |
-| La popolarità è inefficace in tutti i modelli | Effetto **positivo e significativo** (β = 0,51; p = 0,002) sui rispondenti che superano il manipulation check |
+| La popolarità è inefficace in tutti i modelli | **Nullo non solido**: sparisce fra chi dichiara di aver guardato i download (β = 0,51; p = 0,002), e lo stimolo a bassa popolarità mostrava 10K+ download con 84K recensioni |
 | Con il confronto la reputazione supera il brand | **Convergono**, non si invertono (1,41 → 0,90 vs 0,69 → 0,91) |
 | Interazione a tre vie significativa | **Non confermata** (p = 0,63) con misure ripetute correttamente specificate |
 | Nessuna interazione fra variabili focali | **Inconcludente**, non nulla: il disegno era cieco a effetti < 0,76 s.d. |
 
 Motivazioni e numeri completi: [`docs/01-revisione-lavoro-2023.md`](docs/01-revisione-lavoro-2023.md).
 
-![Effetto della manipolazione per variabile focale](analysis/outputs/figures/fig_02_manipulation_check.png)
+![Effetto della manipolazione per variabile focale, sull'intero campione e nel sottogruppo che dichiara di aver usato quel segnale](analysis/outputs/figures/fig_02_manipulation_check.png)
+
+A questi si aggiungono due difetti nella costruzione dei dati, emersi leggendo le
+appendici: lo stimolo a bassa popolarità è internamente impossibile, e 18 rispondenti
+hanno punteggi di involvement imputati con la media senza che sia documentato.
 
 ---
 
@@ -94,7 +99,7 @@ documento di `docs/`, il log corrispondente lo contiene.
 |---|---|---|
 | `00_setup.R` | percorsi e helper condivisi | i CSV originali hanno un BOM UTF-8 che va gestito in lettura |
 | `01_replication.R` | replica delle 9 regressioni e dell'ANOVA | verificare che il lavoro 2023 sia riproducibile prima di criticarlo |
-| `02_data_audit.R` | verifica di struttura, coerenza fra file, descrittive | distinguere problemi di dati da problemi di analisi |
+| `02_data_audit.R` | struttura, coerenza fra file, descrittive, imputazioni, ridondanze | distinguere problemi di dati da problemi di analisi |
 | `03_build_derived.R` | `long_measures.csv` (1.473 × 19), `wide_subjects.csv` (491 × 17) | i file originali sono frammentati per modello; il formato long abilita l'analisi pooled |
 | `04_corrected_inference.R` | ANOVA a misure ripetute corretta, modello misto, contrasti | la specifica originale non modella le misure ripetute e la graduatoria non è mai testata |
 | `05_robustness.R` | controlli su manipulation check, scala ordinale, molteplicità, potenza | quattro verifiche che il lavoro originale non contiene |
@@ -128,8 +133,8 @@ riorganizzazione, verificate contro i file di partenza in `02_data_audit.R`.
 - [x] **Fase 1** — replica, audit, correzione dell'inferenza, robustezza
 - [ ] **Fase 2** — effetti sequenziali, eterogeneità fra rispondenti, test di equivalenza,
       curva di specificazione
-- [ ] **Fase 3** — estensioni che richiedono l'export grezzo del questionario (demografia,
-      item delle scale di involvement)
+- [ ] **Fase 3** — **bloccata**: richiede l'export grezzo del questionario (demografia,
+      item delle scale, codifica del check sul brand)
 - [ ] **Fase 4** — post di aggiornamento su lucabontempi.com
 
 Backlog dettagliato con priorità e criteri di accettazione:

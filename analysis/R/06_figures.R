@@ -2,7 +2,7 @@
 # Figure basate sulle stime corrette (modelli a effetti misti), da usare nel
 # documento di revisione e nel blog post.
 #   fig_01_effetti_focali.png       effetto della manipolazione per variabile
-#   fig_02_manipulation_check.png   stesse stime, prima e dopo il filtro sul check
+#   fig_02_manipulation_check.png   stesse stime nel sottogruppo di slide 6
 #   fig_03_confronto.png            effetto per variabile e posizione di confronto
 # Output: analysis/outputs/figures/
 # ----------------------------------------------------------------------------
@@ -63,10 +63,10 @@ ggsave(file.path(DIR_FIG, "fig_01_effetti_focali.png"), p1,
 
 # --- Figura 2: robustezza al manipulation check ------------------------------
 m_ok <- fit_pool(long[long$manip_ok == 1, ])
-e2 <- rbind(e1, eff_tab(m_ok, "solo check di manipolazione superato"))
+e2 <- rbind(e1, eff_tab(m_ok, "dichiara di aver usato il segnale"))
 e2$focal <- factor(e2$focal, levels = c("brand", "rep", "pop"))
 e2$campione <- factor(e2$campione,
-                      levels = c("tutte le osservazioni", "solo check di manipolazione superato"))
+                      levels = c("tutte le osservazioni", "dichiara di aver usato il segnale"))
 
 p2 <- ggplot(e2, aes(x = focal, y = estimate, colour = focal, shape = campione)) +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.4) +
@@ -77,11 +77,13 @@ p2 <- ggplot(e2, aes(x = focal, y = estimate, colour = focal, shape = campione))
   scale_x_discrete(labels = lab_focal) +
   scale_colour_manual(values = pal, guide = "none") +
   scale_shape_manual(values = c(16, 17), name = NULL) +
-  labs(title = "La popolarita' non e' inefficace: la manipolazione non passava",
-       subtitle = "Stesse stime, ristrette ai rispondenti che hanno superato il manipulation check",
+  labs(title = "Il nullo sulla popolarita' non e' solido come sembra",
+       subtitle = "Stesse stime, ristrette a chi dichiara di aver considerato quel segnale (slide 6)",
        x = NULL, y = "Differenza in ITD (scala 1-7), IC 95%",
-       caption = paste("Sul campione filtrato l'effetto della popolarita' passa da +0,22 (p = 0,075) a +0,51 (p = 0,002).",
-                       "La tesi riportava le quote di superamento del check ma non le usava per alcun controllo.",
+       caption = paste("Nel sottogruppo l'effetto della popolarita' passa da +0,22 (p = 0,075) a +0,51 (p = 0,002).",
+                       "Attenzione: la slide 6 non verifica se la manipolazione e' stata percepita, chiede quali",
+                       "segnali il rispondente dichiara di aver usato. E' condizionamento post-trattamento su una",
+                       "variabile simile a un mediatore: indica fragilita' del nullo, non lo ribalta.",
                        sep = "\n")) +
   theme_thesis
 ggsave(file.path(DIR_FIG, "fig_02_manipulation_check.png"), p2,

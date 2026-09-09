@@ -25,7 +25,7 @@ partire da essi. Tre difetti sono sostanziali e cambiano le conclusioni.
 |---|---|---|
 | **A** | L'ANOVA a misure ripetute non modella le misure ripetute (`Error(lfdn)` con `lfdn` intero) | L'interazione a tre vie dichiarata significativa **sparisce** con la specifica corretta (F = 0,64; p = 0,63) |
 | **B** | La graduatoria brand > reputazione > popolarità è dedotta confrontando a occhio coefficienti stimati su sottocampioni diversi, senza test della differenza | Con il test formale **brand e reputazione non sono distinguibili** (p = 0,22). La gerarchia difendibile è: brand ≈ reputazione ≫ popolarità |
-| **C** | Il manipulation check è riportato ma mai usato | Il risultato più citato della tesi — "la popolarità è sorprendentemente inefficace" — **non regge**: sui rispondenti che superano il check l'effetto passa da +0,22 (p = 0,075) a +0,51 (p = 0,002) |
+| **C** | Il "manipulation check" è riportato ma mai usato — e non è un controllo di percezione, bensì un auto-riferito post-trattamento | Il risultato più citato della tesi — "la popolarità è sorprendentemente inefficace" — **è fragile**: fra chi dichiara di aver guardato i download l'effetto passa da +0,22 (p = 0,075) a +0,51 (p = 0,002). Non lo ribalta (§3.3), ma toglie solidità al nullo |
 
 Altri tre problemi sono di calibrazione dell'evidenza, non di direzione:
 
@@ -36,9 +36,19 @@ Altri tre problemi sono di calibrazione dell'evidenza, non di direzione:
 - **L'affermazione "nessuna interazione a due vie fra variabili focali" è inconcludente,
   non nulla:** il disegno poteva rilevare solo interazioni ≥ 0,75–0,98 deviazioni standard.
 
+Due difetti riguardano invece la costruzione degli stimoli e dei dati, e sono emersi
+leggendo le appendici anziché i modelli:
+
+- **Lo stimolo a bassa popolarità è internamente impossibile** (10K+ download con 84K
+  recensioni). È un confondimento nella manipolazione che produce il risultato più
+  discusso della tesi (§3.3).
+- **18 rispondenti su 491 hanno punteggi di involvement imputati con la media**, senza
+  che ciò sia documentato da nessuna parte (§2.4).
+
 Il quadro che emerge non demolisce il lavoro. Ne cambia il baricentro: la storia più
 solida non è "il brand vince", ma **"brand e reputazione sono equivalenti finché l'utente
-guarda una sola app; il confronto li fa convergere; la popolarità conta poco ma non zero"**.
+guarda una sola app; il confronto li fa convergere; la popolarità conta poco, e quanto
+poco non è determinabile con questi stimoli"**.
 
 ---
 
@@ -94,6 +104,36 @@ ripubblicazione:
 - La riga `comp_i` riporta i valori **di disegno** (media 2/3 = 0,6667; s.d. 0,4714),
   non quelli realizzati. Nel campione la media varia per variabile focale: 0,6965 per
   reputazione, 0,6883 per brand, 0,6151 per popolarità.
+
+### 2.4 Imputazione con la media, non documentata
+
+Le scale di involvement hanno 3 item (`inv_app`, `inv_dl`) e 8 item (`inv_cat`) su scala
+1–7, quindi i punteggi medi devono essere multipli di 1/3 e di 1/8. Ciascuna scala
+contiene invece **un valore che non è ottenibile dalla scala e che coincide esattamente
+con la media della scala stessa** — la firma di un'imputazione con la media:
+
+| Scala | Item | Casi imputati | s.d. pubblicata | s.d. esclusi gli imputati |
+|---|---|---|---|---|
+| `inv_app` | 3 | 5 (1,0%) | 1,0533 | 1,0587 |
+| `inv_dl` | 3 | 3 (0,6%) | 1,2987 | 1,3027 |
+| `inv_cat` | 8 | 11 (2,2%) | 1,0640 | 1,0762 |
+
+In totale 18 rispondenti su 491 (3,7%) hanno almeno una scala imputata, uno ne ha due.
+L'impatto numerico è trascurabile — le s.d. della Tabella 3.1 sono sottostimate di ~0,01 —
+ma la scelta non è dichiarata né nella tesi né nel codice, e su un moderatore introduce
+attenuazione verso zero proprio nei casi imputati.
+
+### 2.5 Ridondanze e residui nei file
+
+Due osservazioni che non intaccano i risultati ma spiegano il contenuto dei file:
+
+- **`M plots.csv` è ridondante.** Contiene le stesse 1.473 righe di `M ANOVA_RM.csv` sulle
+  stesse colonne, meno `n_name` e `x_i_name`. Verificato con `all.equal`: nessun dato
+  aggiuntivo.
+- **I file M2 contengono quattro colonne che nessun modello usa.** `ITD_pop` e `ITD_brand`
+  sono dicotomizzazioni top-3-box (`y ≥ 5`) delle ITD misurate in posizione 1 o 2;
+  `ITD_pop_2` e `ITD_brand_2` sono le stesse ITD centrate sulla media. Sono residui di
+  esplorazioni abbandonate.
 
 ---
 
@@ -172,10 +212,38 @@ reputazione (0,4986, p < 0,10, su 149 osservazioni) e la stima pooled (0,842, p 
 su 491 misure di reputazione). Il coefficiente della reputazione **raddoppia** quando lo
 si stima usando tutta l'informazione disponibile invece di un terzo di essa.
 
-### 3.3 (C) Il manipulation check non è mai usato
+### 3.3 (C) Il manipulation check non è mai usato — e non è un manipulation check
 
-La Tabella 3.2 riporta le quote di superamento del manipulation check, poi non le
-utilizza. Sono queste:
+**Cosa misura davvero.** La slide 6 del questionario (Appendix B) è **una sola domanda a
+scelta multipla**, posta una volta alla fine, riferita alle tre app collettivamente:
+
+> *"Please indicate which factors you took into consideration when evaluating the apps on
+> the previous slides."*
+
+seguita da nove caselle: *Review rating, Number of downloads, Developer brand, App's
+name, App's icon, Number of reviews, App's screenshots, PEGI rate, "About this app"*.
+`man_check_i` vale 1 se la casella corrispondente è spuntata.
+
+Non è quindi una verifica che la manipolazione sia stata percepita: è un
+**auto-riferito di quali segnali il rispondente dichiara di aver usato**, raccolto dopo il
+trattamento. La tesi stessa lo definisce *"a compromise (and not ideal) version"*. Tre
+conseguenze, tutte verificabili nei dati (`02_data_audit.R` §12):
+
+1. **È una misura compositiva.** Spuntare una casella va a scapito delle altre. Le
+   correlazioni fra i tre esiti sullo stesso soggetto lo confermano: rep–pop = +0,305, ma
+   brand–rep = −0,067 e brand–pop = −0,091. Con una misura di attenzione ci si
+   aspetterebbero correlazioni tutte positive.
+2. **Non può variare per posizione**, essendo una domanda unica e globale. Le quote sono
+   infatti piatte (68,4% / 69,2% / 67,4% per *n* = 1, 2, 3). Questa piattezza è
+   strutturale e non dice nulla sul decadimento mnemonico.
+3. **La codifica di `man_check_brand` è ambigua.** La manipolazione del brand cambiava
+   tre elementi insieme — icona, nome dell'app, nome dello sviluppatore (Appendix A) — ma
+   la slide 6 ha tre caselle distinte. Se `man_check_brand` deriva dalla sola casella
+   *Developer brand*, il 67,4% è un conteggio per difetto; se deriva da una qualsiasi
+   delle tre, non è confrontabile con `rep` e `pop`, che dipendono da una casella sola.
+   **Non risolvibile senza l'export grezzo del questionario.**
+
+**Le quote riportate e mai usate.** Restano un'informazione che la tesi produce e ignora:
 
 | Modello | Quota | IC 95% | p vs. 50% |
 |---|---|---|---|
@@ -189,29 +257,43 @@ utilizza. Sono queste:
 | **M2 pop** | **55,9%** | **[47,4; 64,2]** | **0,181** |
 | M3 pop | 60,5% | [56,0; 64,8] | < 0,001 |
 
-Nel sottocampione M2 la manipolazione della popolarità è **indistinguibile dal caso**.
-Complessivamente 194 osservazioni su 491 falliscono il check sulla popolarità, contro
-112 su 491 per la reputazione. Solo 163 rispondenti su 491 superano tutti e tre i check.
+Solo 297 osservazioni su 491 hanno la casella *Number of downloads* spuntata, contro 379
+su 491 per *Review rating*. Solo 163 rispondenti su 491 hanno spuntato tutte e tre le
+caselle rilevanti.
 
-Questo importa perché il risultato più notevole della tesi è proprio un nullo sulla
-popolarità. Un nullo su una manipolazione che spesso non è stata percepita non è un
-risultato sostantivo: è attenuazione da errore di misura. Rifacendo la stima:
+Restringendo la stima a chi dichiara di aver usato il segnale corrispondente:
 
 | Campione | Brand | Reputazione | Popolarità |
 |---|---|---|---|
 | Tutte le osservazioni (N = 1.473) | 1,053 *** | 0,842 *** | 0,218 (p = 0,075) |
-| Solo check superato (N = 1.007) | 1,381 *** | 1,098 *** | **0,507 (p = 0,002)** |
-| Solo soggetti 3/3 check (N = 489) | 1,344 *** | 1,242 *** | **0,517 (p = 0,013)** |
+| Dichiara di aver usato il segnale (N = 1.007) | 1,381 *** | 1,098 *** | **0,507 (p = 0,002)** |
+| Soggetti che spuntano tutte e tre (N = 489) | 1,344 *** | 1,242 *** | **0,517 (p = 0,013)** |
 
-L'effetto della popolarità **più che raddoppia** e diventa nettamente significativo. Tutti
-e tre gli effetti crescono, come atteso quando si rimuove errore di misura, ma la
-popolarità è quella che cambia di più — coerente col fatto che è quella con la
-manipolazione più debole.
+L'effetto della popolarità più che raddoppia e diventa nettamente significativo.
 
-> **Nota di cautela.** Il filtro sul manipulation check è un condizionamento
-> post-trattamento: può reintrodurre selezione. Le stime filtrate vanno lette come limite
-> superiore, quelle non filtrate come limite inferiore attenuato. L'intervallo fra 0,22 e
-> 0,51 è la risposta onesta. Ciò che non è più difendibile è la lettura "zero".
+> **Come va letto — e come no.** Questa non è la rimozione di un errore di misura, e non
+> ribalta il risultato della tesi. `man_check_i` è misurato **dopo** il trattamento ed è
+> plausibilmente influenzato da esso: chi è stato mosso da un segnale è più propenso a
+> dichiarare di averlo usato. Condizionarci sopra è condizionamento post-trattamento su
+> una variabile che si comporta come un mediatore, e il contrasto fra i due gruppi è in
+> parte tautologico — *chi dice di aver guardato i download è stato mosso dai download*.
+>
+> Quello che il dato mostra in modo difendibile è che **il nullo sulla popolarità non è
+> solido**: dipende dall'includere rispondenti che dichiarano di non aver guardato quel
+> segnale, e sparisce fra chi dichiara di averlo guardato. È un motivo per non concludere
+> "la popolarità non conta", non una prova che conti. La risposta onesta resta
+> l'intervallo fra 0,22 e 0,51, con la lettura "zero" indebolita ma non esclusa.
+
+**Un'ipotesi alternativa e più semplice.** Lo stimolo a bassa popolarità (Fig. A.2) mostra
+**10K+ download insieme a 84K recensioni**: più recensioni che download, il che è
+impossibile. Il numero di recensioni è tenuto costante fra le due condizioni, quindi il
+difetto riguarda solo il livello basso. Un rispondente attento poteva percepire lo stimolo
+come non credibile e scontarlo — e *Number of reviews* era una delle caselle di slide 6.
+Questa spiegazione non richiede alcun condizionamento post-trattamento e compete con
+quella basata sul sottogruppo. Nessuna delle due è verificabile con i dati disponibili.
+
+(Anche lo stimolo sulla reputazione, Fig. A.1, riporta 343K recensioni su 1M+ download:
+implausibile ma non impossibile.)
 
 ---
 
@@ -250,6 +332,13 @@ separate:
 
 L'unico effetto di moderazione che regge è quello dell'involvement generale nelle app, e
 regge esattamente per le due variabili per cui la tesi non lo enfatizza.
+
+> **Caveat.** Questa sezione presuppone che le scale di involvement siano state costruite
+> correttamente. `inv_app` contiene un item a polarità invertita e `inv_cat` quattro coppie
+> su otto: se il reverse coding non fosse stato applicato, entrambe risulterebbero
+> attenuate e **tutte** le stime di moderazione sarebbero distorte verso zero, il che
+> spiegherebbe da solo perché due su tre non si replicano. Non è verificabile senza i dati
+> per item (§10, *Limiti che restano aperti*).
 
 Le implicazioni manageriali del §3.3 costruite su queste due moderazioni — *"quando gli
 utenti sono molto coinvolti nel processo di download si affidano di più alla
@@ -387,19 +476,24 @@ in discussione:
    metodologico più solido del lavoro. L'argomento del §3 sul perché le classifiche degli
    store non riflettono le preferenze è corretto e ben documentato.
 2. **La raccolta dati è pulita.** 491 rispondenti completi su 545, randomizzazione
-   corretta, zero valori mancanti, quadrato latino bilanciato. Questa è la parte del
-   lavoro su cui tutto il resto può essere ricostruito.
+   corretta, quadrato latino bilanciato, nessun valore mancante nei file distribuiti
+   (con l'imputazione non dichiarata di §2.4 a spiegarne una parte). Questa è la parte
+   del lavoro su cui tutto il resto può essere ricostruito.
 3. **L'effetto del brand è reale e grande**, ed è l'unico risultato che sopravvive a
    qualunque correzione, inclusa Holm su 81 test. β ≈ 1,05–1,53 punti su 7, *d* ≈ 0,66.
 4. **La scelta della categoria** (app scanner: bassi effetti di rete, freemium, presenza
    di un brand globale come Adobe) è ben argomentata e fa esattamente il lavoro che deve
    fare.
-5. **Le limitazioni sono dichiarate onestamente** nel §3.5, incluso il difetto di disegno
+5. **Il controllo degli stimoli è quasi sempre rigoroso.** In ciascuna coppia varia solo
+   ciò che deve variare e gli altri attributi sono tenuti a livelli intermedi coerenti
+   (rating 4,2; download 1M+). L'unica eccezione è il difetto di Fig. A.2 (§3.3).
+6. **Le limitazioni sono dichiarate onestamente** nel §3.5, incluso il difetto di disegno
    principale.
 
-La revisione non ribalta il lavoro. Ribalta **un** risultato (popolarità), **appiattisce**
-una gerarchia (brand vs reputazione), **ritira** due moderazioni e **riqualifica** un
-nullo in un'inconcludenza. Il resto tiene.
+La revisione non ribalta il lavoro. **Appiattisce** una gerarchia (brand vs reputazione),
+**ritira** un'interazione a tre vie e due moderazioni, **riqualifica** due nulli in
+altrettante indeterminatezze (popolarità; interazioni fra variabili focali) e **segnala**
+due difetti di costruzione dei dati. Il resto tiene.
 
 ---
 
@@ -412,13 +506,31 @@ Per un'eventuale erratum o ripubblicazione:
 | §3.2, ANOVA | *F*(2, 4) = 42,187; *F*(1, 4) = 60,841; *F*(2, 4) = 2,369 | df al denominatore = 1.454 |
 | §3.2, ANOVA | Interazione a tre vie significativa (*F*(4) = 2,681; p < 0,05) | Non significativa con misure ripetute corrette (p = 0,63) |
 | §3.2, Abstract | *"developer's brand is generally the most decisive element"* | Brand e reputazione non distinguibili; entrambi ≫ popolarità |
-| §3.2, Abstract | *"popularity [...] unexpectedly ineffective [...] across all models"* | Effetto positivo e significativo sui rispondenti che superano il check; nullo solo dopo il confronto |
+| §3.2, Abstract | *"popularity [...] unexpectedly ineffective [...] across all models"* | Nullo non solido: sparisce fra chi dichiara di aver guardato i download, e lo stimolo a bassa popolarità è internamente impossibile. Da presentare come indeterminato, non come effetto assente |
 | §3.2 | *"reversal between brand and reputation"* | Convergenza, non inversione |
 | §3.3 | Moderazione involvement-download su reputazione | Non replicata |
 | §3.3 | Moderazione involvement-categoria su brand | Non replicata |
 | Abstract | *"not possible to find clear evidence of any two-way interaction"* | Inconcludente per potenza insufficiente (MDE ≥ 0,76 s.d.) |
 | Tab. 3.1 | s.d. di popolazione; `comp_i` con valori di disegno | s.d. campionarie; valori realizzati |
+| §3.1, Tab. 3.1 | Nessuna menzione del trattamento dei dati mancanti | Dichiarare l'imputazione con la media su 18 rispondenti |
+| App. A, Fig. A.2 | Stimolo a bassa popolarità: 10K+ download con 84K recensioni | Difetto di costruzione da segnalare fra i limiti |
 | `*.r` | `summary(M4_rep)`, `summary(M4_pop)` | `summary(M2_rep)`, `summary(M2_pop)` |
+
+### Limiti che restano aperti
+
+Due ambiguità non sono risolvibili con il materiale pubblicato e richiedono l'export
+grezzo del questionario:
+
+- **Codifica di `man_check_brand`.** Da quale casella (o combinazione) di slide 6 deriva,
+  dato che la manipolazione del brand cambiava tre elementi ma le caselle sono distinte?
+  Finché non è chiarito, il sottogruppo di §3.3 non è utilizzabile per confronti *fra*
+  variabili focali.
+- **Reverse coding delle scale di involvement.** `inv_app` contiene un item a polarità
+  invertita (*"For me, mobile apps do not matter"*) e `inv_cat` quattro coppie su otto.
+  Se l'inversione non fosse stata applicata prima di mediare, entrambe le scale sarebbero
+  attenuate verso il centro e tutte le stime di moderazione distorte verso zero — il che
+  offrirebbe una spiegazione alternativa al fatto che due moderazioni su tre non si
+  replicano (§4.2). Non verificabile senza i dati per item.
 
 ---
 

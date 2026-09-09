@@ -89,3 +89,55 @@ soggetti con n duplicati: 0
   y_brand  
   1   2   3   4   5   6   7 
  16  28  41  88 103 128  87 
+
+## 9. Imputazione con la media nelle scale di involvement
+Le scale hanno 3 item (inv_app, inv_dl) e 8 item (inv_cat) su scala 1-7: le
+medie devono quindi essere multipli di 1/3 e di 1/8. Un valore che non lo e'
+e che coincide con la media della scala indica imputazione.
+
+  inv_app  (3 item) media = 5.328532 | punteggio ottenibile dalla scala? NO  | casi pari alla media:  5 (1.0%)
+           s.d. inclusi = 1.0533 | s.d. esclusi = 1.0587 | scarto = +0.0054
+  inv_dl   (3 item) media = 4.693306 | punteggio ottenibile dalla scala? NO  | casi pari alla media:  3 (0.6%)
+           s.d. inclusi = 1.2987 | s.d. esclusi = 1.3027 | scarto = +0.0040
+  inv_cat  (8 item) media = 4.480208 | punteggio ottenibile dalla scala? NO  | casi pari alla media: 11 (2.2%)
+           s.d. inclusi = 1.0640 | s.d. esclusi = 1.0762 | scarto = +0.0121
+
+  soggetti con almeno una scala imputata: 18 su 491 (3.7%)
+n_scale_imputate
+  0   1   2 
+473  17   1 
+
+## 10. 'M plots.csv' e' ridondante rispetto a 'M ANOVA_RM.csv'?
+  colonne presenti solo in M ANOVA_RM: n_name, x_i_name 
+  colonne presenti solo in M plots:    nessuna 
+  identici sulle colonne comuni?       TRUE 
+  -> M plots.csv e' un sottoinsieme di colonne di M ANOVA_RM.csv, non aggiunge dati.
+
+## 11. Colonne dei file M2 non usate da alcun modello
+  ITD_pop e' la dicotomizzazione top-3-box di y_pop_1e2 (y >= 5)?   TRUE 
+  ITD_brand idem su y_brand_1e2?                                   TRUE 
+  ITD_pop_2 = y_pop_1e2 centrata sulla media di y_pop?  scarto max = 4.73e-10 
+  ITD_brand_2 = y_brand_1e2 centrata?                   scarto max = 4.48e-11 
+  -> residui di esplorazioni abbandonate: nessuna entra nei modelli della tesi.
+
+## 12. Struttura del 'manipulation check' (slide 6 del questionario)
+Non e' un controllo di percezione della manipolazione: e' una singola domanda
+a scelta multipla posta una volta alla fine ('quali fattori hai preso in
+considerazione'), con 9 caselle. man_check_i = 1 se la casella corrispondente
+e' spuntata. Due conseguenze verificabili nei dati:
+
+  (a) e' una misura compositiva: spuntare una casella va a scapito delle altre.
+      Correlazioni fra gli esiti dei tre check sullo stesso soggetto:
+                  man_check_i.rep man_check_i.pop man_check_i.brand
+man_check_i.rep             1.000           0.305            -0.067
+man_check_i.pop             0.305           1.000            -0.091
+man_check_i.brand          -0.067          -0.091             1.000
+      Con una misura di attenzione ci si aspetterebbero correlazioni positive.
+
+  (b) essendo una domanda unica e globale, non puo' variare per posizione:
+         check
+posizione     0     1
+        1 0.316 0.684
+        2 0.308 0.692
+        3 0.326 0.674
+      La piattezza non e' evidenza contro il decadimento mnemonico: e' strutturale.

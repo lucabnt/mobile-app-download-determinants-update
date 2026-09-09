@@ -30,19 +30,20 @@ Il documento di revisione del lavoro originale è
 |---|---|---|---|
 | 1.1 | Struttura del repository, snapshot dell'originale | — | Fatto |
 | 1.2 | Replica esatta delle 9 regressioni e dell'ANOVA | `01_replication.R` | Corrispondenza a 4 decimali |
-| 1.3 | Audit di integrità dei dati | `02_data_audit.R` | Nessuna incoerenza |
+| 1.3 | Audit di integrità dei dati | `02_data_audit.R` | Coerente; rilevate imputazioni e ridondanze |
 | 1.4 | Dataset derivati in formato long e wide | `03_build_derived.R` | `data/derived/` |
 | 1.5 | ANOVA a misure ripetute corretta + modello misto | `04_corrected_inference.R` | Interazione a 3 vie non confermata |
 | 1.6 | Test formale della graduatoria fra variabili focali | `04_corrected_inference.R` | Brand ≈ reputazione ≫ popolarità |
-| 1.7 | Robustezza al manipulation check | `05_robustness.R` | Effetto popolarità recuperato |
+| 1.7 | Robustezza al check di slide 6 | `05_robustness.R` | Nullo sulla popolarità fragile (rivisto, vedi §6) |
 | 1.8 | Modello logit ordinale | `05_robustness.R` | Conclusioni invariate |
 | 1.9 | Correzione per test multipli | `05_robustness.R` | 2/81 sopravvivono a Holm |
 | 1.10 | Analisi di potenza sulle interazioni nulle | `05_robustness.R` | MDE ≥ 0,76 s.d. |
 | 1.11 | Figure basate sulle stime corrette | `06_figures.R` | 3 figure |
 | 1.12 | Documento di revisione | — | `docs/01-revisione-lavoro-2023.md` |
 
-**Risultato della fase:** i dati sono validi, l'inferenza no. Tre conclusioni della tesi
-cambiano, il resto tiene. Dettaglio in `01-revisione-lavoro-2023.md` §1.
+**Risultato della fase:** i dati sono coerenti, l'inferenza no. Cinque conclusioni della
+tesi cambiano o vanno riqualificate, e due difetti riguardano la costruzione degli stimoli
+e dei dati. Il resto tiene. Dettaglio in `01-revisione-lavoro-2023.md` §1.
 
 ---
 
@@ -125,21 +126,33 @@ esplicito e quantificato.
 
 ---
 
-### 2.4 Manipulation check come moderatore, non come filtro **[priorità alta]**
+### 2.4 Slide 6 come esito, non come filtro **[priorità alta — riformulata]**
 
-**Domanda.** Come cambia l'effetto della manipolazione fra chi l'ha percepita e chi no?
+**Contesto.** La lettura originale di questa attività assumeva che `man_check_i` fosse un
+controllo di percezione della manipolazione. Non lo è: la slide 6 è un'unica domanda a
+scelta multipla, posta a fine questionario, su quali segnali il rispondente **dichiara**
+di aver usato (§3.3 della revisione). È quindi post-trattamento e plausibilmente
+influenzata dal trattamento stesso.
 
-**Perché conta.** Il filtro usato in Fase 1 (§3.3 della revisione) è un condizionamento
-post-trattamento e può reintrodurre selezione. Interagire `x` con `manip_ok` invece di
-filtrare stima la stessa quantità senza scartare osservazioni, ed è la specificazione
-difendibile in una pubblicazione.
+**Domanda riformulata.** Due domande distinte, non una:
 
-**Metodo.** `y ~ focale * x * manip_ok + ... + (1 | soggetto)`. In parallelo, trattare
-il fallimento del check come errore di misura nel trattamento e calcolare la correzione
-per attenuazione, per avere un secondo limite superiore indipendente.
+1. *La manipolazione influenza ciò che il rispondente dichiara di aver guardato?*
+   Cioè: `man_check_i` è essa stessa un esito. Modello: `manip_ok ~ focale * x + (1 |
+   soggetto)`, logistico. Se il livello alto di un segnale aumenta la probabilità di
+   dichiararlo, il condizionamento di §3.3 è confermato come problematico e va
+   ridimensionato ulteriormente.
+2. *Il pattern è compatibile con un semplice effetto di attenzione?* Modello:
+   `y ~ focale * x * manip_ok + ... + (1 | soggetto)`, presentato come **descrittivo** e
+   non causale.
 
-**Criterio di accettazione.** L'effetto della popolarità nel gruppo che supera il check
-deve ricadere nell'intervallo [0,22; 0,51] già stimato, oppure va spiegato perché no.
+**Perché conta.** Determina quanto peso può reggere §3.3. Se la risposta a (1) è sì, la
+sezione va riscritta ancora, riducendo il sottogruppo a semplice illustrazione.
+
+**Criterio di accettazione.** Nessuna stima da questa attività va presentata come effetto
+causale. L'output è una qualificazione del nullo sulla popolarità, non una sua sostituzione.
+
+**Dipendenza bloccante.** Il punto (1) resta interpretabile solo dopo aver chiarito la
+codifica di `man_check_brand` (Fase 3.6).
 
 ---
 
@@ -203,22 +216,30 @@ piccola; serve confermarlo.
 
 ---
 
-## 3. Fase 3 — Estensioni che richiedono dati non disponibili
+## 3. Fase 3 — Bloccata dall'assenza dell'export grezzo del questionario
 
-Queste **non sono eseguibili** con il materiale attuale. Elencate perché determinano
-cosa cercare negli archivi della raccolta 2023.
+Non è più solo un elenco di estensioni desiderabili: **due voci sono ambiguità che
+inficiano conclusioni già scritte**, non estensioni facoltative.
 
-| # | Estensione | Dato mancante | Priorità |
+| # | Cosa | Dato mancante | Priorità |
 |---|---|---|---|
-| 3.1 | Eterogeneità per età, genere, occupazione, istruzione | Le variabili demografiche sono descritte nel §3.1.2 della tesi ma **non compaiono in nessuno degli 11 CSV pubblicati** | Alta — recuperare l'export grezzo del questionario |
-| 3.2 | Affidabilità e validità delle scale di involvement (α di Cronbach, CFA) | Solo i punteggi medi `inv_app`, `inv_dl`, `inv_cat` sono condivisi, non gli item | Alta — stesso export |
+| **3.6** | **Codifica di `man_check_brand`** — da quale casella di slide 6 deriva, dato che la manipolazione del brand cambiava tre elementi (icona, nome app, nome sviluppatore) ma le caselle sono distinte? | Risposte per item della slide 6 | **Bloccante** — senza, il sottogruppo di §3.3 non è confrontabile fra variabili focali |
+| **3.7** | **Reverse coding delle scale di involvement** — `inv_app` ha un item a polarità invertita, `inv_cat` quattro coppie su otto. Applicato prima di mediare? | Item delle scale | **Bloccante** — se non applicato, tutte le moderazioni sono distorte verso zero e §4.2 va riscritto |
+| 3.1 | Eterogeneità per età, genere, occupazione, istruzione | Le variabili demografiche sono descritte nel §3.1.2 della tesi ma **non compaiono in nessuno degli 11 CSV pubblicati** | Alta |
+| 3.2 | Affidabilità e validità delle scale di involvement (α di Cronbach, CFA) | Solo i punteggi medi sono condivisi, non gli item | Alta |
 | 3.3 | Qualità delle risposte (straight-lining, tempi di compilazione) | Timestamp e pattern di risposta per item | Media |
-| 3.4 | Analisi dei 54 rispondenti che hanno abbandonato | Record incompleti (545 avviati − 491 completati) | Media — verificare selezione differenziale |
+| 3.4 | Analisi dei 54 rispondenti che hanno abbandonato | Record incompleti (545 avviati − 491 completati) | Media |
 | 3.5 | Aggiornamento del contesto di mercato (Appendice C) | Nuova rilevazione del segmento scanner app sul Play Store | Bassa per la revisione, **alta per il blog post** |
+| 3.8 | Ricostruzione dei 18 punteggi imputati con la media (§2.4 della revisione) | Item delle scale | Bassa — impatto numerico trascurabile |
 
-**Azione immediata:** verificare se l'export grezzo del questionario (probabilmente
-formato SoSci Survey / Qualtrics, dato il campo `lfdn`) è ancora reperibile. Sbloccherebbe
-3.1–3.4 in un colpo solo.
+**Azione immediata, ora bloccante.** Recuperare l'export grezzo del questionario
+(probabilmente SoSci Survey, dato il campo `lfdn`). Sblocca 3.1–3.4 e 3.6–3.8 in un colpo
+solo, e senza 3.6 e 3.7 due sezioni della revisione restano condizionate.
+
+**Se l'export non è recuperabile:** 3.6 e 3.7 diventano limiti permanenti da dichiarare,
+§3.3 va ulteriormente ridimensionato a illustrazione, e §4.2 va presentato con la riserva
+esplicita che le moderazioni potrebbero essere attenuate da un errore di costruzione delle
+scale anziché essere realmente assenti.
 
 ---
 
@@ -235,15 +256,24 @@ credibilità viene dall'autocorrezione, non dalla difesa del risultato.
 **Struttura proposta.**
 
 1. Il contesto: cosa chiedeva la tesi e perché la domanda è ancora aperta nel 2026.
-2. Il risultato che non regge: la popolarità *non* era inefficace, la manipolazione non
-   passava. Figura 2.
-3. Il risultato che si appiattisce: brand e reputazione sono indistinguibili. Figura 1.
-4. Il risultato che migliora: la convergenza brand/reputazione col confronto, e la
-   popolarità come euristica di ripiego. Figura 3.
+2. Il risultato che si appiattisce: brand e reputazione sono indistinguibili, e la
+   gerarchia a tre gradini non era mai stata testata. Figura 1. **È questo il pezzo forte,
+   non la popolarità:** è netto, robusto e interamente dimostrabile.
+3. Il risultato che si scioglie in mano: la popolarità. Non "era inefficace ed è invece
+   efficace", ma "non è determinabile" — lo stimolo a bassa popolarità mostrava 10K+
+   download con 84K recensioni, e il nullo sparisce fra chi dichiara di aver guardato quel
+   segnale. Figura 2. Va raccontato come un limite trovato, non come una scoperta.
+4. Il risultato che migliora: la convergenza brand/reputazione col confronto. Figura 3.
 5. Cosa ho imparato sull'analisi: nove regressioni su sottocampioni disgiunti sprecano
-   potere statistico; 81 test senza correzione producono rumore; un manipulation check
-   non usato è un manipulation check sprecato.
+   potere statistico; 81 test senza correzione producono rumore; una domanda di
+   auto-riferimento non è un manipulation check; e il difetto peggiore l'ho trovato
+   guardando le immagini degli stimoli, non i modelli.
 6. Cosa resta vero.
+
+**Rischio da evitare.** La versione precedente di questo piano puntava sul ribaltamento
+del risultato sulla popolarità come apertura. Quella lettura non ha retto all'esame della
+slide 6 (§3.3 della revisione). Il post non deve ricostruirla: sarebbe esattamente
+l'errore di over-claiming che il post denuncia.
 
 **Requisiti.**
 
@@ -284,6 +314,40 @@ cluster-robust CR2, il che è sufficiente per le conclusioni attuali.
 ---
 
 ## 6. Registro delle modifiche
+
+### 2026-09-09 — Lettura delle appendici: §3.3 ridimensionata
+
+Esame di Appendix A (stimoli) e Appendix B (questionario), che nella Fase 1 non erano
+stati letti. Tre scoperte, la prima delle quali corregge una conclusione della revisione.
+
+**Corretto**
+
+- **§3.3 della revisione era sovradimensionata.** La slide 6 non è un manipulation check:
+  è un'unica domanda a scelta multipla, posta a fine questionario, su quali segnali il
+  rispondente *dichiara* di aver usato. Condizionarci sopra è condizionamento
+  post-trattamento su una variabile simile a un mediatore, non rimozione di errore di
+  misura. La conclusione "il risultato sulla popolarità è ribaltato" è stata degradata a
+  "il nullo sulla popolarità non è solido". Riscritti §1 (riga C), §3.3 e §10; rititolata
+  e ridescritta la Figura 2.
+- Riformulata l'attività 2.4 del piano, che assumeva la lettura sbagliata.
+- Riscritta la struttura del blog post (§4), che apriva sul ribaltamento.
+
+**Aggiunto**
+
+- §3.3 della revisione: **difetto di costruzione dello stimolo**. La condizione a bassa
+  popolarità (Fig. A.2) mostra 10K+ download con 84K recensioni — più recensioni che
+  download. È un'ipotesi alternativa, più semplice e indipendente, per il nullo.
+- §2.4 della revisione: **imputazione con la media non documentata** su 18 rispondenti
+  (3,7%), rilevata perché i punteggi non sono multipli di 1/3 e 1/8 come dovrebbero.
+- §2.5 della revisione: `M plots.csv` è ridondante rispetto a `M ANOVA_RM.csv`; quattro
+  colonne dei file M2 (`ITD_pop`, `ITD_brand`, `ITD_pop_2`, `ITD_brand_2`) sono residui
+  non usati da alcun modello.
+- §4.2 della revisione: caveat sul reverse coding.
+- `02_data_audit.R` esteso con le sezioni 9–12, che rendono riproducibili tutte le
+  scoperte sopra invece di asserirle.
+- Fase 3 riorganizzata: le voci 3.6 (codifica di `man_check_brand`) e 3.7 (reverse coding)
+  sono **bloccanti**, non estensioni facoltative. L'export grezzo del questionario passa
+  da desiderabile a necessario.
 
 ### 2026-09-09 — Materiale originale referenziato invece che duplicato
 
@@ -340,7 +404,7 @@ già pubblicato — deliberatamente non fatta.
 |---|---|
 | Interazione a tre vie *i* × *x* × *n* significativa | **Ritirata** — p = 0,63 con misure ripetute corrette |
 | Il brand è il predittore più efficace | **Ridimensionata** — indistinguibile dalla reputazione (p = 0,22) |
-| La popolarità è inefficace in tutti i modelli | **Ribaltata** — β = 0,51, p = 0,002 sui rispondenti che superano il check |
+| La popolarità è inefficace in tutti i modelli | **Riqualificata** — nullo non solido, ma non ribaltato: vedi la voce del 2026-09-09 sulla lettura delle appendici |
 | Con il confronto, la reputazione supera il brand | **Riformulata** — convergono, non si invertono |
 | L'involvement nel download rafforza la reputazione | **Ritirata** — non si replica (p = 0,48) |
 | L'involvement nella categoria favorisce il brand | **Ritirata** — non si replica (p = 0,37) |

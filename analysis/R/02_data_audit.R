@@ -106,4 +106,61 @@ for (v in c("rep","pop","brand")) {
   cat(sprintf("  y_%-6s ", v)); print(table(factor(y, levels = 1:7)))
 }
 
+cat("\n## 9. Imputazione con la media nelle scale di involvement\n")
+cat("Le scale hanno 3 item (inv_app, inv_dl) e 8 item (inv_cat) su scala 1-7: le\n")
+cat("medie devono quindi essere multipli di 1/3 e di 1/8. Un valore che non lo e'\n")
+cat("e che coincide con la media della scala indica imputazione.\n\n")
+n_item <- c(inv_app = 3, inv_dl = 3, inv_cat = 8)
+imput <- sapply(names(n_item), function(v) {
+  x <- m3$rep[[v]]; abs(x - mean(x)) < 1e-9
+})
+for (v in names(n_item)) {
+  x <- m3$rep[[v]]; mu <- mean(x); k <- n_item[[v]]
+  ottenibile <- abs(mu * k - round(mu * k)) < 1e-6
+  cat(sprintf("  %-8s (%d item) media = %.6f | punteggio ottenibile dalla scala? %-3s | casi pari alla media: %2d (%.1f%%)\n",
+              v, k, mu, ifelse(ottenibile, "si", "NO"), sum(imput[, v]), 100 * mean(imput[, v])))
+  cat(sprintf("           s.d. inclusi = %.4f | s.d. esclusi = %.4f | scarto = %+.4f\n",
+              sd(x), sd(x[!imput[, v]]), sd(x[!imput[, v]]) - sd(x)))
+}
+cat(sprintf("\n  soggetti con almeno una scala imputata: %d su %d (%.1f%%)\n",
+            sum(rowSums(imput) > 0), nrow(imput), 100 * mean(rowSums(imput) > 0)))
+print(table(n_scale_imputate = rowSums(imput)))
+
+cat("\n## 10. 'M plots.csv' e' ridondante rispetto a 'M ANOVA_RM.csv'?\n")
+com <- intersect(names(anv), names(plt))
+a2 <- anv[order(anv$lfdn, anv$i), com]; p2 <- plt[order(plt$lfdn, plt$i), com]
+cat("  colonne presenti solo in M ANOVA_RM:", paste(setdiff(names(anv), names(plt)), collapse = ", "), "\n")
+cat("  colonne presenti solo in M plots:   ",
+    ifelse(length(setdiff(names(plt), names(anv))) == 0, "nessuna",
+           paste(setdiff(names(plt), names(anv)), collapse = ", ")), "\n")
+cat("  identici sulle colonne comuni?      ", isTRUE(all.equal(a2, p2, check.attributes = FALSE)), "\n")
+cat("  -> M plots.csv e' un sottoinsieme di colonne di M ANOVA_RM.csv, non aggiunge dati.\n")
+
+cat("\n## 11. Colonne dei file M2 non usate da alcun modello\n")
+m2r <- read_orig("M2_rep.csv")
+cat("  ITD_pop e' la dicotomizzazione top-3-box di y_pop_1e2 (y >= 5)?  ",
+    all(m2r$ITD_pop == as.integer(m2r$y_pop_1e2 >= 5)), "\n")
+cat("  ITD_brand idem su y_brand_1e2?                                  ",
+    all(m2r$ITD_brand == as.integer(m2r$y_brand_1e2 >= 5)), "\n")
+cat("  ITD_pop_2 = y_pop_1e2 centrata sulla media di y_pop?  scarto max =",
+    signif(max(abs(m2r$ITD_pop_2 - (m2r$y_pop_1e2 - mean(m3$pop$y_pop)))), 3), "\n")
+cat("  ITD_brand_2 = y_brand_1e2 centrata?                   scarto max =",
+    signif(max(abs(m2r$ITD_brand_2 - (m2r$y_brand_1e2 - mean(m3$brand$y_brand)))), 3), "\n")
+cat("  -> residui di esplorazioni abbandonate: nessuna entra nei modelli della tesi.\n")
+
+cat("\n## 12. Struttura del 'manipulation check' (slide 6 del questionario)\n")
+cat("Non e' un controllo di percezione della manipolazione: e' una singola domanda\n")
+cat("a scelta multipla posta una volta alla fine ('quali fattori hai preso in\n")
+cat("considerazione'), con 9 caselle. man_check_i = 1 se la casella corrispondente\n")
+cat("e' spuntata. Due conseguenze verificabili nei dati:\n\n")
+mc_wide <- reshape(anv[, c("lfdn", "i_name", "man_check_i")], idvar = "lfdn",
+                   timevar = "i_name", direction = "wide")
+cat("  (a) e' una misura compositiva: spuntare una casella va a scapito delle altre.\n")
+cat("      Correlazioni fra gli esiti dei tre check sullo stesso soggetto:\n")
+print(round(cor(mc_wide[, -1]), 3))
+cat("      Con una misura di attenzione ci si aspetterebbero correlazioni positive.\n\n")
+cat("  (b) essendo una domanda unica e globale, non puo' variare per posizione:\n")
+print(round(prop.table(table(posizione = anv$n, check = anv$man_check_i), 1), 3))
+cat("      La piattezza non e' evidenza contro il decadimento mnemonico: e' strutturale.\n")
+
 sink(type="message"); sink(); close(con)
