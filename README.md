@@ -59,7 +59,7 @@ analysis/
   R/                 review scripts, numbered in execution order
   outputs/
     tables/          results as CSV
-    figures/         figures generated from the corrected estimates
+    figures/         13 figures generated from the corrected estimates
     logs/            full output of every script — the evidence behind every number quoted
 
 data/
@@ -77,7 +77,8 @@ docs/
 ## Running the analysis
 
 **Requirements:** R ≥ 4.2 (developed on 4.6.1) with `lme4`, `lmerTest`, `emmeans`,
-`ordinal`, `car`, `clubSandwich`, `ggplot2`.
+`ordinal`, `car`, `clubSandwich`, `ggplot2`. The Bayesian script additionally needs `brms` and a
+working Stan backend; `cmdstanr` with CmdStan 2.39 is the one used here.
 
 ```bash
 Rscript -e 'install.packages(c("lme4","lmerTest","emmeans","ordinal","car","clubSandwich","ggplot2"), repos="https://cloud.r-project.org")'
@@ -99,7 +100,12 @@ Rscript analysis/R/10_sequence_effects.R    # does what came before change what 
 Rscript analysis/R/11_heterogeneity.R       # do people differ in what moves them?
 Rscript analysis/R/12_response_scale.R      # is the 1-7 scale a ruler?
 Rscript analysis/R/14_posterior_probabilities.R  # p-values restated as probabilities
+Rscript analysis/R/15_bayesian_brms.R       # the same findings as a full Bayesian model
+Rscript analysis/R/16_figures_extended.R    # the explanatory figures
 ```
+
+`15_bayesian_brms.R` picks its Stan backend by trying a trivial model first: `cmdstanr` where it
+is available, `rstan` otherwise, and a clear message instead of a crash if neither compiles.
 
 Two scripts need a private copy of the raw questionnaire export and skip cleanly without it:
 
@@ -130,6 +136,8 @@ document under `docs/`, the corresponding log contains it.
 | `12_response_scale.R` | cutpoints of the 1–7 scale, and whether the spacing matters | ordinary regression assumes a ruler; this tests the assumption |
 | `13_demographics_quality.R` | demographic moderation and response-quality robustness (optional) | the thesis collected demographics and never used them |
 | `14_posterior_probabilities.R` | the findings restated as probabilities | "89% likely" answers the question a reader asks; a p-value does not |
+| `15_bayesian_brms.R` | the same findings as a full Bayesian model, and a comparison against the approximation | the two agree within 2.9 percentage points, which is how we know the approximation was sound |
+| `16_figures_extended.R` | eight figures explaining the results | most of these findings are easier to see than to read |
 
 ---
 

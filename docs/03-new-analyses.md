@@ -17,7 +17,7 @@ and **how far the answer can be pushed**. Every number is produced by a numbered
 | [4](#4-is-the-17-scale-a-ruler) | Is the 1–7 scale a ruler? | `12_response_scale.R` | 2.7 |
 | [5](#5-does-it-depend-on-who-is-looking) | Does it depend on who is looking? | `13_demographics_quality.R` | 3.1 |
 | [6](#6-does-response-quality-change-anything) | Do rushed or careless answers change anything? | `13_demographics_quality.R` | 3.3 |
-| [7](#7-from-p-values-to-probabilities) | How probable is it that brand beats reputation? | `14_posterior_probabilities.R` | 2.6 |
+| [7](#7-from-p-values-to-probabilities) | How probable is it that brand beats reputation? | `15_bayesian_brms.R`, `14_posterior_probabilities.R` | 2.6 |
 
 ---
 
@@ -96,6 +96,10 @@ crosses a threshold.
 **Conclusion.** There is a consistent hint of a contrast effect, and no more than a hint. The
 direction is worth carrying into a future design; the magnitude is not established here.
 
+![Every specification points towards contrast; none of them settles the question.](../analysis/outputs/figures/fig_10_sequence.png)
+
+*Every specification points towards contrast; none of them settles the question.*
+
 ---
 
 ## 3. Do people differ in what moves them?
@@ -150,6 +154,10 @@ accident. Each respondent saw each cue exactly once, so a personal level for eac
 three numbers per person from three observations per person — 1,473 parameters for 1,473
 observations. The design is saturated by construction.
 
+![Each dot is one respondent: baseline enthusiasm against sensitivity to the cues. The points are shrunken predictions, so the cloud is tighter than the real spread.](../analysis/outputs/figures/fig_08_heterogeneity.png)
+
+*Each dot is one respondent: baseline enthusiasm against sensitivity to the cues. The points are shrunken predictions, so the cloud is tighter than the real spread.*
+
 Second, **this result contradicts what was written before running it.** The work plan (task 2.2)
 predicted that three observations per respondent would be too few and that the model would
 probably fail or return a variance of zero, and committed to reporting that negative outcome
@@ -189,6 +197,10 @@ on a footing that does not depend on the spacing says whether it matters.
 The widest step is **1.95 times** the narrowest. Moving a respondent from 5 to 6, or from 6 to 7,
 takes roughly twice as much underlying intention as moving them from 2 to 3. Respondents avoid
 the ends of the scale, exactly as the literature on rating scales expects.
+
+![Where each answer boundary sits on the underlying intention scale, against what an equally spaced scale would look like.](../analysis/outputs/figures/fig_09_scale_cutpoints.png)
+
+*Where each answer boundary sits on the underlying intention scale, against what an equally spaced scale would look like.*
 
 **What came back — and it does not matter.** Both models were asked the same practical question:
 by how many percentage points does the strong version of a cue raise the probability of an
@@ -256,6 +268,10 @@ room to detect differences between occupations, and none of these tests should b
 evidence that the cue effects are the same for everyone. They are evidence that *this sample*
 cannot tell them apart.
 
+![Cue effects by occupation. A coherent pattern that does not pass its own test.](../analysis/outputs/figures/fig_12_demographics.png)
+
+*Cue effects by occupation. A coherent pattern that does not pass its own test.*
+
 ---
 
 ## 6. Does response quality change anything?
@@ -283,6 +299,10 @@ and none moves enough to change anything. Popularity remains short of significan
 answered flatly. This is the cheapest robustness check in the whole project and it is the kind
 that is most often skipped.
 
+![Removing the 33 flagged respondents moves every effect slightly up and changes nothing.](../analysis/outputs/figures/fig_11_quality.png)
+
+*Removing the 33 flagged respondents moves every effect slightly up and changes nothing.*
+
 ---
 
 ## 7. From p-values to probabilities
@@ -295,35 +315,58 @@ are equal. It means that *if* they were exactly equal, data at least this extrem
 is the statement true?
 
 **Method, from the beginning.** Answering the reversed question needs a probability distribution
-over the effects themselves, called a **posterior**. In large samples, and without strong prior
-opinions, the posterior of a set of regression coefficients is closely approximated by a
-bell-shaped cloud centred on the estimates, whose width and tilt are given by the model's own
-covariance matrix. 200,000 values are drawn from that cloud, and each statement of interest is
-checked against every draw. The share of draws in which it is true is its probability.
+over the effects themselves, called a **posterior**: instead of one best estimate per coefficient
+plus a standard error, a whole range of values with a plausibility attached to each. The model is
+the same mixed model used everywhere else, estimated by a sampler that explores those ranges —
+four independent chains of 2,000 iterations each. Every statement of interest is then checked
+against every draw, and the share of draws in which it holds is its probability.
 
-**Honest label.** This is the normal approximation to the posterior, not a fully Bayesian model.
-It preserves the correlation between coefficients — which is exactly what matters when comparing
-two effects — but it holds the variance components fixed and assumes flat priors. `brms` and
-`rstan` are installed here, but Stan compiles its models with a C++ toolchain (RTools) that is
-not installed, so nothing can be fitted. The work plan authorised this fallback in advance on
-condition that it be declared.
+**Priors.** Deliberately weak: a normal(0, 2) on every effect, on a 1–7 answer scale where the
+largest observed effect is about 1.5. That says only that effects of five or six scale points are
+implausible, and leaves everything the data might plausibly show untouched.
+
+**Did the sampler work?** Yes: the largest R-hat is 1.001 for the first model and 1.010 for the
+second, against a conventional ceiling of 1.01, the effective sample sizes are above 1,100
+everywhere, and there were no divergent transitions. These are the diagnostics that say the
+answer below can be trusted as an answer *to this model*.
+
+**A note on how this was obtained.** For most of this project the numbers below came from an
+approximation, because no Stan model could be compiled on this machine — `rstan` fails inside its
+own compilation wrapper, for reasons documented in §2.6 of
+[`02-work-plan.md`](02-work-plan.md). `cmdstanr`, which carries its own copy of Stan and bypasses
+`rstan` entirely, was then installed and works. The numbers below are from the real model.
+
+The approximation was kept rather than deleted, and the two are compared in
+[`15_bayesian_brms.R`](../analysis/R/15_bayesian_brms.R). They agree: across sixteen statements
+the largest disagreement is **2.9 percentage points**, and every other one is below 1.2. That
+comparison is worth more than either result alone, because it is the only way to know whether the
+months of work done on the approximation were resting on anything.
 
 **What came back.**
 
-| Statement | Probability |
-|---|---|
-| The brand effect is positive | 100% |
-| The reputation effect is positive | 100% |
-| The popularity effect is positive | 96.3% |
-| Brand is ahead of reputation | **89.1%** |
-| Brand is ahead of popularity | 100% |
-| The whole ranking brand > reputation > popularity holds | 89.1% |
-| Brand and reputation are within 0.33 points of each other | 75.7% |
-| The popularity effect is smaller than 0.33 points | 82.2% |
-| Brand is ahead of reputation **before** any comparison | **98.9%** |
-| Brand is ahead of reputation **after** other apps were seen | **48.2%** |
-| The brand–reputation gap shrinks once other apps are seen | 97.4% |
-| The popularity effect is positive before any comparison | 99.1% |
+| Statement | Probability | Approximation |
+|---|---|---|
+| The brand effect is positive | 100% | 100% |
+| The reputation effect is positive | 100% | 100% |
+| The popularity effect is positive | 96.5% | 96.3% |
+| Brand is ahead of reputation | **88.8%** | 89.1% |
+| Brand is ahead of popularity | 100% | 100% |
+| The whole ranking brand > reputation > popularity holds | 88.8% | 89.1% |
+| Brand and reputation are within 0.33 points of each other | 75.6% | 75.7% |
+| The popularity effect is smaller than 0.33 points | 81.8% | 82.2% |
+| Brand is ahead of reputation **before** any comparison | **98.6%** | 98.9% |
+| Brand is ahead of reputation **after** other apps were seen | **51.1%** | 48.2% |
+| The brand–reputation gap shrinks once other apps are seen | 96.2% | 97.4% |
+| The popularity effect is positive before any comparison | 99.3% | 99.1% |
+
+The posterior medians are 1.05 for brand (95% interval 0.81 to 1.28), 0.84 for reputation (0.60
+to 1.08) and 0.22 for popularity (−0.02 to 0.46) — the same numbers the frequentist models give,
+which is what should happen when the priors are this weak.
+
+![The full posterior of each effect. Overlap between two curves is what "not distinguishable" looks like.](../analysis/outputs/figures/fig_13_posterior.png)
+
+*The full posterior of each effect. Overlap between two curves is what "not distinguishable"
+looks like.*
 
 **How to read it, and how not to.** These numbers are not new evidence. They come from the same
 model and the same data as the frequentist results, so they cannot disagree with them — only
@@ -331,7 +374,7 @@ phrase them differently. "Brand ahead of reputation: 89.1%" is the same fact as 
 difference": a two-sided p of 0.22 corresponds to about 0.11 on one side, and 1 − 0.11 ≈ 0.89. If
 the p-value did not convince you, this should not convince you either.
 
-What the reformulation genuinely adds is the last four rows. "98.9% before comparison, 48.2%
+What the reformulation genuinely adds is the last four rows. "98.6% before comparison, 51.1%
 after" states the position-dependence of the ranking (review §12.1) in a form that needs no
 training to read: before the user has seen anything else, brand almost certainly leads; once they
 have, it is a coin toss.

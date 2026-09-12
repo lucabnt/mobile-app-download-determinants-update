@@ -322,12 +322,42 @@ probability but **to be labelled an approximation**, not a full Bayesian estimat
 **Acceptance criterion.** If the fallback is used, the document must say so explicitly.
 Upgrading the R environment first is preferable.
 
-**Outcome (2026-09-12): fallback used, and declared.** `brms` and `rstan` install and load on
-R 4.6.1, but Stan compiles its models with a C++ toolchain (RTools) that is not installed on
-this machine, so no model can be fitted. Installing RTools is a system-level change and was not
-made unprompted. The normal approximation to the posterior was used instead, as authorised here.
-Its main product: brand is ahead of reputation with probability 89.1% overall, 98.9% before any
-comparison and 48.2% after one. See §7 of [`03-new-analyses.md`](03-new-analyses.md).
+**Outcome (2026-09-12): completed with a full Bayesian model.** The task was first closed with
+the authorised approximation and then reopened when `cmdstanr` was installed. The models were
+fitted in Stan: four chains of 2,000 iterations, weakly informative priors, largest R-hat 1.010
+and no divergent transitions. Brand is ahead of reputation with probability 88.8% overall, 98.6%
+before any comparison and 51.1% after one. See §7 of [`03-new-analyses.md`](03-new-analyses.md).
+
+**Why `rstan` could not fit it, accurately.** An earlier version of this entry said
+RTools was missing. That was true when it was written and is no longer the reason. RTools 4.5 was
+installed on 2026-09-12 and works: `make` resolves, `pkgbuild::has_build_tools()` returns TRUE.
+Stan still cannot compile a model here. Four hypotheses were tested and eliminated:
+
+| Hypothesis | Test | Result |
+|---|---|---|
+| The C++ toolchain is missing | Installed RTools; checked `make` and `pkgbuild` | Toolchain present and functional |
+| `rstan` and `StanHeaders` versions are mismatched | Installed the aligned pair from the Stan repository (both 2.39.x) | No change |
+| Output piped to `grep`/`tail` breaks `rstan`'s output capture | Re-ran with stdout redirected to a file, no pipe | No change |
+| `Rscript` handles the sink stack differently from an interactive session | Re-ran under `R --vanilla -f` | No change |
+
+In every attempt the build log contains **no compiler error at all**. The only error is
+`sink(type = "output") : connessione non valida`, raised inside `rstan`'s own compilation
+wrapper. The blocker is therefore an `rstan` incompatibility with this R 4.6.1 installation, not
+the toolchain, not the package versions and not how the script is invoked.
+
+**How it was finally fitted.** `cmdstanr` bundles its own CmdStan and bypasses `rstan`
+entirely. It was not installed unprompted — roughly a gigabyte of download and a full CmdStan
+build is a system-level change — but it was installed on request, and it works: CmdStan 2.39.0,
+minimal model compiling, both models sampling without trouble. The `rstan` failure described
+above is unchanged and now simply irrelevant.
+`analysis/R/15_bayesian_brms.R` chooses its backend by trying a trivial model rather than
+assuming one, so it uses `cmdstanr` where available, falls back to `rstan`, and stops with a
+clear message only if neither compiles.
+
+**What the comparison bought.** The approximation was kept rather than deleted, and the script
+compares the two sets of probabilities. Across sixteen statements the largest disagreement is
+**2.9 percentage points** and every other one is below 1.2. That is the only way to know whether
+the work done while Stan was unavailable was resting on anything — and it was.
 
 ---
 
@@ -437,19 +467,69 @@ R 4.6.1, since 2026-09-12. R 4.2.2 is still on the machine but its library was r
 | `clubSandwich`, `sandwich`, `lmtest` | present | cluster-robust standard errors |
 | `car`, `ggplot2` | present | Type II/III ANOVA, figures |
 | `tidyverse`, `caret` | only needed by the original 2023 script | not used by the review scripts |
-| `brms` | absent | would be needed for 2.6; requires a Stan toolchain |
+| `brms`, `cmdstanr` + CmdStan 2.39.0 | working | task 2.6; `cmdstanr` is the backend that compiles here |
+| `rstan` | installed, cannot compile | superseded by `cmdstanr`; the diagnosis is kept in §2.6 |
 
 **Regression check after the upgrade.** The whole pipeline was re-run on 4.6.1: every
 versioned table agrees with the 4.2.2 output to twelve significant digits and the derived
 datasets are bit-identical, so no number in either document moved.
 
 **Technical debt cleared.** `lmerTest` was listed here as not installable until 2026-09-12;
-it is now available, so Satterthwaite degrees of freedom no longer depend on the
-Kenward-Roger fallback in `emmeans`. Only `brms` (task 2.6) is still missing.
+it is now available, so Satterthwaite degrees of freedom no longer depend on the Kenward-Roger
+fallback in `emmeans`.
+
+**Technical debt cleared, second instalment.** RTools 4.5 and then `cmdstanr` were installed on
+2026-09-12. Stan models now compile and sample, and task 2.6 rests on a real Bayesian model
+rather than an approximation. `rstan` still fails on this installation; nothing depends on it any
+more, and the diagnosis is kept in §2.6 because the reasoning is what makes the conclusion
+checkable.
 
 ---
 
 ## 6. Change log
+
+### 2026-09-12 — The Bayesian model, fitted for real
+
+`cmdstanr` was installed on request and works where `rstan` does not, so task 2.6 no longer rests
+on an approximation. Both models were fitted in Stan (four chains of 2,000 iterations, weak
+priors, largest R-hat 1.010, no divergent transitions) and the posterior figure was added.
+
+- **The approximation held.** Across sixteen probability statements the full model and the normal
+  approximation differ by at most **2.9 percentage points**, and by less than 1.2 everywhere else.
+  Keeping the approximation and comparing the two is what makes that checkable.
+- **One number in the blog draft changed** and was corrected: brand ahead of reputation after
+  comparison, 48.2% under the approximation against **51.1%** under the full model. The sentence
+  called it a coin toss either way, and now it is literally one.
+- §7 of [`03-new-analyses.md`](03-new-analyses.md) was rewritten: the method section now describes the
+  sampler and the priors rather than the approximation, and reports the convergence diagnostics.
+- `15_bayesian_brms.R` now selects its backend by trying a trivial model, instead of assuming
+  `rstan`. Documentation that said Stan could not be fitted here has been corrected everywhere it
+  appeared.
+
+### 2026-09-12 — Explanatory figures, and a second attempt at Stan
+
+**Figures.** `16_figures_extended.R` adds eight figures covering every result that benefits from
+one: what splitting the sample cost, the effect of each cue by presentation position, the null
+results against the relevance band, respondent heterogeneity, the cutpoints of the answer scale,
+the sequence effects, the response-quality check and the demographic comparison. The blog draft
+marks suggested figures with placeholders rather than embedding them, so the final selection stays
+a human choice.
+
+**Two figure errors of mine, caught before publication.** The heterogeneity figure first reported
+the correlation between the plotted points (−0.83) rather than the one the model estimates
+(−0.61); predicted individual values are shrunk towards zero, which inflates their apparent
+association, and the text everywhere else uses −0.61. And the sequence figure labelled two
+different estimands identically, so two different numbers appeared to contradict each other.
+
+**Stan, second attempt.** RTools was installed, so task 2.6 was reopened. Four hypotheses were
+tested and all eliminated; the blocker is inside `rstan`, not the toolchain (§2.6). The fallback
+stands, `15_bayesian_brms.R` now probes Stan and exits cleanly instead of failing halfway, and the
+earlier claim in these documents that "RTools is not installed" has been corrected wherever it
+appeared.
+
+**Blog post.** Rewritten to match the thesis's own English — Oxford spelling, the thesis's terms
+for the three elements — while staying in a blog register, with figure placeholders and the note
+on AI assistance extended into the reflection that prompted the project.
 
 ### 2026-09-12 — Phase 2 and Phase 3 completed
 
@@ -647,3 +727,38 @@ history rewrite with a force-push on an already-published branch — deliberatel
 
 - No content of the 2023 work: the CSVs in `original/data/` are bit-identical to the original
   package, and no other original file was altered.
+
+---
+
+## 7. Decisions taken without further instruction
+
+Judgement calls made while carrying out the work, listed here so that they can be challenged
+rather than discovered. All were reviewed and approved on 2026-09-12.
+
+### Choices inside the analyses
+
+| Decision | What was chosen | Why |
+|---|---|---|
+| Demographic categories | Age under 25 vs 25 or older; occupation student / employed / other; education in four groups; gender in three | The original categories are too thin to estimate anything: six age bands over 491 respondents, 69% of them students |
+| Response-quality flags | Fastest 5% of completion times (under 97 seconds), or an identical answer to all eight items of the category-involvement scale. 33 respondents flagged | Two independent signals of inattention that do not depend on the answers being explained |
+| Relevance band on other outcomes | The 0.26–0.33 band was derived for the popularity outcome and applied to the others in standard-deviation units of each | The anchors behind the band are about practical relevance on a common scale, not about one particular variable |
+| Moderation effects | Expressed per one standard deviation of the moderator | Makes a moderation slope comparable with the relevance band, which is defined on the answer scale |
+
+### Work deliberately not done
+
+| Task | Status | Reason |
+|---|---|---|
+| 3.2 — confirmatory factor analysis of the involvement scales | Not done | Cronbach's α was computed (0.75 / 0.83 / 0.80). A CFA on three short scales of 3, 3 and 8 items would add little that α does not already say, and nothing that any conclusion depends on |
+| 3.4 — the respondents who dropped out | Impossible | The export contains only the 502 who reached the end. The 43 who stopped earlier are not in it, and no other source holds them |
+| 3.5 — updating the market context (Appendix C) | Out of scope | Requires a fresh survey of the scanner-app segment on the Play Store in 2026. That is data collection, not reanalysis, and it matters only to the blog post |
+
+### The blog post
+
+| Decision | What was chosen |
+|---|---|
+| Language | English, matching the thesis and the original post |
+| Spelling | Oxford convention, as the thesis uses it: *-ize* verbs with *-our* nouns (randomized, behaviour) |
+| Register | Plainer and shorter than the thesis, but the same voice: few contractions, no jargon left unexplained |
+| Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result |
+| Figures | Marked with placeholders rather than embedded, so that the final selection is a human choice |
+| The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |

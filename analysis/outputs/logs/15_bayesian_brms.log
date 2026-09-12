@@ -1,0 +1,71 @@
+=== FULL BAYESIAN ESTIMATION ===
+brms 2.23.0 | backend cmdstanr | CmdStan 2.39.0 | 4 chains x 2000 iterations
+
+--- convergence ---
+  fit1: max Rhat = 1.0013 | min bulk ESS = 1561 | divergent transitions = 0
+  fit2: max Rhat = 1.0096 | min bulk ESS = 1198 | divergent transitions = 0
+  Rhat near 1.00 and a large effective sample size mean the sampler explored
+  the posterior properly; divergent transitions should be zero.
+
+--- posterior probabilities ---
+ question                                                           probability_pct
+ brand effect is positive                                           100.0%         
+ reputation effect is positive                                      100.0%         
+ popularity effect is positive                                      96.5%          
+ brand is ahead of reputation                                       88.8%          
+ brand is ahead of popularity                                       100.0%         
+ reputation is ahead of popularity                                  100.0%         
+ the full ranking brand > reputation > popularity holds             88.8%          
+ brand and reputation are within 0.26 points of each other          61.3%          
+ brand and reputation are within 0.33 points of each other          75.6%          
+ the popularity effect is smaller than 0.26 points                  63.2%          
+ the popularity effect is smaller than 0.33 points                  81.8%          
+ brand is ahead of reputation BEFORE any comparison                 98.6%          
+ brand is ahead of reputation AFTER other apps were seen            51.1%          
+ the brand-reputation gap shrinks once other apps are seen          96.2%          
+ the popularity effect is positive BEFORE any comparison            99.3%          
+ the popularity effect is smaller than 0.26 points AFTER comparison 87.3%          
+
+--- posterior summaries of the three effects (Likert points) ---
+        cue median lower95 upper95
+      brand   1.05  0.8067   1.284
+ reputation   0.84  0.5956   1.079
+ popularity   0.22 -0.0183   0.458
+
+--- full Bayesian model vs the normal approximation ---
+                                                           question probability_approximation probability_full
+            brand is ahead of reputation AFTER other apps were seen                     0.482            0.511
+          the brand-reputation gap shrinks once other apps are seen                     0.974            0.962
+ the popularity effect is smaller than 0.26 points AFTER comparison                     0.883            0.873
+                  the popularity effect is smaller than 0.26 points                     0.636            0.632
+                 brand is ahead of reputation BEFORE any comparison                     0.989            0.986
+                  the popularity effect is smaller than 0.33 points                     0.822            0.818
+                                       brand is ahead of reputation                     0.891            0.887
+             the full ranking brand > reputation > popularity holds                     0.891            0.887
+            the popularity effect is positive BEFORE any comparison                     0.991            0.993
+                                      popularity effect is positive                     0.963            0.965
+          brand and reputation are within 0.33 points of each other                     0.757            0.756
+          brand and reputation are within 0.26 points of each other                     0.612            0.613
+                                  reputation is ahead of popularity                     1.000            1.000
+                                           brand effect is positive                     1.000            1.000
+                                       brand is ahead of popularity                     1.000            1.000
+                                      reputation effect is positive                     1.000            1.000
+ difference_pp
+         2.888
+        -1.167
+        -1.021
+        -0.431
+        -0.398
+        -0.342
+        -0.340
+        -0.332
+         0.233
+         0.131
+        -0.075
+         0.033
+         0.009
+         0.000
+         0.000
+         0.000
+
+largest disagreement: 2.9 percentage points

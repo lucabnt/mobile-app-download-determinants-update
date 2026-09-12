@@ -1,143 +1,213 @@
 # I reopened my master's thesis after three years and found three of my own mistakes
 
-*Draft for lucabontempi.com — September 2026. Every number links to a script in the
-[review repository](https://github.com/lucabnt/mobile-app-download-determinants-update).*
+*Draft for lucabontempi.com — September 2026. Every figure and every number below is produced
+by a script in the [review repository](https://github.com/lucabnt/mobile-app-download-determinants-update).*
 
 ---
 
-In 2023 I finished a thesis asking a simple question: when someone lands on an app's page in a
-store, what actually makes them tap Install? I tested three things that every listing shows —
-the **star rating**, the **download count**, and the **developer's name and icon** — by building
-manipulated screenshots and putting them in front of 491 people, three apps each.
+In February 2023 I submitted a thesis on a narrow question: when someone lands on an app's
+product page in a store, which element of that page makes them decide to install it? I tested
+three of them — the **average review rating**, the **number of downloads**, and the
+**developer's brand**, carried by the app name, the icon and the developer's own name. I
+manipulated screenshots of a real Play Store page, showed three of them to each of 491
+respondents, and measured what the literature calls intention to download.
 
-The answer I published was that the developer's brand wins. Rating comes second. Download count
-does essentially nothing.
+The answer I published was that the developer's brand is the most decisive element. Reputation
+comes second. Popularity does essentially nothing.
 
-This year I reopened the files. The good news first: the data is clean, the randomisation worked,
-and every regression in the thesis reproduces to four decimal places. The bad news is that I got
-three things wrong, and none of them were in the data. They were in what I did with it.
+This year I reopened the files. The data survived the scrutiny: the randomization worked, there
+are no missing values, and every regression in the thesis reproduces to four decimal places. The
+analysis did not. I made three mistakes, and none of them was in the data — they were in what I
+did with it.
 
-## Mistake one: I compared numbers that were never compared
+## Mistake one: I compared numbers that had never been compared
 
-The headline finding — brand beats rating — came from putting three coefficients side by side:
-1.53 for brand, 0.50 for rating, 0.36 for downloads. Brand is obviously bigger. Case closed.
+The headline finding came from placing three coefficients side by side: 1.53 for brand, 0.50 for
+reputation, 0.36 for popularity. Brand is visibly the largest. Case closed.
 
-Except those three numbers came from three *different* regressions, run on three *different*
-groups of people. Nowhere in the thesis is there a test of whether 1.53 is statistically
-different from 0.50. I eyeballed it.
+Except that those three numbers came from three *different* regressions, estimated on three
+*different* groups of respondents. Nowhere in the thesis is there a test of whether 1.53 differs
+from 0.50. I looked at them and concluded.
 
-So I ran the test. In a single model using all 1,473 observations, with a proper adjustment for
+So I ran the test I should have run. One model, all 1,473 answers, with a proper adjustment for
 the fact that each person answered three times:
 
-| Cue | Effect on intention (1–7 scale) | 95% CI |
+| Element | Effect on intention to download (1–7 scale) | 95% CI |
 |---|---|---|
-| Developer brand | **+1.05** | 0.81 to 1.29 |
-| Star rating | **+0.84** | 0.60 to 1.08 |
-| Download count | +0.22 | −0.02 to 0.46 |
+| Developer's brand | **+1.05** | 0.81 to 1.29 |
+| Reputation (rating) | **+0.84** | 0.60 to 1.08 |
+| Popularity (downloads) | +0.22 | −0.02 to 0.46 |
 
-Brand and rating are **not distinguishable** (p = 0.22). Both clearly beat downloads. The
-three-step hierarchy I published is really two steps, and I had split my own sample into thirds
-for no reason — which is why rating's effect *doubled* once I stopped doing that.
+Brand and reputation are **not distinguishable** (p = 0.22). Both clearly beat popularity. My
+three-step hierarchy is really two steps.
 
-To check this wasn't an artefact of my new preferred model, I ran the comparison every
+The interesting part is what the fragmentation cost. Splitting one sample into nine subsamples
+threw away most of the statistical power I had collected — and reputation's effect nearly
+doubled once it was estimated from all 491 answers rather than 149.
+
+> **[FIGURE — `fig_05_pooling_gain.png`]**
+> *Suggested caption: the same question asked two ways. Hollow points are the thesis estimates,
+> each from its own subsample; solid points use all the data at once. Reputation almost doubles;
+> brand moves the other way.*
+
+To be sure this was not simply my new favourite model talking, I re-ran the comparison every
 defensible way: 24 combinations of sample, model type and controls, one of which failed to
-converge and was dropped. Brand comes out ahead in 4 of the remaining 23. The conclusion is not a
-finding about apps; it was an artefact of an analysis choice.
+converge and was dropped. Brand comes out ahead in 4 of the remaining 23. The original conclusion
+was not a finding about apps. It was an artefact of an analytical choice.
 
-## Mistake two: my "manipulation check" wasn't one
+> **[FIGURE — `fig_04_specification_curve.png`]**
+> *Suggested caption: every defensible specification of the same comparison. If a conclusion only
+> appears in a corner of this picture, it is a choice, not a result.*
 
-The result people quoted back to me was the surprising one: download counts don't matter. In a
-market where everyone obsesses over install numbers, that's a fun thing to say.
+## Mistake two: my "manipulation check" was not one
 
-I no longer think the data supports it, for two reasons I should have caught in 2023.
+The result people quoted back to me was the counter-intuitive one: download counts do not matter.
+In a market where everybody watches install numbers, that is an enjoyable thing to say.
 
-The first is embarrassing. I went back to the actual stimulus images. The low-popularity version
-of the app shows **10,000+ downloads and 84,000 reviews**. More reviews than downloads. It's
-impossible, and any respondent who looked carefully would have known something was off with that
-screenshot.
+I no longer believe the data supports it, for two reasons I should have caught in 2022.
 
-The second is subtler. My thesis reports a "manipulation check" — the share of respondents who
-confirmed they'd noticed each cue. What I actually asked, at the very end, was: *which factors
-did you take into consideration?*, with nine checkboxes. That's not a check that the manipulation
-registered. It's people telling me what they think they did, after the fact. Among the 60% who
-ticked "number of downloads", the download effect more than doubles to +0.51 and becomes
-significant. But that comparison is close to circular: people moved by downloads are more likely
-to say they looked at downloads.
+The first is embarrassing. I went back to the stimulus images themselves. The low-popularity
+version of the app displays **10,000+ downloads alongside 84,000 reviews**. More reviews than
+downloads. It is impossible, and the review count was held constant across the two conditions, so
+the defect sits entirely in the weak version — precisely the one that had to carry the
+comparison.
 
-So what's the honest answer? I set a relevance threshold *before* looking — the smallest effect
-that would matter in practice, which every reasonable way of deriving it puts between 0.26 and
-0.33 points. Against that bar:
+The second is subtler. The thesis reports a manipulation check: the share of respondents who
+confirmed they had noticed each element. What I actually asked, once, at the very end, was *which
+factors did you take into consideration?*, with nine boxes to tick. That is not a check that the
+manipulation registered. It is people reporting, after the fact, what they believe they did.
+Among the 60% who ticked "number of downloads", the popularity effect more than doubles, to +0.51,
+and becomes significant — but that comparison is close to circular, because people moved by
+download counts are more likely to say they looked at them.
 
-- **Before comparison**, when someone sees one app and nothing else, downloads do work: +0.46,
-  and that one is real.
-- **After** they've seen other apps, the effect is +0.06, and it sits exactly on the boundary of
-  what I can resolve. I can't tell "nothing" from "too small to care about".
+So what is the honest answer? Before looking, I fixed the smallest effect that would matter in
+practice. Every reasonable way of deriving it lands between 0.26 and 0.33 scale points. Measured
+against that bar:
 
-"Download counts don't matter" was too strong. "Download counts are a fallback you use when you
-have nothing else to go on" fits everything I can see.
+- **before comparison**, when a respondent sees one app and nothing else, popularity does work:
+  +0.46, and that one is real;
+- **after** they have seen other apps, the effect is +0.06, sitting exactly on the boundary of
+  what this study can resolve. I cannot separate "nothing" from "too small to matter".
 
-## Mistake three: I said the interactions were absent when I couldn't have seen them
+> **[FIGURE — `fig_07_equivalence.png`]**
+> *Suggested caption: which null results are really null. The shaded band is the zone of
+> practical irrelevance, fixed before the tests were run. An interval far wider than the band
+> means the study could not see, not that there was nothing to see.*
 
-The thesis concludes there's no interaction between the three cues — a great rating doesn't
-amplify a great brand, and so on. That's true in the sense that nothing came out significant.
+"Download counts do not matter" was too strong. "Download counts are the cue you fall back on
+when you have nothing else to go on" fits everything I can observe.
 
-It's also meaningless. Running the numbers, my design could only have detected an interaction
-larger than roughly 1.3 points on the 7-point scale — about 0.9 standard deviations. Real
-interactions in this literature are a fraction of the main effects, which here were 0.2 to 1.0. I
-was looking for something the instrument couldn't see and reporting the silence as evidence.
+## Mistake three: I reported absence where I should have reported blindness
 
-The same goes for two "moderation" results I built managerial advice on: neither replicates, and
-neither can be ruled out either. They were noise I dressed as findings. Of the 81 coefficients I
-estimated across nine regressions, exactly **two** survive a correction for having run that many
-tests. Both of them are the brand effect.
+The thesis concludes that there is no interaction between the three elements — a strong rating
+does not amplify a strong brand, and so on. That is true in the sense that nothing came out
+significant.
 
-## What actually holds up — and one thing that's new
+It is also empty. Running the numbers, my design could only have detected an interaction larger
+than roughly 1.3 points on the 7-point scale, about 0.9 standard deviations. Real interactions in
+this literature are fractions of the main effects, which here range from 0.2 to 1.0. I was
+searching for something my instrument could not see, and reporting the silence as evidence.
 
-**Brand and rating are equally powerful, and interchangeable only on average.** Split by
-position, the story is sharper than anything I originally claimed:
+The same applies to two moderation results on which I built managerial advice. Neither replicates,
+and neither can be ruled out either. Of the 81 coefficients I estimated across nine regressions,
+exactly **two** survive a correction for having run that many tests. Both are the brand effect.
+
+## What holds up — and one thing that is new
+
+**Brand and reputation are equally powerful, and interchangeable only on average.** Split by
+position in the sequence, the picture is sharper than anything I originally claimed:
 
 | | Shown first | Shown after other apps |
 |---|---|---|
-| Brand | **+1.41** | +0.90 |
-| Rating | +0.69 | **+0.91** |
-| Downloads | +0.46 | +0.06 |
+| Developer's brand | **+1.41** | +0.90 |
+| Reputation | +0.69 | **+0.91** |
+| Popularity | +0.46 | +0.06 |
 
-Brand dominates when there's nothing to compare against. Once a user has seen alternatives, the
-two converge completely. Stated as a probability: brand leads rating with 99% probability before
-comparison, and 48% after — a coin toss.
+> **[FIGURE — `fig_06_by_position.png`]**
+> *Suggested caption: the ranking depends on where the app appears in the sequence. Brand
+> dominates the first app seen and fades; reputation holds steady and overtakes it.*
 
-There's a practical reading. A strong brand is worth most in the moment where a user isn't
-shopping around: a link from a search result, an ad, a recommendation. Ratings earn their keep in
-the browse-and-compare context, where users are actively collecting information. If you're a new
-entrant, this is the better news than it sounds — you can't buy Adobe's brand, but you can be the
-app that survives the comparison.
+Brand dominates when there is nothing to compare against. Once a user has seen alternatives, the
+two converge completely. Stated as a probability: the brand leads reputation with 99% probability
+before comparison, and 51% after — a coin toss.
 
-And one genuinely new finding, which I'd predicted in advance would fail: **people differ a lot
-in how much any of this moves them**, and the difference is systematic. The respondents most
-inclined to download things in general are the *least* moved by the cues (correlation −0.61). The
-cues do their work on the undecided. An average effect across everyone hides that.
+> **[FIGURE — `fig_13_posterior.png`]**
+> *Suggested caption: how large each effect plausibly is, given the data. Where two curves
+> overlap, the data cannot tell the two elements apart — which is what "not distinguishable"
+> looks like.*
+
+There is a practical reading. A strong brand is worth most in the moment when the user is not
+shopping around: a link from a search result, an advertisement, a recommendation. Ratings earn
+their keep in the browse-and-compare context, where the user is actively collecting information.
+For a new entrant this is better news than it sounds. You cannot buy Adobe's brand, but you can be
+the app that survives the comparison.
+
+And one genuinely new finding, which I had predicted in writing would fail before I ran it:
+**respondents differ a great deal in how much any of this moves them**, and the difference is
+systematic. The people most inclined to download things in general are the *least* moved by what
+the listing shows (correlation −0.61). The cues do their work on the undecided. An average effect
+across everybody conceals that entirely.
+
+> **[FIGURE — `fig_08_heterogeneity.png`]**
+> *Suggested caption: each dot is one respondent — their baseline enthusiasm against how much the
+> page elements move them. The cues work on the undecided.*
+
+## Three things I checked that changed nothing
+
+A reanalysis is only worth as much as the checks that could have embarrassed it. Three of them
+did not.
+
+Respondents do not treat a 1–7 scale as a ruler. The step into the top category is nearly twice
+the step into the third, because people avoid the ends of a scale. Re-estimating everything
+without assuming even spacing moves the effects by 0.8 to 3.1 percentage points and leaves the
+ranking untouched.
+
+The effects do not depend measurably on who is answering — not on age, gender, education or
+occupation. Students respond to reputation roughly twice as strongly as employed respondents,
+which is a tidy story that does not pass its own test; with 69% students in the sample, it could
+not have passed.
+
+And removing the 33 respondents who rushed or gave a single answer to an entire scale moves every
+effect slightly upwards, as removing noise should, and changes nothing else.
+
+> **[FIGURE, optional — `fig_09_scale_cutpoints.png`]**
+> *Suggested caption: where each answer boundary sits on the underlying intention scale, against
+> what an evenly spaced scale would look like.*
+
+> **[FIGURE, optional — `fig_12_demographics.png`]**
+> *Suggested caption: the effect of each element by occupation. A coherent pattern that does not
+> pass its own test.*
 
 ## What three years of distance taught me
 
 Three things, none of them about app stores.
 
-**Splitting your sample to answer a question is usually the wrong move.** My nine separate
-regressions threw away most of the statistical power I had collected, then left me comparing
-numbers across samples that couldn't be compared. One model on all the data answered the question
-directly and gave a different answer.
+**Splitting a sample to answer a question is usually the wrong move.** My nine separate
+regressions discarded most of the power I had collected, and then left me comparing numbers
+across samples that could not be compared. One model on all the data answered the question
+directly, and gave a different answer.
 
-**"Not significant" is not a finding until you say what you could have detected.** Every null I
-reported deserved a sentence about the smallest effect the design could see. Three of them
-dissolve under that question.
+**"Not significant" is not a finding until you say what you could have detected.** Every null
+result I reported deserved a sentence about the smallest effect the design could see. Three of
+them dissolve under that question.
 
 **Look at your stimuli again.** The worst problem in this project — a screenshot showing more
-reviews than downloads — wasn't in the models or the data. It was in a PNG file that I looked at
-a hundred times in 2022 and never actually checked.
+reviews than downloads — was not in the models or in the data. It was in an image file I had
+looked at a hundred times in 2022 and never actually checked.
 
 ---
 
-*The full review, the reanalysis code, the pre-registered decision rules and every log are in the
-[repository](https://github.com/lucabnt/mobile-app-download-determinants-update). The original
-thesis, data and code remain
-[here](https://github.com/lucabnt/mobile-app-download-determinants). The 2026 reanalysis was
-carried out with AI assistance; every figure it produced is reproducible from the scripts.*
+*A note on how this was done.* The reanalysis was carried out with AI assistance, and the idea
+began as a small curiosity: how would an AI have written my master's thesis? The answer turned out
+to be less interesting than the question it provoked, which is how an AI would **review** it. It
+did not find anything I could not have found myself in 2023. It did the one thing I did not do,
+which is to check every claim against the evidence I already had, including the claims that were
+convenient. That is a low bar, and I did not clear it the first time.
+
+*The full review, the reanalysis code, the decision rules fixed before the tests were run, and
+every log are in the
+[review repository](https://github.com/lucabnt/mobile-app-download-determinants-update). The
+original thesis, data and code remain
+[here](https://github.com/lucabnt/mobile-app-download-determinants). Further figures — on the
+answer scale, on respondent demographics, on response quality and on order effects — are in the
+repository for anyone who wants them.*
