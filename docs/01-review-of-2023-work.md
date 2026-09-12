@@ -27,7 +27,7 @@ defects are substantive and change the conclusions.
 |---|---|---|
 | **A** | The repeated-measures ANOVA does not model repeated measures (`Error(lfdn)` with `lfdn` an integer) | The three-way interaction reported as significant **disappears** under the correct specification (F = 0.64, p = 0.63) |
 | **B** | The brand > reputation > popularity ranking is inferred by eyeballing coefficients estimated on different subsamples, with no test of the difference | Under a formal test **brand and reputation are indistinguishable** (p = 0.22). The defensible hierarchy is brand ≈ reputation ≫ popularity |
-| **C** | The "manipulation check" is reported but never used — and it is not a perception check, it is a post-treatment self-report | The thesis's most-quoted result, "popularity is surprisingly ineffective", **is fragile**: among respondents who say they looked at downloads the effect goes from +0.22 (p = 0.075) to +0.51 (p = 0.002). This does not overturn it (§3.3), but it removes the null's solidity |
+| **C** | The "manipulation check" is reported and, by the author's deliberate choice, not used — but it is not a perception check at all, it is a post-treatment self-report | The thesis's most-quoted result, "popularity is surprisingly ineffective", **is fragile**: among respondents who say they looked at downloads the effect goes from +0.22 (p = 0.075) to +0.51 (p = 0.002). This does not overturn it (§3.3), but it removes the null's solidity |
 
 Three further problems concern the calibration of the evidence rather than its direction:
 
@@ -233,7 +233,15 @@ observations) and the pooled estimate (0.842, p < 0.001, on 491 reputation measu
 reputation coefficient **rises by two thirds** once it is estimated using all the available information
 rather than a third of it.
 
-### 3.3 (C) The manipulation check is never used — and it is not a manipulation check
+### 3.3 (C) The manipulation check is reported but not used — and it is not a manipulation check
+
+**Author's clarification (2026-09-12).** Measuring this and then *not* using it was a
+deliberate design choice, not an oversight: the question was meant to be collected and
+reported, never to gate the sample or condition an estimate. Given what it actually measures
+— see below — that decision was the right one, and this section should be read as a
+criticism of the **label** and of what the thesis leaves unsaid about it, not of the choice.
+What follows from the choice, and is not stated in the thesis, is that the design contains no
+verification that the manipulation was perceived.
 
 **What it actually measures.** Slide 6 of the questionnaire (Appendix B) is **a single
 multiple-choice question**, asked once at the end, about the three apps collectively:
@@ -270,8 +278,8 @@ the data ([`02_data_audit.R`](../analysis/R/02_data_audit.R) §12):
    the first version of this review — tests against a benchmark that has no meaning for a
    multi-select self-report. It is kept only for the record.
 
-**The rates reported and never used.** They remain a piece of information the thesis
-produces and ignores:
+**The rates reported, and deliberately set aside.** They remain a piece of information the
+thesis produces and then, by design, does not act on:
 
 | Model | Rate | 95% CI | p vs 50% |
 |---|---|---|---|

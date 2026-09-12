@@ -488,6 +488,27 @@ checkable.
 
 ## 6. Change log
 
+### 2026-09-12 — Figures embedded, PDF render, the manipulation check reframed
+
+**Changed**
+
+- The eight figure placeholders in the post are now actual images, with the suggested
+  captions promoted to figure captions. Two remain marked optional, in an HTML comment.
+- The closing note no longer offers "further figures on the answer scale and on respondent
+  demographics": both are now in the post.
+- **The author confirmed that not using slide 6 was a deliberate choice**, not an oversight.
+  §3.3 of the review, row C of §1 and the corresponding passage of the post were rewritten
+  accordingly: the criticism is now directed at the *label* — a post-treatment self-report
+  reported under the heading "manipulation check" — and at the consequence the thesis does
+  not state, which is that no verification of perception exists in the design. The decision
+  itself is recorded as correct.
+
+**Added**
+
+- A pandoc command in `docs/blog/README.md` that renders the post to PDF for review.
+
+---
+
 ### 2026-09-12 — The Bayesian model, fitted for real
 
 `cmdstanr` was installed on request and works where `rstan` does not, so task 2.6 no longer rests
@@ -760,6 +781,7 @@ rather than discovered. All were reviewed and approved on 2026-09-12.
 | Spelling | Oxford convention, as the thesis uses it: *-ize* verbs with *-our* nouns (randomized, behaviour) |
 | Register | Plainer and shorter than the thesis, but the same voice: few contractions, no jargon left unexplained |
 | Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result |
-| Figures | Marked with placeholders rather than embedded, so that the final selection is a human choice |
+| Figures | Embedded as relative links into `analysis/outputs/figures/`: six in the body, two marked optional in an HTML comment so they can be dropped without hunting for them |
+| PDF render | `pandoc` with `xelatex`, command in `docs/blog/README.md`. The images resolve through `--resource-path=docs/blog`, so the post keeps working both as a file in the repository and as a rendered document |
 | The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |
 | Versioning | The drafts are **not** committed: `docs/blog/` is in `.gitignore`. The post belongs on the site; an unreviewed draft carrying the author's name should not become public merely because the analysis repository is |
