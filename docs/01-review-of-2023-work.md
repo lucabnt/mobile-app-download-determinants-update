@@ -90,7 +90,8 @@ Replicated focal coefficients:
 - **Subsamples.** The M1 (n = 1) and M2 (n = 3) sample sizes match exactly those expected
   from the repeated-measures file: 149/189/153 and 196/143/152, each summing to 491.
 - **Centring.** `y_i_mc` is `y_i` centred on the mean **within focal variable** (maximum
-  error 0.000000); the three involvement measures are centred on the overall mean.
+  error 0.000000); the three involvement measures are centred on the overall mean. What that
+  choice does and does not cost is assessed in §2.5.
 - **Missing values.** Zero, across all eleven files.
 - **Descriptive statistics.** Means and standard deviations in Table 3.1 match the data.
 
@@ -144,7 +145,85 @@ were deliberate and probably test runs, but not the specific reason — and the 
 silently counts all 11 as non-completers. One respondent more or less has no visible effect
 on the estimates; the point is documentation.
 
-### 2.5 Redundancies and leftovers in the files
+### 2.5 The mean-centred ITD: assessed, and it holds
+
+The 2023 work carries two centrings, and they are not the same kind of decision. The three
+involvement measures are centred on the overall mean, which is standard practice in a model
+with interactions: it makes the coefficient of *x* readable as the effect at *average*
+involvement rather than at involvement zero, a value no respondent has. The outcome is
+centred **within focal variable** (`y_i_mc`) and is used only to draw Figure 3.1.
+
+This section was added on 2026-09-12 at the author's prompting: the review had verified how
+`y_i_mc` is built (§2.2) without ever asking what the choice costs.
+[`17_centering_check.R`](../analysis/R/17_centering_check.R) asks.
+
+**What is subtracted.** Not one constant but three, one per cue:
+
+| Cue | Mean ITD subtracted | Deviation from the within-cue rule |
+|---|---|---|
+| Developer's brand | 4.9674 | < 5e-10 |
+| Reputation | 4.0468 | < 5e-10 |
+| Popularity | 4.5255 | < 5e-10 |
+
+The overall mean is 4.5132, so a single overall centring would have been a different
+operation. The three cues are moved to a common zero of their own.
+
+**Would any estimate have changed?** The general rule is that subtracting a constant per
+group from the outcome is harmless *if and only if* the model already contains that group as
+a term, because the constants are then absorbed by the group intercepts. The thesis's nine
+regressions are estimated one cue at a time — there the cue *is* the sample — and the pooled
+models of this review carry `focal` as a factor. Either way the constants are absorbed.
+Verified rather than asserted, refitting the pooled mixed model on both outcomes:
+
+- every coefficient except the two cue intercepts is identical to within 5 × 10⁻¹¹, and so
+  is every standard error and both variance components;
+- the two cue intercepts move by exactly the difference between the centring constants
+  (+0.9206 for reputation, +0.4420 for popularity);
+- the manipulation effects that carry the ranking — 1.053, 0.842, 0.218 — are unchanged;
+- in the repeated-measures ANOVA, the only line that moves is the `focal` main effect, and
+  it moves to exactly nothing (F = 0.000, p = 1.000). The tests the thesis interprets are
+  identical: *x* F = 98.99, `focal × x` F = 9.90, the three-way term F = 0.64.
+
+Had every model in the thesis used the centred outcome, the results would have been the same
+minus one effect that would have been structurally zero. **The choice is sound.**
+
+**What the centred scale costs the reader.** Because each cue is shifted by its own mean, the
+vertical position of a line in Figure 3.1 is not a level of intention to download: it is a
+deviation from that cue's own average. Slopes survive; heights do not. In 4 of the 6
+low/high panels the three cues come out in a different order on the centred scale than they
+do on the 1–7 scale: popularity is the highest line in all three "low" panels once centred,
+and in only one of them on the raw scale. The one reading the thesis takes from the figure,
+the parallel between *n* = 1 and *n* = 3, is about slopes and is therefore safe.
+
+![The same cell means on the raw and the mean-centred scale](../analysis/outputs/figures/fig_14_centring.png)
+
+**The dimension that was left untouched.** In a repeated-measures design the variance worth
+handling is between respondents: it is 41% of the total (ICC, §3.1). Cue centring removes
+5.1% of the variance of ITD; respondent centring would remove 56.7%. But centring cannot
+substitute for a respondent term in the model, and doing it to the outcome alone would have
+been actively harmful, because each respondent's mean contains their own treated
+observation:
+
+| Estimator | Brand | Reputation | Popularity |
+|---|---|---|---|
+| OLS, no respondent term | 0.976 | 0.800 | 0.116 |
+| Mixed model, random intercept | 1.050 | 0.846 | 0.224 |
+| Respondent fixed effects (within) | 1.097 | 0.879 | 0.294 |
+| **Outcome centred by respondent only** | **0.723** | **0.565** | **0.191** |
+
+(Same fixed part in all four, without the involvement controls, so that the only difference
+is how respondents are handled.) The three legitimate estimators bracket each other, as they
+should. Centring the outcome by respondent attenuates every effect by about a third — 34%,
+36% and 35% against the within estimate. It is a trap the thesis did not fall into, because
+it centred on the cue, which its models control for, and not on the respondent.
+
+**Verdict.** The mean-centred ITD is a defensible plotting device and carries no estimate.
+Two qualifications are worth putting in any republication: the label *mean-centered ITD*
+should say *centred within focal variable*, and the figure should warn that only slopes are
+comparable. The variance that needed handling in this design was never a matter of centring:
+it needed the respondent term that `Error(lfdn)` failed to provide (§3.1).
+
+### 2.6 Redundancies and leftovers in the files
 
 Two observations that do not affect the results but explain the file contents:
 
@@ -561,6 +640,11 @@ in question:
    vary does vary, and the other attributes are held at consistent intermediate levels
    (rating 4.2; downloads 1M+). The one exception is the Fig. A.2 defect (§3.3).
 6. **The limitations are stated honestly** in §3.5, including the main design defect.
+7. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
+   Figure 3.1 changes no estimate and could have been used throughout without consequence
+   (§2.5); the involvement measures are centred as they should be; the manipulation check was
+   collected and deliberately not used, which was the right decision given what it measures
+   (§3.3).
 
 The review does not overturn the work. It **flattens** a hierarchy (brand vs reputation),
 **withdraws** a three-way interaction and two moderations, **requalifies** two nulls as
@@ -587,6 +671,8 @@ For a possible erratum or republication:
 | §3.1, Tab. 3.1 | No mention of missing-data handling | Declare the mean imputation on 18 respondents |
 | §3.1 | *"545 participants [...] 491 of them completed it"* | 502 completed; 11 were excluded — 10 because a whole block was never displayed to them, 1 for a reason not recorded |
 | App. A, Fig. A.2 | Low-popularity stimulus: 10K+ downloads with 84K reviews | Construction defect, to be flagged among the limitations |
+| Fig. 3.1, caption | *"Mean-centered ITD"* | Centred **within focal variable**: only the slopes are comparable across the three cues, not the heights (§2.5) |
+| §3.2, manipulation check | Reported per model as *manipulation check* | It is a post-treatment self-report, deliberately not used; say so, and state that the design carries no perception check (§3.3) |
 | `*.r` | `summary(M4_rep)`, `summary(M4_pop)` | `summary(M2_rep)`, `summary(M2_pop)` |
 
 ### Limitations resolved with the raw export

@@ -488,6 +488,28 @@ checkable.
 
 ## 6. Change log
 
+### 2026-09-12 — The mean-centred ITD, assessed
+
+**Added**
+
+- `analysis/R/17_centering_check.R` and §2.5 of the review. The author asked whether the
+  choice of a mean-centred ITD had been evaluated; it had not. The review had verified how
+  `y_i_mc` is built and had not asked what it costs.
+- What the check establishes: the centring is **within focal variable**, three constants and
+  not one; it carries no estimate in the thesis, only Figure 3.1; and refitting every model
+  on the centred outcome changes nothing except the between-cue main effect, which becomes
+  structurally zero. The choice is sound.
+- Two qualifications recorded: the label understates what was done, and heights in Figure 3.1
+  are not comparable across cues (in 4 of 6 panels the centred ordering differs from the raw
+  one).
+- The substantive point: centring cannot replace a respondent term. Centring the outcome by
+  respondent — the tempting move in a repeated-measures design — attenuates every effect by
+  about a third, while respondent fixed effects and the mixed model agree closely with the
+  pooled estimates.
+- `fig_14_centring.png`: the same cell means on both scales.
+
+---
+
 ### 2026-09-12 — Figures embedded, PDF render, the manipulation check reframed
 
 **Changed**
@@ -676,7 +698,7 @@ read. Three findings, the first of which corrects a conclusion of the review.
   simpler, independent alternative explanation for the null.
 - §2.4 of the review: **undocumented mean imputation** on 18 respondents (3.7%), detected
   because the scores are not multiples of 1/3 and 1/8 as they should be.
-- §2.5 of the review: `M plots.csv` is redundant given `M ANOVA_RM.csv`; four columns of the
+- §2.6 of the review (then numbered 2.5): `M plots.csv` is redundant given `M ANOVA_RM.csv`; four columns of the
   M2 files (`ITD_pop`, `ITD_brand`, `ITD_pop_2`, `ITD_brand_2`) are unused leftovers.
 - §4.2 of the review: caveat on reverse coding.
 - `02_data_audit.R` extended with sections 9–12, making all of the above reproducible rather
@@ -781,7 +803,7 @@ rather than discovered. All were reviewed and approved on 2026-09-12.
 | Spelling | Oxford convention, as the thesis uses it: *-ize* verbs with *-our* nouns (randomized, behaviour) |
 | Register | Plainer and shorter than the thesis, but the same voice: few contractions, no jargon left unexplained |
 | Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result |
-| Figures | Embedded as relative links into `analysis/outputs/figures/`: six in the body, two marked optional in an HTML comment so they can be dropped without hunting for them |
+| Figures | Embedded as relative links into `analysis/outputs/figures/`: six in the body, three marked optional in an HTML comment so they can be dropped without hunting for them |
 | PDF render | `pandoc` with `xelatex`, command in `docs/blog/README.md`. The images resolve through `--resource-path=docs/blog`, so the post keeps working both as a file in the repository and as a rendered document |
 | The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |
 | Versioning | The drafts are **not** committed: `docs/blog/` is in `.gitignore`. The post belongs on the site; an unreviewed draft carrying the author's name should not become public merely because the analysis repository is |

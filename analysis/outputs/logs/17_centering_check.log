@@ -1,0 +1,242 @@
+=== 1. WHAT THE CENTRING SUBTRACTS ===
+
+Claim to verify: y_i_mc = y_i - mean(y_i within focal variable).
+
+  focal   n mean_raw mean_centred     max_dev
+1 brand 491  4.96741 -4.48065e-11 4.48062e-11
+2   rep 491  4.04684  1.89409e-10 1.89410e-10
+3   pop 491  4.52546  4.72505e-10 4.72505e-10
+
+Overall mean of y_i: 4.513238 
+Largest deviation from the within-focal rule: 4.73e-10 
+
+So the constant subtracted is different for each cue: it is not one
+centring but three. The three cues are moved to a common zero, which is
+exactly what makes the levels no longer comparable (see §4).
+
+
+=== 2. WHERE THE THESIS USES IT ===
+
+`y_i_mc` appears in the 2023 script only inside the four interaction.plot
+calls that produce Figure 3.1 (lines 118-138 of thesis_analysis_2023.R).
+Every regression uses the raw outcome: the nine lm() calls take y_rep_*,
+y_pop_*, y_brand_*, and the repeated-measures ANOVA takes y_i. The
+centred outcome therefore carries no estimate in the thesis; it carries a
+figure, and one sentence of the Discussion that reads the figure.
+
+
+=== 3. WOULD ANY ESTIMATE HAVE CHANGED? ===
+
+Subtracting a constant per cue cannot change a slope within that cue, so
+in principle only the main effect of `focal` moves. Two things can break
+that in practice: an unbalanced design, and terms that mix cues.
+
+--- 3.1 Balance of the design ---
+           position first second third
+focal x_f                             
+brand low              69     91    75
+      high             84     95    77
+rep   low              74     73   106
+      high             75     73    90
+pop   low              94     80    70
+      high             95     79    73
+
+cell sizes: min 69, max 106, mean 81.8
+The Latin square is near-balanced but not exactly balanced (random
+assignment, not a fixed rotation), so the orthogonality is approximate.
+
+--- 3.2 Same mixed model, raw outcome vs centred outcome ---
+               term       raw   centred   se_raw se_centred  difference
+1       (Intercept)  4.556074 -0.411340 0.105516   0.105516 -4.9674e+00
+2          focalrep -0.772955  0.147616 0.115023   0.115023  9.2057e-01
+3          focalpop -0.014153  0.427802 0.116839   0.116839  4.4196e-01
+4           x_fhigh  1.052767  1.052767 0.121898   0.121898  4.7111e-11
+5    positionsecond -0.138798 -0.138798 0.075889   0.075889  7.8559e-13
+6     positionthird -0.205280 -0.205280 0.076101   0.076101  1.0330e-12
+7           inv_app  0.179057  0.179057 0.048047   0.048047  3.3251e-13
+8            inv_dl -0.077246 -0.077246 0.041135   0.041135 -4.6185e-14
+9           inv_cat  0.138764  0.138764 0.044521   0.044521 -3.1788e-13
+10 focalrep:x_fhigh -0.210290 -0.210290 0.171326   0.171326 -9.8733e-12
+11 focalpop:x_fhigh -0.834700 -0.834700 0.173268   0.173268  3.2615e-11
+
+Expected shift if centring only moves the cue intercepts:
+  focalrep  +0.920570   (observed +0.920570)
+  focalpop  +0.441955   (observed +0.441955)
+
+Every other coefficient: largest absolute change 4.71e-11
+Standard errors: largest absolute change 2.10e-11
+Variance components identical to 1.38e-09
+
+--- 3.3 The manipulation effect by cue, both scales ---
+  focal effect_raw       p_raw effect_centred   p_centred
+1 brand   1.052767 2.32170e-17       1.052767 2.32170e-17
+2   rep   0.842477 9.13461e-12       0.842477 9.13461e-12
+3   pop   0.218068 7.47825e-02       0.218068 7.47825e-02
+
+Largest difference in the effects that carry the thesis's ranking: 7.97e-11
+
+--- 3.4 The repeated-measures ANOVA, both scales ---
+
+Raw outcome:
+
+Error: subj_f
+                    Df Sum Sq Mean Sq F value Pr(>F)  
+x_f                  1   20.0  20.037   4.434 0.0358 *
+focal:x_f            2   24.4  12.225   2.705 0.0679 .
+focal:position       4   56.9  14.233   3.149 0.0142 *
+x_f:position         2   14.8   7.395   1.636 0.1958  
+focal:x_f:position   4   42.1  10.515   2.327 0.0555 .
+Residuals          477 2155.7   4.519                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Error: Within
+                    Df Sum Sq Mean Sq F value   Pr(>F)    
+focal                2  208.2  104.08  73.961  < 2e-16 ***
+x_f                  1  139.3  139.29  98.985  < 2e-16 ***
+position             2   11.3    5.67   4.028   0.0181 *  
+focal:x_f            2   27.9   13.94   9.904 5.52e-05 ***
+focal:position       4   12.9    3.21   2.284   0.0586 .  
+x_f:position         2    6.9    3.45   2.450   0.0869 .  
+focal:x_f:position   4    3.6    0.90   0.642   0.6325    
+Residuals          965 1358.0    1.41                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Centred outcome:
+
+Error: subj_f
+                    Df Sum Sq Mean Sq F value Pr(>F)  
+x_f                  1   20.0  20.037   4.434 0.0358 *
+focal:x_f            2   24.4  12.225   2.705 0.0679 .
+focal:position       4   56.9  14.233   3.149 0.0142 *
+x_f:position         2   14.8   7.395   1.636 0.1958  
+focal:x_f:position   4   42.1  10.515   2.327 0.0555 .
+Residuals          477 2155.7   4.519                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Error: Within
+                    Df Sum Sq Mean Sq F value   Pr(>F)    
+focal                2    0.0    0.00   0.000   1.0000    
+x_f                  1  139.3  139.29  98.985  < 2e-16 ***
+position             2   11.3    5.67   4.028   0.0181 *  
+focal:x_f            2   27.9   13.94   9.904 5.52e-05 ***
+focal:position       4   12.9    3.21   2.284   0.0586 .  
+x_f:position         2    6.9    3.45   2.450   0.0869 .  
+focal:x_f:position   4    3.6    0.90   0.642   0.6325    
+Residuals          965 1358.0    1.41                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Only the `focal` line moves, and it moves to nothing: centring within
+cue deletes the between-cue main effect by construction. Every test the
+thesis actually interprets -- x, focal:x, and the three-way term -- is
+unchanged. Had the ANOVA been run on y_i_mc, the conclusions would have
+been the same, minus one effect that would have been structurally zero.
+
+
+=== 4. WHAT THE CENTRED SCALE COSTS THE READER ===
+
+Figure 3.1 plots the centred outcome for each cue in the same panel. Since
+each cue was shifted by its own constant, the vertical position of a line
+is not a level of intention to download: it is a level relative to that
+cue's own average. Ordering of the lines is therefore not interpretable,
+while their slopes are.
+
+ focal position    x mean_raw mean_centred
+ brand    first  low    4.130     -0.83698
+   rep    first  low    3.905     -0.14144
+   pop    first  low    4.638      0.11284
+ brand    first high    5.619      0.65163
+   rep    first high    4.347      0.29982
+   pop    first high    4.979      0.45349
+ brand   second  low    4.714     -0.25313
+   rep   second  low    3.726     -0.32082
+   pop   second  low    4.513     -0.01296
+ brand   second high    5.463      0.49574
+   rep   second high    4.301      0.25453
+   pop   second high    4.139     -0.38622
+ brand    third  low    4.440     -0.52741
+   rep    third  low    3.434     -0.61288
+   pop    third  low    4.186     -0.33974
+ brand    third high    5.208      0.24038
+   rep    third high    4.689      0.64205
+   pop    third high    4.548      0.02249
+
+Ordering of the three cues within each panel of the figure:
+  first  x=low    raw: pop > brand > rep      centred: pop > rep > brand      DIFFERENT
+  first  x=high   raw: brand > pop > rep      centred: brand > pop > rep      same
+  second x=low    raw: brand > pop > rep      centred: pop > brand > rep      DIFFERENT
+  second x=high   raw: brand > rep > pop      centred: brand > rep > pop      same
+  third  x=low    raw: brand > pop > rep      centred: pop > brand > rep      DIFFERENT
+  third  x=high   raw: brand > rep > pop      centred: rep > brand > pop      DIFFERENT
+
+Where the two orderings disagree, the figure shows an ordering that the
+data does not have on its own scale. The thesis reads one thing from the
+figure -- the parallel between n=1 and n=3 -- and that reading is safe,
+because it is about slopes. A reader comparing heights would be misled.
+
+  written: fig_14_centring.png
+
+
+=== 5. WHY THE CUE CENTRING IS HARMLESS, AND WHEN CENTRING IS NOT ===
+
+The general rule: subtracting a constant per group from the outcome is
+harmless if and only if the model already contains that group as a term,
+because the constants are then absorbed by the group intercepts. The nine
+regressions of the thesis are estimated one cue at a time -- the cue is
+the sample -- and the pooled models of this review carry `focal` as a
+factor. Either way a per-cue constant is absorbed, which is what §3
+observed rather than assumed.
+
+The rule also says where the same operation would have done damage. In a
+repeated-measures design the tempting centring is by respondent, and 41%
+of the variance in ITD is between respondents (ICC, script 04). Doing it
+to the outcome alone, with no respondent term in the model, is not a
+neutral rescaling: each respondent's mean contains their own treated
+observation, so part of the effect is subtracted from itself.
+
+Variance removed by each centring:
+  by cue        var(y) = 2.7731 -> var(y_mc) = 2.6317  (5.1% removed)
+  by respondent var(y) = 2.7731 -> var(y_sc) = 1.2011  (56.7% removed)
+
+                          estimator focal estimate      se
+               OLS, no subject term brand   0.9761 0.14289
+     mixed model (random intercept) brand   1.0500 0.12239
+     subject fixed effects (within) brand   1.0973 0.13179
+ outcome centred by respondent only brand   0.7234 0.08955
+               OLS, no subject term   pop   0.1164 0.14274
+     mixed model (random intercept)   pop   0.2240 0.12226
+     subject fixed effects (within)   pop   0.2942 0.13168
+ outcome centred by respondent only   pop   0.1906 0.08945
+               OLS, no subject term   rep   0.8002 0.14284
+     mixed model (random intercept)   rep   0.8461 0.12236
+     subject fixed effects (within)   rep   0.8794 0.13180
+ outcome centred by respondent only   rep   0.5647 0.08951
+
+The three legitimate estimators bracket each other: the mixed model sits
+between pooled OLS and the within estimator, as it should. Centring the
+outcome alone attenuates every effect instead, against the within
+estimate: brand -34%, reputation -36%, popularity -35%.
+That is the trap the thesis did not fall into -- because it centred on the
+cue, which its models already control for, and not on the respondent.
+
+
+=== 6. VERDICT ===
+
+The mean-centred ITD is a defensible plotting device and a harmless one
+for inference: no estimate in the thesis depends on it, and had every
+model used it, only the between-cue main effect would have changed --
+to zero, by construction.
+
+Two qualifications stand:
+  (a) the label. 'Mean-centered ITD' suggests one centring on the overall
+      mean. It is three centrings, one per cue, so heights in Figure 3.1
+      are within-cue deviations and not comparable across cues.
+  (b) the dimension left untouched. The variance that needed handling in
+      this design is between respondents, and no centring can do it: it
+      needs a respondent term in the model, which is what the integer
+      Error(lfdn) failed to provide and what the mixed model of script 04
+      finally provides. Centring the outcome by respondent instead would
+      have shrunk every effect by about a third (§5).

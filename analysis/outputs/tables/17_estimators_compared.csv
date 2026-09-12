@@ -1,0 +1,13 @@
+"estimator","focal","estimate","se"
+"OLS, no subject term","brand",0.976123798829313,0.142893375416471
+"OLS, no subject term","rep",0.800165190585729,0.14284243491472
+"OLS, no subject term","pop",0.11644908618864,0.142735731550837
+"mixed model (random intercept)","brand",1.04997779728425,0.122385705584729
+"mixed model (random intercept)","rep",0.846129101245732,0.122362048336273
+"mixed model (random intercept)","pop",0.223991114619408,0.122258502198971
+"subject fixed effects (within)","brand",1.09734992787423,0.131793612592284
+"subject fixed effects (within)","rep",0.879370141967073,0.131801722915241
+"subject fixed effects (within)","pop",0.294168311008413,0.131680962491127
+"outcome centred by respondent only","brand",0.723381464168188,0.0895453944422662
+"outcome centred by respondent only","rep",0.564683326435813,0.0895134721273993
+"outcome centred by respondent only","pop",0.190648756554655,0.0894466055229863

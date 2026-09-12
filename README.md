@@ -59,7 +59,7 @@ analysis/
   R/                 review scripts, numbered in execution order
   outputs/
     tables/          results as CSV
-    figures/         13 figures generated from the corrected estimates
+    figures/         14 figures generated from the corrected estimates
     logs/            full output of every script — the evidence behind every number quoted
 
 data/
@@ -101,6 +101,7 @@ Rscript analysis/R/12_response_scale.R      # is the 1-7 scale a ruler?
 Rscript analysis/R/14_posterior_probabilities.R  # p-values restated as probabilities
 Rscript analysis/R/15_bayesian_brms.R       # the same findings as a full Bayesian model
 Rscript analysis/R/16_figures_extended.R    # the explanatory figures
+Rscript analysis/R/17_centering_check.R     # the thesis's mean-centred outcome, assessed
 ```
 
 `15_bayesian_brms.R` picks its Stan backend by trying a trivial model first: `cmdstanr` where it
@@ -137,6 +138,7 @@ document under `docs/`, the corresponding log contains it.
 | `14_posterior_probabilities.R` | the findings restated as probabilities | "89% likely" answers the question a reader asks; a p-value does not |
 | `15_bayesian_brms.R` | the same findings as a full Bayesian model, and a comparison against the approximation | the two agree within 2.9 percentage points, which is how we know the approximation was sound |
 | `16_figures_extended.R` | eight figures explaining the results | most of these findings are easier to see than to read |
+| `17_centering_check.R` | what the thesis's mean-centred ITD changes, and what it hides | a choice the review had verified without ever assessing it |
 
 ---
 
