@@ -42,13 +42,13 @@ Brand and reputation are **not distinguishable** (p = 0.22). Both clearly beat p
 three-step hierarchy is really two steps.
 
 The interesting part is what the fragmentation cost. Splitting one sample into nine subsamples
-threw away most of the statistical power I had collected — and reputation's effect nearly
-doubled once it was estimated from all 491 answers rather than 149.
+threw away most of the statistical power I had collected — and reputation's effect rose by two
+thirds, from 0.50 to 0.84, once it was estimated from all 491 answers rather than 149.
 
 > **[FIGURE — `fig_05_pooling_gain.png`]**
 > *Suggested caption: the same question asked two ways. Hollow points are the thesis estimates,
-> each from its own subsample; solid points use all the data at once. Reputation almost doubles;
-> brand moves the other way.*
+> each from its own subsample; solid points use all the data at once. Reputation rises by two
+> thirds; brand moves the other way.*
 
 To be sure this was not simply my new favourite model talking, I re-ran the comparison every
 defensible way: 24 combinations of sample, model type and controls, one of which failed to

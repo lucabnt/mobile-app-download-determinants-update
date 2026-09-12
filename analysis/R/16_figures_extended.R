@@ -80,7 +80,7 @@ p5 <- ggplot(d5, aes(estimate, focal, colour = focal, shape = approach)) +
   labs(title = "What splitting the sample cost",
        subtitle = "Same data, same question. Nine regressions on disjoint subsamples, against one model on all of it",
        x = "Effect on intention to download (1-7 scale), 95% CI", y = NULL,
-       caption = paste("Reputation nearly doubles once it is estimated from all 491 answers instead of 149.",
+       caption = paste("Reputation rises by two thirds once it is estimated from all 491 answers instead of 149.",
                        "Brand moves the other way: part of its apparent lead was the fragmentation.", sep = "\n")) +
   base_theme
 save_fig(p5, "fig_05_pooling_gain.png")

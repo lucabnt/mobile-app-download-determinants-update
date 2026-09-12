@@ -230,7 +230,7 @@ hierarchy is really a two-step one: {brand, reputation} ≫ popularity.
 That the brand's apparent advantage was largely an artefact of fragmenting the sample is
 visible in the contrast between M1's reputation estimate (0.4986, p < 0.10, on 149
 observations) and the pooled estimate (0.842, p < 0.001, on 491 reputation measures). The
-reputation coefficient **doubles** once it is estimated using all the available information
+reputation coefficient **rises by two thirds** once it is estimated using all the available information
 rather than a third of it.
 
 ### 3.3 (C) The manipulation check is never used — and it is not a manipulation check
