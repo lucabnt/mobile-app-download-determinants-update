@@ -1,0 +1,4 @@
+"model","estimable","singular","n_parameters","logLik","AIC","lrt_chisq","lrt_df","lrt_p"
+"random intercept only",TRUE,FALSE,13,-2620.19329646954,5266.38659293908,NA,NA,NA
+"+ own sensitivity to the manipulation",TRUE,FALSE,15,-2615.04878378237,5260.09756756474,10.2890253743426,2,0.00583131534650426
+"+ own level for each cue",FALSE,NA,NA,NA,NA,NA,NA,NA

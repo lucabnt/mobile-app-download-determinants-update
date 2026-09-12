@@ -1,0 +1,68 @@
+=== EQUIVALENCE RULE (fixed before running) ===
+band: 0.26-0.33 Likert points on the popularity outcome (s.d. = 1.5691)
+     = 0.1657-0.2103 s.d., applied in s.d. units to every other outcome
+
+                                  estimand estimate    se ci90_lo ci90_hi flip_point band_lo band_hi p_value
+       popularity effect, all observations   0.2181 0.122  0.0168   0.419      0.419   0.260   0.330  0.0748
+            popularity effect, shown first   0.4615 0.197  0.1374   0.785      0.785   0.260   0.330  0.0192
+           popularity effect, after others   0.0585 0.156 -0.1979   0.315      0.315   0.260   0.330  0.7072
+     M2 interaction x_rep:x_brand (M2_rep)   0.1660 0.467 -0.6066   0.939      0.939   0.283   0.360  0.7228
+       M2 interaction x_rep:x_pop (M2_rep)  -0.3708 0.461 -1.1323   0.391      1.132   0.283   0.360  0.4219
+     M2 interaction x_pop:x_brand (M2_pop)   0.3916 0.546 -0.5137   1.297      1.297   0.260   0.330  0.4749
+       M2 interaction x_pop:x_rep (M2_pop)  -0.7437 0.539 -1.6370   0.150      1.637   0.260   0.330  0.1702
+   M2 interaction x_brand:x_rep (M2_brand)   0.2510 0.507 -0.5888   1.091      1.091   0.263   0.334  0.6215
+   M2 interaction x_brand:x_pop (M2_brand)  -0.6766 0.511 -1.5228   0.170      1.523   0.263   0.334  0.1878
+    moderation inv_dl on rep (per +1 s.d.)  -0.0884 0.124 -0.2922   0.115      0.292   0.283   0.360  0.4755
+ moderation inv_cat on brand (per +1 s.d.)   0.1121 0.125 -0.0932   0.317      0.317   0.263   0.334  0.3689
+         verdict
+    inconclusive
+  effect present
+ at the boundary
+    inconclusive
+    inconclusive
+    inconclusive
+    inconclusive
+    inconclusive
+    inconclusive
+ at the boundary
+ at the boundary
+
+=== VERDICT COUNTS ===
+
+at the boundary  effect present    inconclusive 
+              3               1               7 
+
+
+=== REPORTING TEST: is slide 6 itself affected by the manipulation? ===
+Logistic mixed model manip_ok ~ focal * x + (1|subject), all three focal variables.
+The checks count 1, 2 and 3 boxes, so high-vs-low is compared WITHIN a focal
+variable and never across them.
+
+                   Estimate Std. Error     z value     Pr(>|z|)
+(Intercept)       0.4786909  0.1400475  3.41806169 0.0006306881
+focalrep          0.7328372  0.2052491  3.57047685 0.0003563319
+focalpop         -0.0121040  0.1933446 -0.06260326 0.9500824304
+x_fhigh           0.5595676  0.2019110  2.77135817 0.0055822986
+focalrep:x_fhigh -0.4433704  0.2994012 -1.48085741 0.1386445738
+focalpop:x_fhigh -0.6031630  0.2786877 -2.16429725 0.0304415434
+
+Odds of ticking the matching box, high vs low:
+focal = brand:
+ contrast   odds.ratio        SE  df asymp.LCL asymp.UCL null z.ratio p.value
+ high / low  1.7499157 0.3533272 Inf 1.1780133  2.599466    1   2.771  0.0056
+
+focal = rep:
+ contrast   odds.ratio        SE  df asymp.LCL asymp.UCL null z.ratio p.value
+ high / low  1.1232174 0.2491239 Inf 0.7272298  1.734826    1   0.524  0.6004
+
+focal = pop:
+ contrast   odds.ratio        SE  df asymp.LCL asymp.UCL null z.ratio p.value
+ high / low  0.9573412 0.1838659 Inf 0.6570311  1.394915    1  -0.227  0.8204
+
+Confidence level used: 0.95 
+Intervals are back-transformed from the log odds ratio scale 
+Tests are performed on the log odds ratio scale 
+
+If the high level raises the odds of reporting the cue, the subgroup split in
+section 3.3 of the review conditions on a variable the treatment moves, and must
+be downgraded from 'fragile null' to illustration only.

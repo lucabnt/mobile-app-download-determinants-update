@@ -44,8 +44,10 @@ by reading the appendices rather than the models:
 - **The low-popularity stimulus is internally impossible** (10K+ downloads alongside 84K
   reviews). This is a confound in the very manipulation that produces the thesis's most
   discussed result (§3.3).
-- **18 of 491 respondents have mean-imputed involvement scores**, documented nowhere
-  (§2.4).
+- **18 of 491 respondents have mean-imputed involvement scores**, and **11 respondents who
+  reached the end were excluded**, neither documented anywhere (§2.4). The raw export
+  explains all of the imputation and ten of the exclusions; one exclusion has no reason
+  visible in the data.
 
 The picture that emerges does not demolish the work. It shifts its centre of gravity: the
 sturdier story is not "brand wins" but **"brand and reputation are equivalent as long as
@@ -120,6 +122,27 @@ In total 18 of 491 respondents (3.7%) have at least one imputed scale, one has t
 numerical impact is negligible — Table 3.1's standard deviations are understated by ~0.01 —
 but the choice is declared neither in the thesis nor in the code, and on a moderator it
 introduces attenuation towards zero precisely in the imputed cases.
+
+**Confirmed from the raw export (2026-09-11, [`09_raw_export_checks.R`](../analysis/R/09_raw_export_checks.R)).** The imputed rows are exactly the
+rows in which a respondent saw an item and skipped it (EFS code 0). The same export reveals
+a second undeclared choice: it holds **502** respondents who reached the end, not 491. Of the
+11 left out:
+
+- **10 were never shown a whole block** (EFS code −77): all 10 missed the involvement pages,
+  and one of them the app screens as well. Eight answered within the same two-day window
+  early in fieldwork, which is consistent with a temporary routing problem — an
+  interpretation, not something the export records.
+- **1 had complete, plausible data** — every block shown, an ordinary completion time, valid
+  answers throughout — and no reason for its exclusion is visible in the export. It is
+  present in every export snapshot from the first one, so it was not a late arrival missed
+  when the workbook was built.
+
+The first rule is coherent: shown but skipped → imputed, never shown → excluded. The eleventh
+exclusion is not explained by anything in the data. The author recalls that the exclusions
+were deliberate and probably test runs, but not the specific reason — and the export's
+`tester` flag is 0 for all 502 respondents, so no test run was marked as one. The thesis declares none of this, and its "491 of 545 completed"
+silently counts all 11 as non-completers. One respondent more or less has no visible effect
+on the estimates; the point is documentation.
 
 ### 2.5 Redundancies and leftovers in the files
 
@@ -234,12 +257,18 @@ the data ([`02_data_audit.R`](../analysis/R/02_data_audit.R) §12):
 2. **It cannot vary by position**, being a single global question. The rates are indeed
    flat (68.4% / 69.2% / 67.4% for *n* = 1, 2, 3). That flatness is structural and says
    nothing about memory decay.
-3. **The coding of `man_check_brand` is ambiguous.** The brand manipulation changed three
-   elements at once — icon, app name, developer name (Appendix A) — but slide 6 has three
-   separate boxes. If `man_check_brand` derives from the *Developer brand* box alone, 67.4%
-   is an undercount; if it derives from any of the three, it is not comparable with `rep`
-   and `pop`, which depend on a single box. **Not resolvable without the raw questionnaire
-   export.**
+3. **The three checks count different numbers of boxes.** The raw export and the original
+   processing workbook (resolved 2026-09-11, [`09_raw_export_checks.R`](../analysis/R/09_raw_export_checks.R)) show that `man_check_brand` is 1 if
+   *any of three* boxes is ticked, `man_check_rep` if *either of two*, and `man_check_pop`
+   only if its *single* box is. The export does not store box labels, but the correlation
+   structure of the nine boxes shows two clean clusters matching the coding — the numeric
+   cues of the stats bar (rating, number of reviews, downloads) and the identity cues
+   (developer brand, app name, app icon) — so the coding is substantively correct. Its
+   consequence is that **the rates are mechanically not comparable across focal
+   variables**: popularity's lower rate is partly an artefact of having one box instead of
+   two or three. For the same reason, the "p vs 50%" column in the table below — added in
+   the first version of this review — tests against a benchmark that has no meaning for a
+   multi-select self-report. It is kept only for the record.
 
 **The rates reported and never used.** They remain a piece of information the thesis
 produces and ignores:
@@ -281,6 +310,30 @@ The popularity effect more than doubles and becomes clearly significant.
 > among those who say they did. That is a reason not to conclude "popularity does not
 > matter", not proof that it does. The honest answer remains the range between 0.22 and
 > 0.51, with the "zero" reading weakened but not excluded.
+
+**Tested directly (2026-09-12,
+[`08_equivalence.R`](../analysis/R/08_equivalence.R)).** The worry above — that slide 6 is
+itself moved by the treatment — can be tested rather than assumed. A logistic mixed model of the tick on
+`focal × manipulation` says the treatment moves what respondents report **for brand only**:
+
+| Focal variable | Odds of ticking the box, high vs low | p |
+|---|---|---|
+| Brand | 1.75 | 0.006 |
+| Reputation | 1.12 | 0.60 |
+| Popularity | 0.96 | 0.82 |
+
+For popularity — the variable this section is about — the conditioning variable is *not*
+moved by the manipulation, so the subgroup split survives this particular objection. For
+brand it is moved, which means the *cross-variable* comparison inside the subgroup is
+contaminated: among respondents who tick the brand boxes, selection depends on the treatment,
+and that inflates the brand row of the table above.
+
+The rule pre-registered for this test (work plan, *Step 2A*) said the section would drop to
+"illustration only" if the manipulation raised the probability of ticking the box — without
+saying *for which variable*, while the test is by variable. The resolution applied here, put
+on the record so it can be challenged: the rule fires for brand and not for popularity, so
+this section keeps its "fragile null" reading and the brand column carries the warning above.
+A rule written per variable from the start would have needed no interpreting.
 
 **A simpler alternative hypothesis.** The low-popularity stimulus (Fig. A.2) shows **10K+
 downloads alongside 84K reviews**: more reviews than downloads, which is impossible. The
@@ -329,11 +382,19 @@ Estimating the moderations in a single pooled model rather than nine separate re
 The only moderation effect that holds is general involvement in apps, and it holds
 precisely for the two variables the thesis does not emphasise.
 
-> **Caveat.** This section assumes the involvement scales were built correctly. `inv_app`
-> contains one reverse-polarity item and `inv_cat` four pairs out of eight: if reverse
-> coding was not applied, both would be attenuated and **all** moderation estimates biased
-> towards zero, which would by itself explain why two of three fail to replicate. Not
-> verifiable without item-level data (§10, *Limitations that remain open*).
+**Not replicated is not the same as absent (2026-09-12).** An equivalence test puts both
+moderations *at the boundary* of the relevance band: the download-involvement moderation on
+reputation has a flip point of 0.29 against a band of 0.28–0.36 Likert points, and the
+category-involvement moderation on brand 0.32 against 0.26–0.33. Neither is supported by the
+data, and neither can be ruled out by it. "Withdrawn" in §10 refers to the thesis's positive
+claim; it should not be read as evidence that these moderations are zero.
+
+> **Scale construction checked (2026-09-11).** An earlier version of this section warned
+> that the non-replication could be an artefact of missing reverse coding. The raw items
+> rule that out: the reverse-polarity item of `inv_app` and the five reverse-polarity pairs
+> of `inv_cat` were recoded correctly before averaging, and the scales are reliable
+> (Cronbach's α = 0.75 for `inv_app`, 0.83 for `inv_dl`, 0.80 for `inv_cat`). The two
+> moderations fail to replicate on correctly built scales.
 
 The managerial implications in §3.3 built on these two moderations — *"when users are
 highly involved in the download process they rely more on reputation"* and *"when
@@ -360,6 +421,10 @@ The design could detect only interactions between 0.76 and 0.98 standard deviati
 enormous effects by the standards of the relevant literature, where interactions are
 typically fractions of the main effect (here: 0.14–0.66 s.d.). The model was **blind** to
 any plausible interaction. The correct wording is "inconclusive", not "absent".
+
+The equivalence test turns this into one number per interaction: the flip points run from 0.94 to 1.64 Likert
+points against a relevance band of 0.26–0.36, so all six land in *inconclusive*. Not one of
+them comes close to being ruled out.
 
 ---
 
@@ -402,10 +467,16 @@ It is not a reversal: it is a **convergence**. Brand loses a third of its streng
 overtakes the other in a statistically distinguishable way.
 
 And there is a finding the thesis does not mention at all: **popularity works when the user
-has no alternatives in front of them** (0.462, p = 0.019). It collapses to zero as soon as
-comparison enters. This is more interesting than the blanket null the thesis reports, and it
+has no alternatives in front of them** (0.462, p = 0.019). It drops to 0.06 once comparison
+enters. This is more interesting than the blanket null the thesis reports, and it
 has an immediate substantive reading: the download count is a fallback heuristic, used in
 the absence of better information and abandoned the moment other information appears.
+
+Under the equivalence rule fixed for Step 2A each of these gets a verdict: *effect present*
+before comparison (0.462, p = 0.019), *at the boundary* after it (0.059, flip point 0.315
+against a band of 0.26–0.33) and *inconclusive* overall (0.218, flip point 0.419). The honest
+summary is that popularity does something when nothing else is on screen, and that afterwards
+these data cannot separate "nothing" from "something too small to matter".
 
 **Due caution:** the three-way `focal × manipulation × comparison` interaction has
 p = 0.111. The pattern is coherent and in the expected direction, but it is not established.
@@ -506,24 +577,28 @@ For a possible erratum or republication:
 | Abstract | *"not possible to find clear evidence of any two-way interaction"* | Inconclusive for lack of power (MDE ≥ 0.76 s.d.) |
 | Tab. 3.1 | Population s.d.; `comp_i` with design values | Sample s.d.; realised values |
 | §3.1, Tab. 3.1 | No mention of missing-data handling | Declare the mean imputation on 18 respondents |
+| §3.1 | *"545 participants [...] 491 of them completed it"* | 502 completed; 11 were excluded — 10 because a whole block was never displayed to them, 1 for a reason not recorded |
 | App. A, Fig. A.2 | Low-popularity stimulus: 10K+ downloads with 84K reviews | Construction defect, to be flagged among the limitations |
 | `*.r` | `summary(M4_rep)`, `summary(M4_pop)` | `summary(M2_rep)`, `summary(M2_pop)` |
 
-### Limitations that remain open
+### Limitations resolved with the raw export
 
-Two ambiguities cannot be resolved with the published material and require the raw
-questionnaire export:
+Two ambiguities flagged in an earlier version of this review were resolved on 2026-09-11
+from the raw questionnaire export and the original processing workbook ([`09_raw_export_checks.R`](../analysis/R/09_raw_export_checks.R)). The raw
+export contains personal data and is not part of this repository.
 
-- **Coding of `man_check_brand`.** Which slide-6 box (or combination) does it derive from,
-  given that the brand manipulation changed three elements but the boxes are separate?
-  Until this is settled, the §3.3 subgroup cannot be used for comparisons *between* focal
-  variables.
-- **Reverse coding of the involvement scales.** `inv_app` contains one reverse-polarity item
-  (*"For me, mobile apps do not matter"*) and `inv_cat` four pairs out of eight. If the
-  reversal was not applied before averaging, both scales would be attenuated towards the
-  centre and every moderation estimate biased towards zero — which would offer an
-  alternative explanation for why two of three moderations fail to replicate (§4.2). Not
-  verifiable without item-level data.
+- **Coding of the slide-6 checks.** Brand counts any of three boxes, reputation either of
+  two, popularity one (§3.3). The coding is substantively correct; the rates are not
+  comparable across focal variables.
+- **Reverse coding of the involvement scales.** Applied correctly (§4.2). An earlier version
+  of this section said `inv_cat` had four reverse-polarity pairs out of eight: it has five.
+
+The export also confirms the whole processing chain: ITD values, manipulation levels,
+positions and check values rebuilt from the raw answers match the published datasets for
+all 491 respondents, with zero discrepancies.
+
+One new, minor open point emerged: the reason for excluding one respondent with complete data
+is not recorded anywhere (§2.4).
 
 ---
 
@@ -545,3 +620,120 @@ Environment used: R 4.2.2 with `lme4`, `emmeans`, `ordinal`, `clubSandwich`, `ca
 
 The next step — which further analyses the data still supports — is in
 [`02-work-plan.md`](02-work-plan.md).
+
+---
+
+## 12. Stress tests: the Step 2A results
+
+Three of the claims above rest on a single specification each. Step 2A put every one of them
+through a test written into the work plan **before** it was run: a specification curve for the
+ranking, an equivalence rule with a pre-declared band for the null results, and a direct test
+of whether slide 6 is itself moved by the treatment. Scripts:
+[`07_specification_curve.R`](../analysis/R/07_specification_curve.R) and
+[`08_equivalence.R`](../analysis/R/08_equivalence.R).
+
+### 12.1 Brand and reputation are indistinguishable — **kept**
+
+Every defensible way of estimating the brand-minus-reputation gap was run: 24 specifications
+crossing sample (all 1,473 observations, and each presentation position on its own), model
+(cluster-robust OLS, linear mixed and ordinal mixed on the clustered sample; OLS and ordinal
+where a subject contributes a single row) and controls (involvement on or off, position on or
+off). One ordinal fit was dropped for non-convergence (§12.4), leaving 23.
+
+| | |
+|---|---|
+| Brand ahead at p < 0.05 | **4 of 23** (17.4%) |
+| Reputation ahead at p < 0.05 | 0 |
+| Pre-registered rule | below 25% → keep "indistinguishable" |
+
+The rule was fixed before the numbers existed and it returns **keep**: §3.2 stands as written.
+
+The median estimate by sample, however, shows that the average hides an ordered pattern:
+
+| Sample | Median brand − reputation |
+|---|---|
+| First position only | **+1.16** |
+| Second position only | +0.16 |
+| Third position only | **−0.42** |
+| All observations | +0.20 |
+
+All four significant specifications are first-position ones. "Indistinguishable" is therefore
+a statement about the average across positions, not a claim that the two cues are
+interchangeable: before the user has seen anything else brand leads clearly, and by the third
+screen the sign has turned over. That is §6 seen from another angle, and it is the reason the
+two sections must be read together.
+
+The slide-6 panel — the 24 specifications that filter on the post-treatment self-report, kept
+apart from the main curve on purpose — puts brand ahead in **none** of its 24 cells, which is
+consistent with the contamination described in §3.3.
+
+### 12.2 The popularity null is fragile — **confirmed and made precise**
+
+The equivalence rule (work plan, *Step 2A*) judges each estimate on its flip point: the
+smallest symmetric bound at which the 90% confidence interval still fits inside. Below the
+band of 0.26–0.33 Likert points the estimate is equivalent to zero under every defensible
+threshold, above it the test is inconclusive under every one, and inside it the answer depends
+on where the bar is put.
+
+| Estimate | Effect | Flip point | Band | Verdict |
+|---|---|---|---|---|
+| Popularity, all observations | +0.218 | 0.419 | 0.26–0.33 | inconclusive |
+| Popularity, shown first | +0.462 | — | — | **effect present** (p = 0.019) |
+| Popularity, after other apps | +0.059 | 0.315 | 0.26–0.33 | **at the boundary** |
+| Six M2 interactions | −0.74 to +0.39 | 0.94–1.64 | 0.26–0.36 | inconclusive (all six) |
+| Involvement-download on reputation | −0.088 | 0.292 | 0.28–0.36 | at the boundary |
+| Involvement-category on brand | +0.112 | 0.317 | 0.26–0.33 | at the boundary |
+
+Three things follow. Popularity **does** work before comparison. After comparison the data
+cannot separate "nothing" from "something too small to matter" — and no defensible threshold
+settles it, which is why a single SESOI was rejected in favour of the band. And the thesis's
+six null interactions are not near being ruled out: their flip points are three to five times
+the relevance band, exactly as the power analysis in §4.3 predicted.
+
+The reporting test that belongs to this claim is in §3.3: the treatment moves what respondents
+say they looked at for brand only, not for popularity.
+
+### 12.3 Convergence under comparison — **stays a hypothesis**
+
+Twelve specifications, the gap reduction **positive in all twelve**, significant in **six**.
+The pre-registered bar for strengthening the wording was nine of twelve, so §6 keeps its
+hypothesis framing. What is notable is where the split falls: significance divides by
+standard-error method, not by sample or controls — all four cluster-robust specifications are
+significant (p = 0.005–0.008), two of four mixed-model ones are (p = 0.047, 0.048) and none of
+the four ordinal ones (p = 0.063–0.070). A stable direction with method-dependent significance
+is the signature of an effect the design can see but not resolve.
+
+### 12.4 What was dropped, and two corrections to this analysis
+
+**One fit was dropped.** An ordinal mixed model on the full sample stopped with a gradient of
+7.2, where healthy fits of the same family sit around 0.001, and reported a standard error of
+0.0028 instead of the ≈0.27 of its three sibling specifications. Its estimate was ordinary; its
+standard error had collapsed, so it would have entered the count as a spurious significant
+specification. A convergence guard keyed on the reported gradient removes it, and the log names
+it.
+
+Two mistakes were made while building these tests, and both are recorded because they affected
+numbers that were on screen at some point:
+
+- The first version of the guard keyed on the condition number of the Hessian. That statistic
+  does not separate the two cases here (592 for a healthy fit against 5,376 for the degenerate
+  one), and since `clmm` does not report it at all the guard silently discarded **all sixteen**
+  ordinal fits rather than the one bad one. The share for claim 1 was briefly computed on 20
+  specifications instead of 23. The verdict was the same either way, but the denominator was
+  wrong.
+- The rule for the reporting test did not say which focal variable it applied to, while the
+  test is by variable. How that was resolved is stated in §3.3 rather than left implicit.
+
+Neither the specification curve nor the equivalence tests changed a conclusion of this review.
+They changed how much weight each conclusion can carry, which was their purpose.
+
+---
+
+## 13. Beyond the review
+
+This document asks whether the 2023 conclusions hold. A companion document asks what else the
+same respondents can tell us: whether the order of the apps matters, whether people differ in
+which cue moves them, whether the 1–7 scale behaves like a ruler, whether any of it depends on
+who was answering, and how the findings look when phrased as probabilities rather than
+p-values. It is in [`03-new-analyses.md`](03-new-analyses.md), and it explains each model
+from first principles.

@@ -1,0 +1,63 @@
+=== BETWEEN-RESPONDENT HETEROGENEITY ===
+
+observations: 1473 | respondents: 491 | observations per respondent: 3 
+
+--- What each specification asks of a single respondent ---
+  random intercept only                      1 random effect(s) per respondent, 3 observations each -> estimable
+  + own sensitivity to the manipulation      2 random effect(s) per respondent, 3 observations each -> estimable
+  + own level for each cue                   3 random effect(s) per respondent, 3 observations each -> saturated, not estimable
+
+--- random intercept only ---
+      grp        var1 var2  vcov  sdcor
+   subj_f (Intercept) <NA> 0.989 0.9945
+ Residual        <NA> <NA> 1.407 1.1863
+singular fit (a variance estimated at exactly zero): FALSE 
+
+--- + own sensitivity to the manipulation ---
+      grp        var1 var2    vcov   sdcor
+   subj_f (Intercept) <NA>  1.3127  1.1457
+   subj_f           x <NA>  0.3103  0.5571
+   subj_f (Intercept)    x -0.3898 -0.6107
+ Residual        <NA> <NA>  1.3273  1.1521
+singular fit (a variance estimated at exactly zero): FALSE 
+
+--- + own level for each cue ---
+NOT ESTIMABLE. lme4 reports:
+   number of observations (=1473) <= number of random effects (=1473) for term (1 + focal | subj_f); the random-effects parameters and the residual variance (or scale parameter) are probably unidentifiable 
+
+
+=== DOES ALLOWING INDIVIDUAL SENSITIVITY IMPROVE THE FIT? ===
+Likelihood-ratio test against the random-intercept model. The p-value is
+conservative here, because testing a variance at its lower boundary of zero
+makes the standard test too strict: a non-significant result is genuinely
+non-significant.
+
++ own sensitivity to the manipulation:
+Data: long
+Models:
+m0: y ~ focal * x + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
+r$m: y ~ focal * x + position + inv_app + inv_dl + inv_cat + (1 + x | subj_f)
+    npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)   
+m0    13 5266.4 5335.2 -2620.2    5240.4                        
+r$m   15 5260.1 5339.5 -2615.1    5230.1 10.289  2   0.005831 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+=== HOW MUCH VARIANCE SITS BETWEEN RESPONDENTS? ===
+  ICC = 0.4127
+
+=== SUMMARY ===
+                                 model estimable singular n_parameters logLik  AIC lrt_chisq lrt_df    lrt_p
+                 random intercept only      TRUE    FALSE           13  -2620 5266        NA     NA       NA
+ + own sensitivity to the manipulation      TRUE    FALSE           15  -2615 5260     10.29      2 0.005831
+              + own level for each cue     FALSE       NA           NA     NA   NA        NA     NA       NA
+
+=== HOW TO READ THIS ===
+Respondents clearly differ in their baseline enthusiasm. Whether they differ
+in their SENSITIVITY to the cues is a question this design cannot answer:
+with three answers per person there is almost nothing left to estimate an
+individual slope from, and the third specification is saturated by
+construction - each person sees each cue exactly once, so a per-person level
+for each cue would need as many parameters as there are observations.
+This is a limit of the experiment, not evidence that everybody reacts alike.
+Answering it needs several apps per cue per respondent.

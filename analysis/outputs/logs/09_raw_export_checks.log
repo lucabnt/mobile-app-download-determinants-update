@@ -1,0 +1,68 @@
+=== RAW EXPORT CHECKS ===
+
+## 1. Sample
+  respondents in the export (all reached the end): 502 
+  dispcode:
+ 31  32 
+496   6 
+  thesis respondents found in the export: 491 of 491 
+  completed respondents not in the thesis: 11 
+
+## 2. ITD, manipulation level and position rebuilt from v_90..v_119
+  rep    exactly one screen shown: 491/491 | mismatches vs published: y=0 x=0 n=0
+  pop    exactly one screen shown: 491/491 | mismatches vs published: y=0 x=0 n=0
+  brand  exactly one screen shown: 491/491 | mismatches vs published: y=0 x=0 n=0
+
+## 3. Slide-6 checks rebuilt with the workbook formulas
+  rep    = any of v_74, v_77             (2 boxes) rate  77.2% | mismatches vs published: 0
+  pop    = any of v_75                   (1 box) rate  60.5% | mismatches vs published: 0
+  brand  = any of v_76, v_78, v_82       (3 boxes) rate  67.4% | mismatches vs published: 0
+
+  Tick rate of each box:
+  box tick_rate used_by
+ v_74      70.3     rep
+ v_75      60.5     pop
+ v_76      32.4   brand
+ v_77      50.1     rep
+ v_78      32.8   brand
+ v_79      50.7       -
+ v_80       3.9       -
+ v_81      30.5       -
+ v_82      45.2   brand
+
+  Phi correlations between boxes. The export does not store box labels; the
+  structure shows two clusters matching the coding: v_74/v_75/v_77 (numeric cues
+  of the stats bar: rating, downloads, number of reviews) and v_76/v_78/v_82
+  (identity cues: developer brand, app name, app icon).
+      v_74  v_75  v_76  v_77  v_78  v_79  v_80  v_81  v_82
+v_74  1.00  0.26 -0.07  0.35 -0.08 -0.05  0.04 -0.01 -0.10
+v_75  0.26  1.00 -0.05  0.31 -0.09 -0.11  0.03 -0.12 -0.10
+v_76 -0.07 -0.05  1.00 -0.08  0.12  0.00  0.02 -0.12  0.11
+v_77  0.35  0.31 -0.08  1.00 -0.11 -0.08  0.03 -0.11 -0.13
+v_78 -0.08 -0.09  0.12 -0.11  1.00  0.09 -0.01  0.01  0.31
+v_79 -0.05 -0.11  0.00 -0.08  0.09  1.00  0.05  0.13  0.18
+v_80  0.04  0.03  0.02  0.03 -0.01  0.05  1.00  0.03 -0.01
+v_81 -0.01 -0.12 -0.12 -0.11  0.01  0.13  0.03  1.00 -0.02
+v_82 -0.10 -0.10  0.11 -0.13  0.31  0.18 -0.01 -0.02  1.00
+
+## 4. Involvement scales rebuilt from the items
+  reverse-coded items (8 - x): v_177, v_168, v_169, v_170, v_172, v_173 
+  (inv_app: 1 of 3 items; inv_cat: 5 of 8 pairs, matching the polarity in Appendix B)
+
+  inv_app  max |rebuilt - published| on complete rows = 3.3e-10 | rows with a skipped item =  5 | same rows as the imputed ones? TRUE | alpha = 0.745
+  inv_dl   max |rebuilt - published| on complete rows = 3.3e-10 | rows with a skipped item =  3 | same rows as the imputed ones? TRUE | alpha = 0.832
+  inv_cat  max |rebuilt - published| on complete rows = 0.0e+00 | rows with a skipped item = 11 | same rows as the imputed ones? TRUE | alpha = 0.801
+
+## 5. The completed respondents excluded from the thesis
+  excluded: 11 
+excl_type
+                             all blocks shown involvement pages and app screens never shown 
+                                            1                                             1 
+                involvement pages never shown 
+                                            9 
+  included: skipped items coded 0 = 51 | never-shown items coded -77 = 0 
+  -> displayed but skipped -> mean-imputed; block never displayed -> excluded.
+     Any 'all blocks shown' case above was excluded for a reason the export does not record.
+
+## 6. Completion times of the included respondents
+  under 60 s: 3 | not recorded (-1): 5 | median: 189.5 s

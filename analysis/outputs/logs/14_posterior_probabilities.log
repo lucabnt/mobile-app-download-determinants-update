@@ -1,0 +1,32 @@
+=== POSTERIOR PROBABILITIES (normal approximation) ===
+draws: 2e+05 | relevance band: 0.26 - 0.33 Likert points
+
+--- point estimates the draws are centred on ---
+  brand +1.053 | reputation +0.843 | popularity +0.218
+
+--- probabilities ---
+ question                                                           probability_pct
+ brand effect is positive                                           100.0%         
+ reputation effect is positive                                      100.0%         
+ popularity effect is positive                                      96.3%          
+ brand is ahead of reputation                                       89.1%          
+ brand is ahead of popularity                                       100.0%         
+ reputation is ahead of popularity                                  100.0%         
+ the full ranking brand > reputation > popularity holds             89.1%          
+ brand and reputation are within 0.26 points of each other          61.2%          
+ brand and reputation are within 0.33 points of each other          75.7%          
+ the popularity effect is smaller than 0.26 points                  63.6%          
+ the popularity effect is smaller than 0.33 points                  82.2%          
+ brand is ahead of reputation BEFORE any comparison                 98.9%          
+ brand is ahead of reputation AFTER other apps were seen            48.2%          
+ the brand-reputation gap shrinks once other apps are seen          97.4%          
+ the popularity effect is positive BEFORE any comparison            99.1%          
+ the popularity effect is smaller than 0.26 points AFTER comparison 88.3%          
+
+=== HOW TO READ THIS ===
+These are statements about the effects given the data, not about hypothetical
+repetitions of the experiment. A probability near 50% means the data are
+silent on the question; one near 100% means they settle it. They are read
+alongside the frequentist results, not instead of them: both come from the
+same model and the same data, so they cannot disagree about the evidence,
+only about how it is phrased.

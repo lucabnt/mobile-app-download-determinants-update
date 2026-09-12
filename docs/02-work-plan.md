@@ -47,12 +47,127 @@ of the data. The rest holds. Detail in `01-review-of-2023-work.md` §1.
 
 ---
 
+## Next step — Step 2A: stress-test the claims the post will make
+
+**Status:** completed 2026-09-12. The choices below were fixed **before** anything was run and
+were not revised afterwards. Verdicts: §12 of the review. Claim 1 **kept** (brand ahead in 4 of
+23 specifications, below the 25% bar), claim 2 **confirmed and made precise** (popularity is an
+effect before comparison, at the boundary after it), claim 3 **stays a hypothesis** (6 of 12
+significant, below the 9 of 12 bar).
+
+### Why this step, and why now
+
+The post (§4) will make three claims, and each currently rests on a single specification.
+Step 2A puts each through a test designed in advance, and does nothing else: it produces no
+new findings, only a verdict on findings already written. It is fully unblocked — none of it
+depends on the raw questionnaire export.
+
+| Claim in the post | Current evidence | Stress test | Plan task |
+|---|---|---|---|
+| **1.** Brand and reputation are indistinguishable | One pooled mixed model, p = 0.22 | Specification curve on the brand − reputation contrast | 2.5 |
+| **2.** The popularity effect is indeterminate, not zero | Fragile subgroup result + stimulus defect | Equivalence test (TOST) on the popularity effect, overall and after comparison; does the manipulation change what respondents report on slide 6? | 2.3, 2.4 (point 1) |
+| **3.** Brand and reputation converge under comparison | Three-way interaction, p = 0.11 | Same specification curve, with the three-way contrast as a second estimand | 2.5 |
+
+### Pre-registered choices
+
+**Specification grid (claims 1 and 3).** Only defensible specifications enter the main curve:
+
+| Sample | Structure | Models | Controls | Specs |
+|---|---|---|---|---|
+| All observations (1,473) | clustered, 3 per subject | OLS with CR2 cluster-robust SEs; linear mixed; ordinal mixed | involvement on/off × position on/off | 12 |
+| Position 1 only (491) | independent, 1 per subject | OLS; ordinal | involvement on/off | 4 |
+| Position 2 only (491) | independent | OLS; ordinal | involvement on/off | 4 |
+| Position 3 only (491) | independent | OLS; ordinal | involvement on/off | 4 |
+
+24 specifications in the main curve. Design notes:
+
+- The "position 1 only" cells are the thesis's own Model 1 comparison — brand vs reputation
+  among respondents who saw each first — run as **one** regression with a formal contrast
+  instead of three separate ones. They are highlighted in the curve.
+- Naive OLS on the full sample is excluded: its standard errors ignore the ICC of 0.41 and
+  are not defensible. In the single-position samples each subject contributes one row, so
+  OLS is correct there and a mixed model would be degenerate.
+- **Slide-6-filtered samples are excluded from the main curve**, because filtering on a
+  post-treatment self-report is not a defensible specification (§3.3 of the review). They
+  appear in a separate, labelled panel (24 further specifications).
+- Ordinal specifications estimate log-odds, not Likert points: they count towards the
+  significance shares but are plotted on their own axis.
+- Claim 3 is estimable only in the full-sample cells (within a single-position sample,
+  comparison is constant), so its curve has 12 specifications.
+
+**Decision rules for claim 1**, by share of main-curve specifications in which brand exceeds
+reputation at p < 0.05:
+
+| Share | Wording in the review and the post |
+|---|---|
+| < 25% | "Brand and reputation are indistinguishable" — kept as stated |
+| 25–75% | "Brand may lead, but whether it does depends on analytic choices" — curve shown |
+| > 75% | Claim 1 is wrong: §3.2 of the review is revised and the post restructured |
+
+**Equivalence test for claim 2 — rule fixed 2026-09-12, before running anything.** A single
+SESOI cannot settle this question. Every defensible anchor lands between **0.26 and 0.33
+Likert points** (0.166–0.210 s.d. of the popularity outcome), and the point at which the
+post-comparison verdict flips — 0.315 points — sits inside that band. Choosing one number
+would choose the answer. The rule is therefore a band plus a three-way verdict, applied to
+the **flip point** of each estimate: the smallest symmetric bound at which the 90% CI still
+fits inside.
+
+| Flip point | Verdict |
+|---|---|
+| below 0.26 points (0.166 s.d.) | *equivalent to zero* under every defensible threshold |
+| above 0.33 points (0.210 s.d.) | *inconclusive* under every defensible threshold |
+| in between | *at the boundary*, reported as such |
+
+Where the 95% CI excludes zero, the estimate is labelled *effect present* instead. The band
+comes from four independent anchors, none of which is decisive on its own: small telescopes
+(the effect the original M1 had 33% power to detect, 0.33 points), Cohen's d = 0.20 (0.31),
+half a rating star (0.28) and a quarter of the brand effect (0.26). A practical anchor — the
+smallest change in downloads a developer would care about — could not be used: these data
+contain no bridge from the 1–7 intention scale to conversion. For outcomes other than
+popularity the band is applied in s.d. units of that outcome. The same script applies the
+rule to the other nulls listed in §2.3 (six M2 interactions, two moderations), closing that
+task; those results feed the review, not the post.
+
+**Reporting test for claim 2.** Logistic mixed model `manip_ok ~ focal * x + (1 | subject)`,
+for all three focal variables (the coding is now known, Phase 3.6). Because the checks count
+1, 2 and 3 boxes respectively, the test compares high vs low *within* each focal variable and
+never compares rates across them. If the high level significantly raises the probability of
+ticking the matching box, §3.3 of the review is downgraded from "fragile null" to "illustration only", and the post drops the
+subgroup figure.
+
+**Claim 3** is presented as a hypothesis whatever the outcome. Its wording can strengthen
+only if the three-way contrast is significant in at least 9 of its 12 specifications.
+
+### Deliverables
+
+| Output | Content |
+|---|---|
+| `analysis/R/07_specification_curve.R` | Grid, estimation, curve for claims 1 and 3 |
+| `analysis/R/08_equivalence.R` | TOST on the §2.3 nulls; reporting test on slide 6 |
+| `analysis/outputs/figures/fig_04_specification_curve.png` | Main curve + slide-6 panel |
+| `analysis/outputs/tables/07_*.csv`, `08_*.csv`, logs | Every number behind the verdicts |
+| New §12 in the review | Verdicts, with wording in §3.2, §3.3 and §6 adjusted according to the rules above |
+| This plan | Tasks 2.3, 2.5 and 2.4 (point 1) closed; change-log entry |
+
+### Out of scope
+
+2.1 (sequence effects), 2.2 (random slopes), 2.4 point 2, 2.6, 2.7 and all of Phase 3. They
+produce new evidence; Step 2A only checks the evidence the post will use.
+
+### After Step 2A
+
+Drafting the post (§4) can start immediately. Task 2.1 can run in parallel: no section of
+the post structure needs it, and if it yields a result it belongs in a follow-up rather than
+in this post.
+
+---
+
 ## 2. Phase 2 — New analyses on the existing data
 
 Ordered by value/cost ratio. All feasible with the data already in
 `data/derived/long_measures.csv`, with no new collection.
 
-### 2.1 Sequence and anchoring effects **[high priority]**
+### 2.1 Sequence and anchoring effects **[closed 2026-09-12]**
 
 **Question.** Does ITD for the app in position *k* depend on **which values** the user saw
 in earlier positions, not merely on the fact that they saw some?
@@ -75,9 +190,13 @@ that the sign is stable between the linear and ordinal specifications.
 **Risk.** Order is randomised and the earlier levels are randomised too, so identification
 is clean. Low risk.
 
+**Outcome (2026-09-12).** A contrast effect in the expected direction in every specification,
+significant in none that can be read without conditioning on an untested interaction. Reported
+as a hint, not a finding — see §2 of [`03-new-analyses.md`](03-new-analyses.md).
+
 ---
 
-### 2.2 Between-respondent heterogeneity: random slopes **[high priority]**
+### 2.2 Between-respondent heterogeneity: random slopes **[closed 2026-09-12]**
 
 **Question.** Do all users react to the same cues, or are there distinct profiles — some
 who look at brand, some at ratings, some at nothing?
@@ -99,9 +218,16 @@ reported as such** — not forced by trying progressively simpler specifications
 **Acceptance criterion.** LRT plus convergence diagnostics. A negative outcome (no estimable
 heterogeneity) is a publishable result.
 
+**Outcome (2026-09-12): the prediction above was wrong, and is left standing rather than
+quietly edited.** Respondents do differ in how much the manipulation moves them
+(χ² = 10.29, 2 df, p = 0.0058; sensitivity s.d. 0.56 against average effects of 0.22–1.05), and
+the correlation between baseline and sensitivity is −0.61: the people most inclined to download
+anything are the least moved by the cues. The third specification, a personal level for each
+cue, is saturated by construction and genuinely not estimable. See §3 of [`03-new-analyses.md`](03-new-analyses.md).
+
 ---
 
-### 2.3 Equivalence testing on the null results **[high priority]**
+### 2.3 Equivalence testing on the null results **[closed 2026-09-12]**
 
 **Question.** Is the popularity effect after comparison (β = 0.059) *zero*, or merely *not
 distinguishable from zero*?
@@ -111,22 +237,23 @@ three (popularity ineffective; no interaction between focal variables; no modera
 several places). A TOST with a declared practical-relevance threshold turns "we found
 nothing" into "we ruled out effects larger than X".
 
-**Method.** Two One-Sided Tests with the SESOI (smallest effect size of interest) fixed *a
-priori* — proposal: 0.20 s.d., roughly 0.3 points on the 1–7 scale, the threshold below
-which an effect on download intention has no managerial relevance. Apply to: the
-post-comparison popularity effect, the six M2 interactions, the two moderations that fail
-to replicate.
+**Method.** Two One-Sided Tests, but with a band instead of a single SESOI: see *Next step —
+Step 2A* for the rule adopted on 2026-09-12 (0.26–0.33 Likert points, verdict on the flip
+point) and for why a single threshold was rejected. Apply to: the popularity effect overall
+and after comparison, the six M2 interactions, the two moderations that fail to replicate.
 
-**Acceptance criterion.** For each null, one of three labels: *equivalent to zero*,
-*inconclusive*, *effect present*. No "not significant" without qualification.
+**Acceptance criterion.** For each null, one of four labels: *equivalent to zero*, *at the
+boundary*, *inconclusive*, *effect present*. No "not significant" without qualification.
 
 **Note.** From Phase 1 we already know the six M2 interactions will almost certainly land
 in *inconclusive* (MDE ≥ 0.76 s.d. against a SESOI of 0.20). That is the point: making it
 explicit and quantified.
 
+**Scheduled.** Step 2A.
+
 ---
 
-### 2.4 Slide 6 as an outcome, not a filter **[high priority — reformulated]**
+### 2.4 Slide 6 as an outcome, not a filter **[point 1 closed 2026-09-12]**
 
 **Context.** The original reading of this task assumed `man_check_i` was a check that the
 manipulation had been perceived. It is not: slide 6 is a single multiple-choice question,
@@ -150,12 +277,14 @@ yes, that section must be rewritten again, reducing the subgroup to a mere illus
 **Acceptance criterion.** No estimate from this task is to be presented as a causal effect.
 The output is a qualification of the popularity null, not a replacement for it.
 
-**Blocking dependency.** Point (1) is interpretable only once the coding of
-`man_check_brand` is clarified (Phase 3.6).
+**Dependency resolved.** The coding of the checks is now known (Phase 3.6).
+
+**Scheduled.** Point (1), for all three focal variables, is part of Step 2A. Point (2) is not
+scheduled.
 
 ---
 
-### 2.5 Specification-curve analysis **[medium priority]**
+### 2.5 Specification-curve analysis **[closed 2026-09-12]**
 
 **Question.** How much does the "brand > reputation" conclusion depend on analytic choices?
 
@@ -163,10 +292,10 @@ The output is a qualification of the popularity null, not a replacement for it.
 arguing that the pooled specification is the right one, show **all** reasonable
 specifications and see where the brand-vs-reputation contrast falls.
 
-**Method.** Grid over the choices: sample (all / n=1 / n=3 / box ticked / subjects ticking
-3 of 3) × model (OLS / cluster-robust OLS / mixed / mixed ordinal) × controls (with and
-without involvement, with and without position). ~120 specifications. Curve ordered by
-estimate, with the thesis's own specification highlighted.
+**Method.** Superseded by the pre-registered grid in *Next step — Step 2A*. The grid
+originally written here (~120 specifications) was mis-sized and included indefensible
+cells: naive OLS on clustered data, degenerate mixed models on single-position samples, and
+slide-6-filtered samples inside the main curve.
 
 **Acceptance criterion.** Share of specifications in which the brand-vs-reputation contrast
 is significant at 5%. If it is low — as expected — the thesis conclusion is an analytic
@@ -176,7 +305,7 @@ choice, not a fact.
 
 ---
 
-### 2.6 Bayesian reformulation **[medium priority]**
+### 2.6 Bayesian reformulation **[closed 2026-09-12, with the fallback]**
 
 **Question.** What is the probability that brand matters more than reputation?
 
@@ -193,9 +322,16 @@ probability but **to be labelled an approximation**, not a full Bayesian estimat
 **Acceptance criterion.** If the fallback is used, the document must say so explicitly.
 Upgrading the R environment first is preferable.
 
+**Outcome (2026-09-12): fallback used, and declared.** `brms` and `rstan` install and load on
+R 4.6.1, but Stan compiles its models with a C++ toolchain (RTools) that is not installed on
+this machine, so no model can be fitted. Installing RTools is a system-level change and was not
+made unprompted. The normal approximation to the posterior was used instead, as authorised here.
+Its main product: brand is ahead of reputation with probability 89.1% overall, 98.9% before any
+comparison and 48.2% after one. See §7 of [`03-new-analyses.md`](03-new-analyses.md).
+
 ---
 
-### 2.7 Structure of the response scale **[low priority]**
+### 2.7 Structure of the response scale **[closed 2026-09-12]**
 
 **Question.** Do respondents use the 1–7 scale uniformly, or do they cluster on focal values
 (4 = neutral, extremes avoided)?
@@ -211,32 +347,34 @@ systematically distorts small effects — precisely the ones on popularity.
 the scale as interval and as ordinal. From Phase 1 the difference looks small; it needs
 confirming.
 
+**Outcome (2026-09-12).** The scale is demonstrably not a ruler — the widest step between
+cutpoints is 1.95 times the narrowest — and it changes nothing: the effect on the probability of
+answering 5 or more differs by 0.8 to 3.1 percentage points between the two treatments, with the
+ranking intact. See §4 of [`03-new-analyses.md`](03-new-analyses.md).
+
 ---
 
-## 3. Phase 3 — Blocked by the missing raw questionnaire export
+## 3. Phase 3 — Unblocked: raw export available
 
-This is no longer just a list of desirable extensions: **two entries are ambiguities that
-undermine conclusions already written**, not optional extras.
+The raw questionnaire export (EFS/Unipark, 502 respondents who reached the end) and the
+workbook that turned it into the thesis datasets were recovered on 2026-09-11.
 
-| # | What | Missing data | Priority |
-|---|---|---|---|
-| **3.6** | **Coding of `man_check_brand`** — which slide-6 box does it derive from, given that the brand manipulation changed three elements (icon, app name, developer name) but the boxes are separate? | Item-level slide-6 responses | **Blocking** — without it the §3.3 subgroup is not comparable across focal variables |
-| **3.7** | **Reverse coding of the involvement scales** — `inv_app` has one reverse-polarity item, `inv_cat` four pairs out of eight. Applied before averaging? | Scale items | **Blocking** — if not applied, all moderations are biased towards zero and §4.2 must be rewritten |
-| 3.1 | Heterogeneity by age, gender, occupation, education | The demographics are described in §3.1.2 of the thesis but **appear in none of the 11 published CSVs** | High |
-| 3.2 | Reliability and validity of the involvement scales (Cronbach's α, CFA) | Only the mean scores are shared, not the items | High |
-| 3.3 | Response quality (straight-lining, completion times) | Timestamps and per-item response patterns | Medium |
-| 3.4 | Analysis of the 54 respondents who dropped out | Incomplete records (545 started − 491 completed) | Medium |
-| 3.5 | Updating the market context (Appendix C) | A fresh survey of the scanner-app segment on the Play Store | Low for the review, **high for the blog post** |
-| 3.8 | Reconstructing the 18 mean-imputed scores (§2.4 of the review) | Scale items | Low — negligible numerical impact |
+**Privacy rule.** The export contains paradata — browser strings, session ids, timestamps —
+and must never enter this repository, which is public. Scripts read it from a private path
+given in the `RAW_EXPORT` environment variable and write aggregates only; `.gitignore`
+blocks accidental copies.
 
-**Immediate action, now blocking.** Recover the raw questionnaire export (probably SoSci
-Survey, given the `lfdn` field). It unlocks 3.1–3.4 and 3.6–3.8 in one go, and without 3.6
-and 3.7 two sections of the review remain conditional.
-
-**If the export cannot be recovered:** 3.6 and 3.7 become permanent declared limitations,
-§3.3 must be downgraded further to an illustration, and §4.2 must carry the explicit
-reservation that the moderations may be attenuated by a scale-construction error rather
-than genuinely absent.
+| # | What | Status |
+|---|---|---|
+| **3.6** | Coding of the slide-6 checks | **Resolved** — brand = any of 3 boxes, reputation = either of 2, popularity = 1. Substantively correct; rates not comparable across focal variables (review §3.3) |
+| **3.7** | Reverse coding of the involvement scales | **Resolved** — applied correctly (review §4.2) |
+| 3.8 | The 18 mean-imputed scores | **Resolved** — exactly the respondents who skipped an item; mechanism documented (review §2.4). Re-estimating without imputation is optional, given the negligible impact |
+| 3.9 | The 11 completed respondents excluded from the thesis | **Closed** — 10 were never shown a whole block (all missed the involvement pages, one also the app screens). The author recalls the exclusions were deliberate and probably test runs, without the specific reason; the export's `tester` flag is 0 for all 502 respondents, so no test run was marked as one (review §2.4) |
+| 3.2 | Reliability and validity of the involvement scales | **Partly done** — α = 0.75 / 0.83 / 0.80. CFA still open, low priority |
+| 3.1 | Heterogeneity by age, gender, occupation, education | **Done 2026-09-12** — no moderation reaches significance (age p = 0.20, gender p = 0.49, education p = 0.16, occupation p = 0.09). With 69% students the sample cannot tell the groups apart, which is a statement about the sample, not about people (§5 of [`03-new-analyses.md`](03-new-analyses.md)) |
+| 3.3 | Response quality (speeding, straight-lining) | **Done 2026-09-12** — 33 respondents flagged (fastest 5%, or an identical answer to all eight items of a scale). Removing them moves every effect slightly up and changes nothing (§6 of [`03-new-analyses.md`](03-new-analyses.md)) |
+| 3.4 | The respondents who dropped out | **Still blocked** — the export holds only the 502 who reached the end; the 43 who stopped earlier are not in it |
+| 3.5 | Updating the market context (Appendix C) | Unchanged — needs a fresh survey of the Play Store; high priority for the blog post only |
 
 ---
 
@@ -280,34 +418,120 @@ criticise.
 - Declare explicitly that the 2026 analysis was carried out with AI assistance, if that is
   the site's standard.
 
-**Precondition.** Close at least 2.1, 2.3 and 2.5 of Phase 2: without the specification
-curve, point 2 of the structure is an assertion; with it, it is a demonstration.
+**Precondition.** Close Step 2A (tasks 2.3, 2.5 and 2.4 point 1). Without the
+specification curve, point 2 of the structure is an assertion; with it, it is a
+demonstration. Task 2.1 is not a precondition: no section of the post uses it.
 
 ---
 
 ## 5. Environment and dependencies
 
-R 4.2.2 (`C:\Program Files\R\R-4.2.2`).
+R 4.6.1, since 2026-09-12. R 4.2.2 is still on the machine but its library was rebuilt for
+4.6.1 and no longer loads, so 4.6.1 is the only working interpreter.
 
 | Package | Status | Use |
 |---|---|---|
-| `tidyverse`, `caret` | present | required by the original script |
-| `lme4` | present | mixed-effects models |
-| `emmeans` | installed in this session | contrasts and marginal means |
-| `ordinal` | present | mixed ordinal logit (`clmm`) |
-| `clubSandwich`, `sandwich`, `lmtest` | installed in this session | cluster-robust standard errors |
-| `car` | present | Type II/III ANOVA on mixed models |
-| `lmerTest` | **not installable** | fails to compile from source on R 4.2.2 |
-| `brms` | absent | needed for 2.6; requires a Stan toolchain |
+| `lme4`, `lmerTest` | present | mixed-effects models, Satterthwaite degrees of freedom |
+| `emmeans` | present | contrasts and marginal means |
+| `ordinal` | present | mixed and fixed-effect ordinal logit (`clmm`, `clm`) |
+| `clubSandwich`, `sandwich`, `lmtest` | present | cluster-robust standard errors |
+| `car`, `ggplot2` | present | Type II/III ANOVA, figures |
+| `tidyverse`, `caret` | only needed by the original 2023 script | not used by the review scripts |
+| `brms` | absent | would be needed for 2.6; requires a Stan toolchain |
 
-**Technical debt.** Upgrading R to ≥ 4.3 would unlock `lmerTest` (Satterthwaite df on mixed
-models) and make `brms` practical. In the meantime the mixed-model df come from `emmeans`
-with the Kenward-Roger method and are cross-checked against CR2 cluster-robust SEs, which is
-sufficient for the current conclusions.
+**Regression check after the upgrade.** The whole pipeline was re-run on 4.6.1: every
+versioned table agrees with the 4.2.2 output to twelve significant digits and the derived
+datasets are bit-identical, so no number in either document moved.
+
+**Technical debt cleared.** `lmerTest` was listed here as not installable until 2026-09-12;
+it is now available, so Satterthwaite degrees of freedom no longer depend on the
+Kenward-Roger fallback in `emmeans`. Only `brms` (task 2.6) is still missing.
 
 ---
 
 ## 6. Change log
+
+### 2026-09-12 — Phase 2 and Phase 3 completed
+
+All remaining analyses were run and written up in a new document,
+[`03-new-analyses.md`](03-new-analyses.md), which explains each model from first principles rather than
+assuming the reader knows it. New scripts: `10_sequence_effects.R`, `11_heterogeneity.R`,
+`12_response_scale.R`, `13_demographics_quality.R`, `14_posterior_probabilities.R`.
+
+- **2.1 sequence effects — closed.** Contrast in direction everywhere, established nowhere.
+- **2.2 heterogeneity — closed, and the pre-registered prediction was wrong.** Individual
+  sensitivity to the manipulation is real (p = 0.0058) and inversely related to baseline
+  enthusiasm (r = −0.61). The prediction of a null result stays in §2.2 as written.
+- **2.6 Bayesian — closed with the authorised fallback.** RTools is absent, so Stan cannot
+  compile; the normal approximation to the posterior was used and labelled as such.
+- **2.7 response scale — closed.** The scale is not equally spaced and it does not matter.
+- **3.1 demographics, 3.3 response quality — done.** Neither changes a conclusion.
+- **A method error of mine, corrected before publication.** The first version of the scale
+  comparison evaluated the ordinal effect at one reference respondent, which places each cue at
+  a different point of the S-shaped curve; for reputation this inflated the gap between methods
+  from 3.1 to 11.7 percentage points. Replaced by an average marginal effect over all
+  observations.
+
+Phase 4 (the blog post) is drafted in `docs/blog/`.
+
+### 2026-09-12 — Step 2A executed; R upgraded to 4.6.1
+
+**Equivalence rule fixed first.** A single SESOI could not settle the popularity question:
+every defensible anchor falls between 0.26 and 0.33 Likert points and the flip point of the
+post-comparison estimate (0.315) sits inside that band, so choosing one number would have
+chosen the answer. The band plus a three-way verdict was written into *Step 2A* before any of
+it was run.
+
+**Step 2A executed.** Tasks 2.3, 2.5 and 2.4 (point 1) are closed; results in §12 of the
+review, added in this pass. No conclusion of the review changed; what changed is how much
+weight each one can carry. New scripts: `07_specification_curve.R`, `08_equivalence.R`.
+
+**R upgraded to 4.6.1.** The 4.2.2 library had been rebuilt for 4.6.1 and stopped loading
+mid-session. The whole pipeline was re-run on 4.6.1: every versioned table agrees with the
+4.2.2 output to twelve significant digits and the derived datasets are bit-identical.
+`lmerTest`, listed here as technical debt since 2026-09-09, is now installed.
+
+**Two errors of mine, recorded because they reached the numbers.** The first convergence guard
+keyed on a statistic `clmm` does not report, discarding all sixteen ordinal fits instead of the
+one degenerate one (§12.4 of the review). And an earlier version of that guard crashed the
+whole run on a zero-length value, so the script now wraps each fit so that one unstable model
+cannot take the other 59 down with it.
+
+### 2026-09-11 — Raw export recovered: Phase 3 blockers resolved
+
+The raw EFS export and the original processing workbook (`Elaboration.xlsx`) were provided.
+Both stay outside the repository; the new script `analysis/R/09_raw_export_checks.R` reads the
+export from a private path and logs aggregates only.
+
+- **Chain verified end to end:** ITD values, manipulation levels, positions and check values
+  rebuilt from the raw answers match the published datasets for all 491 respondents.
+- **3.7 resolved:** reverse coding applied correctly; α = 0.75 / 0.83 / 0.80. The §4.2 caveat
+  of the review was replaced.
+- **3.6 resolved:** the checks count 3 (brand), 2 (reputation) and 1 (popularity) boxes.
+  Review §3.3 rewritten: the rates are not comparable across focal variables. The "p vs 50%"
+  column added in the first version of the review is flagged as meaningless for a
+  multi-select self-report.
+- **Imputation and exclusions explained:** skipped items → mean-imputed (18); blocks never
+  displayed → excluded (10 of 502 completers). One further respondent with complete data was
+  excluded for a reason the export does not record. None of this is declared in the thesis.
+- **Correction:** the review and this plan said `inv_cat` has four reverse-polarity pairs out
+  of eight. It has five.
+- Step 2A: the reporting test now covers all three focal variables.
+- `.gitignore`: guards against accidental copies of raw exports and workbooks.
+
+### 2026-09-11 — Next step defined: Step 2A
+
+Step 2A (stress-testing the three claims the post will make) defined and pre-registered
+before running any of it.
+
+- New section *Next step — Step 2A*, with specification grid, decision rules and
+  deliverables.
+- §2.5: the specification grid was mis-sized (~120) and included indefensible cells. Replaced
+  by a 24-specification main curve plus a separate 24-specification slide-6 panel.
+- §2.3, §2.4: marked as scheduled in Step 2A (for 2.4, point 1 only, reputation and
+  popularity only).
+- §4: the post's precondition no longer includes task 2.1, which no section of the post uses.
+- SESOI for the equivalence tests locked at 0.20 s.d., as proposed on 2026-09-09.
 
 ### 2026-09-09 — Whole repository translated to English
 

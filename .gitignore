@@ -25,3 +25,9 @@ Desktop.ini
 # Scratch
 scratch/
 *.tmp
+
+# Raw survey exports and processing workbooks: personal data, never versioned
+data_project_*.csv
+*.xlsx
+*.xls
+*.sav

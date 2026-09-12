@@ -1,0 +1,89 @@
+=== SPECIFICATION CURVE ===
+lmerTest available: TRUE | R: R version 4.6.1 (2026-06-24 ucrt) 
+
+  [ 1] all    cr2  inv=FALSE pos=FALSE  est=+0.176 (se 0.205) p=0.3897
+  [ 2] all    cr2  inv=FALSE pos=TRUE   est=+0.176 (se 0.205) p=0.3919
+  [ 3] all    cr2  inv=TRUE  pos=FALSE  est=+0.194 (se 0.203) p=0.3402
+  [ 4] all    cr2  inv=TRUE  pos=TRUE   est=+0.194 (se 0.204) p=0.3424
+  [ 5] all    lmm  inv=FALSE pos=FALSE  est=+0.204 (se 0.173) p=0.2385
+  [ 6] all    lmm  inv=FALSE pos=TRUE   est=+0.204 (se 0.173) p=0.2378
+  [ 7] all    lmm  inv=TRUE  pos=FALSE  est=+0.210 (se 0.172) p=0.2221
+  [ 8] all    lmm  inv=TRUE  pos=TRUE   est=+0.210 (se 0.172) p=0.2215
+  [ 9] all    clmm inv=FALSE pos=FALSE  est=+0.401 (se 0.003) p=0.0000   <- did not converge, dropped
+  [10] all    clmm inv=FALSE pos=TRUE   est=+0.407 (se 0.274) p=0.1371
+  [11] all    clmm inv=TRUE  pos=FALSE  est=+0.408 (se 0.272) p=0.1329
+  [12] all    clmm inv=TRUE  pos=TRUE   est=+0.414 (se 0.272) p=0.1282
+  [13] pos1   ols  inv=FALSE pos=FALSE  est=+1.047 (se 0.357) p=0.0035
+  [14] pos1   ols  inv=TRUE  pos=FALSE  est=+0.979 (se 0.345) p=0.0047
+  [15] pos1   clm  inv=FALSE pos=FALSE  est=+1.278 (se 0.413) p=0.0020
+  [16] pos1   clm  inv=TRUE  pos=FALSE  est=+1.284 (se 0.415) p=0.0020
+  [17] pos2   ols  inv=FALSE pos=FALSE  est=+0.174 (se 0.350) p=0.6207
+  [18] pos2   ols  inv=TRUE  pos=FALSE  est=+0.153 (se 0.349) p=0.6612
+  [19] pos2   clm  inv=FALSE pos=FALSE  est=+0.197 (se 0.399) p=0.6209
+  [20] pos2   clm  inv=TRUE  pos=FALSE  est=+0.132 (se 0.401) p=0.7419
+  [21] pos3   ols  inv=FALSE pos=FALSE  est=-0.487 (se 0.343) p=0.1565
+  [22] pos3   ols  inv=TRUE  pos=FALSE  est=-0.395 (se 0.341) p=0.2472
+  [23] pos3   clm  inv=FALSE pos=FALSE  est=-0.452 (se 0.383) p=0.2388
+  [24] pos3   clm  inv=TRUE  pos=FALSE  est=-0.367 (se 0.384) p=0.3393
+  [25] ticked cr2  inv=FALSE pos=FALSE  est=+0.180 (se 0.246) p=0.4643
+  [26] ticked cr2  inv=FALSE pos=TRUE   est=+0.184 (se 0.246) p=0.4561
+  [27] ticked cr2  inv=TRUE  pos=FALSE  est=+0.231 (se 0.242) p=0.3394
+  [28] ticked cr2  inv=TRUE  pos=TRUE   est=+0.235 (se 0.242) p=0.3327
+  [29] ticked lmm  inv=FALSE pos=FALSE  est=+0.254 (se 0.213) p=0.2349
+  [30] ticked lmm  inv=FALSE pos=TRUE   est=+0.256 (se 0.213) p=0.2286
+  [31] ticked lmm  inv=TRUE  pos=FALSE  est=+0.280 (se 0.212) p=0.1866
+  [32] ticked lmm  inv=TRUE  pos=TRUE   est=+0.283 (se 0.211) p=0.1814
+  [33] ticked clmm inv=FALSE pos=FALSE  est=+0.533 (se 0.330) p=0.1063
+  [34] ticked clmm inv=FALSE pos=TRUE   est=+0.545 (se 0.331) p=0.0998
+  [35] ticked clmm inv=TRUE  pos=FALSE  est=+0.568 (se 0.328) p=0.0840
+  [36] ticked clmm inv=TRUE  pos=TRUE   est=+0.580 (se 0.329) p=0.0785
+  [37] all3   cr2  inv=FALSE pos=FALSE  est=+0.075 (se 0.345) p=0.8274
+  [38] all3   cr2  inv=FALSE pos=TRUE   est=+0.099 (se 0.349) p=0.7763
+  [39] all3   cr2  inv=TRUE  pos=FALSE  est=+0.107 (se 0.342) p=0.7541
+  [40] all3   cr2  inv=TRUE  pos=TRUE   est=+0.131 (se 0.345) p=0.7039
+  [41] all3   lmm  inv=FALSE pos=FALSE  est=+0.060 (se 0.289) p=0.8350
+  [42] all3   lmm  inv=FALSE pos=TRUE   est=+0.090 (se 0.289) p=0.7546
+  [43] all3   lmm  inv=TRUE  pos=FALSE  est=+0.072 (se 0.289) p=0.8035
+  [44] all3   lmm  inv=TRUE  pos=TRUE   est=+0.102 (se 0.289) p=0.7239
+  [45] all3   clmm inv=FALSE pos=FALSE  est=+0.373 (se 0.477) p=0.4347
+  [46] all3   clmm inv=FALSE pos=TRUE   est=+0.430 (se 0.479) p=0.3692
+  [47] all3   clmm inv=TRUE  pos=FALSE  est=+0.390 (se 0.476) p=0.4130
+  [48] all3   clmm inv=TRUE  pos=TRUE   est=+0.447 (se 0.478) p=0.3499
+  [49] claim3 cr2  inv=FALSE pos=FALSE  est=+1.251 (se 0.438) p=0.0045
+  [50] claim3 cr2  inv=FALSE pos=TRUE   est=+1.249 (se 0.438) p=0.0046
+  [51] claim3 cr2  inv=TRUE  pos=FALSE  est=+1.149 (se 0.426) p=0.0073
+  [52] claim3 cr2  inv=TRUE  pos=TRUE   est=+1.146 (se 0.426) p=0.0075
+  [53] claim3 lmm  inv=FALSE pos=FALSE  est=+0.754 (se 0.379) p=0.0471
+fixed-effect model matrix is rank deficient so dropping 1 column / coefficient
+  [54] claim3 lmm  inv=FALSE pos=TRUE   est=+0.751 (se 0.379) p=0.0479
+  [55] claim3 lmm  inv=TRUE  pos=FALSE  est=+0.727 (se 0.378) p=0.0548
+fixed-effect model matrix is rank deficient so dropping 1 column / coefficient
+  [56] claim3 lmm  inv=TRUE  pos=TRUE   est=+0.724 (se 0.378) p=0.0558
+  [57] claim3 clmm inv=FALSE pos=FALSE  est=+1.111 (se 0.597) p=0.0626
+design is column rank deficient so dropping 1 coef
+  [58] claim3 clmm inv=FALSE pos=TRUE   est=+1.102 (se 0.597) p=0.0650
+  [59] claim3 clmm inv=TRUE  pos=FALSE  est=+1.087 (se 0.594) p=0.0670
+design is column rank deficient so dropping 1 coef
+  [60] claim3 clmm inv=TRUE  pos=TRUE   est=+1.078 (se 0.594) p=0.0695
+
+=== CONVERGENCE ===
+  specifications fitted: 60 | dropped for non-convergence: 1
+ curve           estimand sample model involvement position  estimate         se max_grad
+  main brand - reputation    all  clmm       FALSE    FALSE 0.4008268 0.00277538     7.24
+  A dropped fit keeps a sensible estimate but its standard error collapses, so it
+  would otherwise count as a spurious 'significant' specification.
+
+=== CLAIM 1: brand above reputation, main curve ===
+  specifications kept: 23 of 24 | brand above reputation at p<0.05: 4 (17.4%)
+  reputation above brand at p<0.05: 0
+  median estimate by sample:
+   all   pos1   pos2   pos3 
+ 0.204  1.163  0.163 -0.423 
+  pre-registered verdict -> KEEP: brand and reputation are indistinguishable 
+
+=== CLAIM 3: does the gap shrink once other apps have been seen? ===
+  specifications kept: 12 of 12 | significant reduction: 6 | positive sign: 12
+  pre-registered rule: wording can strengthen only if at least 9 of 12 are significant -> KEEP AS HYPOTHESIS 
+
+=== slide-6 panel (not part of the main curve) ===
+  specifications kept: 24 | brand above reputation at p<0.05: 0 (0.0%)

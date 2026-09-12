@@ -36,12 +36,15 @@ stimulus:
 | No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. |
 
 Full reasoning and figures: [`docs/01-review-of-2023-work.md`](docs/01-review-of-2023-work.md).
+Each of these conclusions was then stress-tested against criteria fixed before the tests were
+run — a specification curve over every defensible model, and equivalence tests on the null
+results. All of them survived: §12 of the review.
 
 ![Manipulation effect by focal variable, on the full sample and within the subgroup that reports using the cue](analysis/outputs/figures/fig_02_slide6_subgroup.png)
 
 Two further defects concern how the data was built, and surfaced by reading the appendices:
-the low-popularity stimulus is internally impossible, and 18 respondents have mean-imputed
-involvement scores with no documentation of the fact.
+the low-popularity stimulus is internally impossible; and 18 respondents have mean-imputed
+involvement scores while 11 who completed the survey were left out, none of it documented.
 
 ---
 
@@ -65,6 +68,7 @@ data/
 docs/
   01-review-of-2023-work.md   the review: what holds, what does not, why
   02-work-plan.md             plan for further analysis + change log
+  03-new-analyses.md          what else the data can answer, each model explained
   blog/                       drafts for the lucabontempi.com post
 ```
 
@@ -72,11 +76,11 @@ docs/
 
 ## Running the analysis
 
-**Requirements:** R ≥ 4.2 with `lme4`, `emmeans`, `ordinal`, `car`, `clubSandwich`,
-`ggplot2`.
+**Requirements:** R ≥ 4.2 (developed on 4.6.1) with `lme4`, `lmerTest`, `emmeans`,
+`ordinal`, `car`, `clubSandwich`, `ggplot2`.
 
 ```bash
-Rscript -e 'install.packages(c("lme4","emmeans","ordinal","car","clubSandwich","ggplot2"), repos="https://cloud.r-project.org")'
+Rscript -e 'install.packages(c("lme4","lmerTest","emmeans","ordinal","car","clubSandwich","ggplot2"), repos="https://cloud.r-project.org")'
 ```
 
 Scripts must be run **from the repository root**, in the order shown: `03` produces the
@@ -89,6 +93,19 @@ Rscript analysis/R/03_build_derived.R       # builds data/derived/
 Rscript analysis/R/04_corrected_inference.R # correct ANOVA + test of the ranking
 Rscript analysis/R/05_robustness.R          # slide-6 check, ordinal model, multiplicity, power
 Rscript analysis/R/06_figures.R             # figures
+Rscript analysis/R/07_specification_curve.R # every defensible specification of the ranking
+Rscript analysis/R/08_equivalence.R         # equivalence tests on the null results
+Rscript analysis/R/10_sequence_effects.R    # does what came before change what comes next?
+Rscript analysis/R/11_heterogeneity.R       # do people differ in what moves them?
+Rscript analysis/R/12_response_scale.R      # is the 1-7 scale a ruler?
+Rscript analysis/R/14_posterior_probabilities.R  # p-values restated as probabilities
+```
+
+Two scripts need a private copy of the raw questionnaire export and skip cleanly without it:
+
+```bash
+RAW_EXPORT=/path/to/export.csv Rscript analysis/R/09_raw_export_checks.R
+RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R
 ```
 
 Every script writes a complete log to `analysis/outputs/logs/`. If a number appears in a
@@ -105,6 +122,14 @@ document under `docs/`, the corresponding log contains it.
 | `04_corrected_inference.R` | correct repeated-measures ANOVA, mixed model, contrasts | the original specification does not model repeated measures, and the ranking is never tested |
 | `05_robustness.R` | checks on slide 6, ordinal scale, multiplicity, power | four checks the original work does not contain |
 | `06_figures.R` | three figures | communicating the corrected estimates |
+| `07_specification_curve.R` | the brand-vs-reputation contrast under all 24 defensible specifications | shows whether the ranking is a finding or an analytic choice |
+| `08_equivalence.R` | equivalence verdicts on the null results, plus the slide-6 reporting test | "not significant" is not the same as "no effect" |
+| `09_raw_export_checks.R` | aggregate checks on the raw survey export (optional) | verifies the chain from raw answers to the thesis datasets; needs a private copy of the export in `RAW_EXPORT`, skips cleanly without it |
+| `10_sequence_effects.R` | contrast and assimilation from the apps seen earlier | the thesis asked this on a third of the data; in long format it uses 982 observations |
+| `11_heterogeneity.R` | random slopes: do respondents differ in cue sensitivity? | an average effect is only useful if it describes people |
+| `12_response_scale.R` | cutpoints of the 1–7 scale, and whether the spacing matters | ordinary regression assumes a ruler; this tests the assumption |
+| `13_demographics_quality.R` | demographic moderation and response-quality robustness (optional) | the thesis collected demographics and never used them |
+| `14_posterior_probabilities.R` | the findings restated as probabilities | "89% likely" answers the question a reader asks; a p-value does not |
 
 ---
 
@@ -130,11 +155,15 @@ by reorganisation, verified against the source files in `02_data_audit.R`.
 ## Status
 
 - [x] **Phase 1** — replication, audit, corrected inference, robustness
-- [ ] **Phase 2** — sequence effects, between-respondent heterogeneity, equivalence testing,
-      specification curve
-- [ ] **Phase 3** — **blocked**: requires the raw questionnaire export (demographics, scale
-      items, coding of the brand check)
-- [ ] **Phase 4** — update post on lucabontempi.com
+- [x] **Phase 2, Step 2A** — the three headline claims stress-tested against a rule fixed in
+      advance; all three survive (§12 of the review)
+- [x] **Phase 2, rest** — sequence effects, respondent heterogeneity, response scale, posterior
+      probabilities ([`docs/03-new-analyses.md`](docs/03-new-analyses.md))
+- [x] **Phase 3** — raw export recovered (kept private); blocking ambiguities resolved,
+      demographics and response-quality checks done. Still open: the 43 respondents who dropped
+      out early, who are not in the export
+- [ ] **Phase 4** — update post on lucabontempi.com (draft in
+      [`docs/blog/`](docs/blog/), awaiting review)
 
 Detailed backlog with priorities and acceptance criteria:
 [`docs/02-work-plan.md`](docs/02-work-plan.md).

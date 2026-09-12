@@ -41,7 +41,7 @@ formula: y_ord ~ focal * x_f + position + inv_app + inv_dl + inv_cat +      (1 |
 data:    long
 
  link  threshold nobs logLik   AIC     niter       max.grad cond.H 
- logit flexible  1473 -2496.39 5026.78 2532(12525) 2.13e-03 1.5e+02
+ logit flexible  1473 -2496.39 5026.78 2567(12700) 1.92e-03 1.5e+02
 
 Random effects:
  Groups Name        Variance Std.Dev.
@@ -50,27 +50,27 @@ Number of groups:  subj_f 491
 
 Coefficients:
                  Estimate Std. Error z value Pr(>|z|)    
-focalrep         -1.18901    0.18396  -6.463 1.02e-10 ***
-focalpop         -0.06508    0.18097  -0.360  0.71911    
-x_fhigh           1.71154    0.19915   8.594  < 2e-16 ***
-positionsecond   -0.18442    0.11851  -1.556  0.11969    
-positionthird    -0.29510    0.11935  -2.473  0.01342 *  
+focalrep         -1.18899    0.18398  -6.462 1.03e-10 ***
+focalpop         -0.06508    0.18099  -0.360  0.71917    
+x_fhigh           1.71153    0.19918   8.593  < 2e-16 ***
+positionsecond   -0.18441    0.11852  -1.556  0.11971    
+positionthird    -0.29509    0.11935  -2.472  0.01342 *  
 inv_app           0.32739    0.07916   4.136 3.54e-05 ***
-inv_dl           -0.13325    0.06796  -1.961  0.04993 *  
+inv_dl           -0.13324    0.06796  -1.960  0.04994 *  
 inv_cat           0.21211    0.07303   2.904  0.00368 ** 
-focalrep:x_fhigh -0.41415    0.27223  -1.521  0.12817    
-focalpop:x_fhigh -1.33779    0.27410  -4.881 1.06e-06 ***
+focalrep:x_fhigh -0.41416    0.27226  -1.521  0.12822    
+focalpop:x_fhigh -1.33780    0.27414  -4.880 1.06e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Threshold coefficients:
     Estimate Std. Error z value
-1|2  -4.4433     0.2351 -18.897
-2|3  -2.6760     0.1907 -14.031
-3|4  -1.6864     0.1787  -9.436
+1|2  -4.4433     0.2352 -18.895
+2|3  -2.6760     0.1907 -14.029
+3|4  -1.6864     0.1787  -9.435
 4|5  -0.2988     0.1714  -1.743
-5|6   1.1379     0.1747   6.514
-6|7   3.0653     0.2000  15.323
+5|6   1.1379     0.1747   6.513
+6|7   3.0653     0.2001  15.322
 
 Odds ratios of the manipulation effect, by focal variable:
   brand   log-odds = +1.7115   OR = 5.537
@@ -131,6 +131,9 @@ evidence is not evidence of absence: these results are inconclusive, not null.
 The thesis reads the moderations off 9 separate regressions. Here they are
 estimated in a single model with the repeated-measures structure.
 
+Registered S3 method overwritten by 'car':
+  method           from
+  na.action.merMod lme4
 Analysis of Deviance Table (Type III Wald chisquare tests)
 
 Response: y

@@ -150,8 +150,8 @@ Linear mixed model fit by maximum likelihood  ['lmerMod']
 Formula: y ~ focal * x_f + position + inv_app + inv_dl + inv_cat + (1 |      subj_f)
    Data: long
 
-     AIC      BIC   logLik deviance df.resid 
-  5266.4   5335.2  -2620.2   5240.4     1460 
+      AIC       BIC    logLik -2*log(L)  df.resid 
+   5266.4    5335.2   -2620.2    5240.4      1460 
 
 Scaled residuals: 
      Min       1Q   Median       3Q      Max 
@@ -195,9 +195,9 @@ Data: long
 Models:
 m_pool0: y ~ focal + x_f + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
 m_pool: y ~ focal * x_f + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
-        npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
-m_pool0   11 5287.4 5345.7 -2632.7   5265.4                         
-m_pool    13 5266.4 5335.2 -2620.2   5240.4 25.021  2  3.687e-06 ***
+        npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)    
+m_pool0   11 5287.4 5345.7 -2632.7    5265.4                         
+m_pool    13 5266.4 5335.2 -2620.2    5240.4 25.021  2  3.687e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
