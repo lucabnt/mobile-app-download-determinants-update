@@ -31,3 +31,8 @@ data_project_*.csv
 *.xlsx
 *.xls
 *.sav
+
+# Blog drafts: written here, published on the site, not versioned. An unreviewed
+# draft carrying the author's name should not become public as a side effect of
+# publishing the analysis.
+docs/blog/

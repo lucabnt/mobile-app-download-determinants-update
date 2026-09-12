@@ -552,7 +552,7 @@ assuming the reader knows it. New scripts: `10_sequence_effects.R`, `11_heteroge
   from 3.1 to 11.7 percentage points. Replaced by an average marginal effect over all
   observations.
 
-Phase 4 (the blog post) is drafted in `docs/blog/`.
+Phase 4 (the blog post) is drafted, but kept out of the repository on purpose: see §7.
 
 ### 2026-09-12 — Step 2A executed; R upgraded to 4.6.1
 
@@ -762,3 +762,4 @@ rather than discovered. All were reviewed and approved on 2026-09-12.
 | Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result |
 | Figures | Marked with placeholders rather than embedded, so that the final selection is a human choice |
 | The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |
+| Versioning | The drafts are **not** committed: `docs/blog/` is in `.gitignore`. The post belongs on the site; an unreviewed draft carrying the author's name should not become public merely because the analysis repository is |

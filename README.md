@@ -69,7 +69,6 @@ docs/
   01-review-of-2023-work.md   the review: what holds, what does not, why
   02-work-plan.md             plan for further analysis + change log
   03-new-analyses.md          what else the data can answer, each model explained
-  blog/                       drafts for the lucabontempi.com post
 ```
 
 ---
@@ -170,8 +169,8 @@ by reorganisation, verified against the source files in `02_data_audit.R`.
 - [x] **Phase 3** — raw export recovered (kept private); blocking ambiguities resolved,
       demographics and response-quality checks done. Still open: the 43 respondents who dropped
       out early, who are not in the export
-- [ ] **Phase 4** — update post on lucabontempi.com (draft in
-      [`docs/blog/`](docs/blog/), awaiting review)
+- [ ] **Phase 4** — update post on lucabontempi.com. The draft is written but deliberately
+      not versioned here: it belongs on the site, not in the analysis repository
 
 Detailed backlog with priorities and acceptance criteria:
 [`docs/02-work-plan.md`](docs/02-work-plan.md).
