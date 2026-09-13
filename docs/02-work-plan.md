@@ -408,15 +408,19 @@ blocks accidental copies.
 
 ---
 
-## 4. Phase 4 — Blog post for lucabontempi.com
+## 4. Phase 4 — Blog post for lucabontempi.com **[published]**
 
-**Destination.** An update to the existing post at
-[`lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/`](https://lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/),
-or a new post linking to it.
+**Destination.** A new post at [`lucabontempi.com/blog/reopening-my-thesis`](https://lucabontempi.com/blog/reopening-my-thesis), linking to
+the 2023 one at
+[`lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/`](https://lucabontempi.com/blog/determinants_of_download_on_mobile_app_stores/).
 
 **Angle.** Not "here is my thesis", but **"I reopened my three-year-old thesis and found
 three of my own mistakes"**. It is the most defensible framing and the most readable:
 credibility comes from self-correction, not from defending the result.
+
+**Published title.** *I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything* — the
+AI angle, kept marginal in the body, carries the headline. The body's own framing is
+unchanged: the mistakes are the subject, the reviewer is the hook.
 
 **Proposed structure.**
 
@@ -820,8 +824,8 @@ rather than discovered. All were reviewed and approved on 2026-09-12.
 | Language | English, matching the thesis and the original post |
 | Spelling | Oxford convention, as the thesis uses it: *-ize* verbs with *-our* nouns (randomized, behaviour) |
 | Register | Plainer and shorter than the thesis, but the same voice: few contractions, no jargon left unexplained |
-| Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result |
+| Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result. The published title (*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*) leads with the reviewer instead; the body was left as it is |
 | Figures | Embedded as relative links into `analysis/outputs/figures/`: six in the body, three marked optional in an HTML comment so they can be dropped without hunting for them |
 | PDF render | `pandoc` with `xelatex`, command in `docs/blog/README.md`. The images resolve through `--resource-path=docs/blog`, so the post keeps working both as a file in the repository and as a rendered document |
 | The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |
-| Versioning | The drafts are **not** committed: `docs/blog/` is in `.gitignore`. The post belongs on the site; an unreviewed draft carrying the author's name should not become public merely because the analysis repository is |
+| Versioning | The drafts are **not** committed: `docs/blog/` is in `.gitignore`. The post lives at its own URL (https://lucabontempi.com/blog/reopening-my-thesis); a draft carrying the author's name should not become public merely because the analysis repository is |

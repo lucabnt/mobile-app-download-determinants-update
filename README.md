@@ -9,6 +9,10 @@ This repository holds only the new work. The 2023 material is **referenced, not
 duplicated**: the sole exception is the 11 CSV datasets in
 [`original/data/`](original/data/), which the scripts read directly.
 
+**Read the result first:** the review is written up for a general audience as
+[*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*](https://lucabontempi.com/blog/reopening-my-thesis).
+This repository is the evidence behind it.
+
 **Original work:**
 [github.com/lucabnt/mobile-app-download-determinants](https://github.com/lucabnt/mobile-app-download-determinants)
 · published at
@@ -171,8 +175,10 @@ by reorganisation, verified against the source files in `02_data_audit.R`.
 - [x] **Phase 3** — raw export recovered (kept private); blocking ambiguities resolved,
       demographics and response-quality checks done. Still open: the 43 respondents who dropped
       out early, who are not in the export
-- [ ] **Phase 4** — update post on lucabontempi.com. The draft is written but deliberately
-      not versioned here: it belongs on the site, not in the analysis repository
+- [x] **Phase 4** — the update is published on lucabontempi.com:
+      [*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*](https://lucabontempi.com/blog/reopening-my-thesis).
+      Its draft is deliberately not versioned here: the post belongs on the site, the evidence
+      belongs in this repository
 
 Detailed backlog with priorities and acceptance criteria:
 [`docs/02-work-plan.md`](docs/02-work-plan.md).
@@ -181,13 +187,23 @@ Detailed backlog with priorities and acceptance criteria:
 
 ## Citation
 
+**To point a reader at the review, link the post rather than this repository.** It states
+every finding in plain language, carries the figures, and links back here for the evidence:
+
+> Bontempi, L. (2026). *I Asked an AI to Review My Thesis. It Found Nothing New, Then Found
+> Everything*. https://lucabontempi.com/blog/reopening-my-thesis
+
+To cite the analysis itself — the code, the logs and the decision rules fixed before the tests
+were run — cite the repository and the commit date:
+
+> Bontempi, L. (2026). *Determinants of Download on Mobile App Stores — review and extension*.
+> GitHub: lucabnt/mobile-app-download-determinants-update.
+
 For the original work:
 
 > Bontempi, L. (2023). *Determinants of Download on Mobile App Stores — An Empirical
 > Analysis*. Master's thesis, Chair of Marketing, Eberhard Karls Universität Tübingen /
 > Università di Pavia.
-
-For the review, cite this repository and the commit date.
 
 ---
 
