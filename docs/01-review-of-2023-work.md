@@ -85,6 +85,21 @@ Replicated focal coefficients:
 - **Design structure.** 491 respondents × 3 measures = 1,473 observations. Each subject
   sees each focal variable exactly once and each position exactly once: a Latin square,
   correctly randomised (no duplicates).
+- **One version per cue per respondent.** Each focal variable exists as **two** screenshots,
+  a strong and a weak one (Appendix A: Fig. A.1 reputation, A.2 popularity, A.3 brand — six
+  stimuli in all), and each respondent is shown exactly **one** of the two. Verified on the
+  data: all 1,473 subject × cue pairs carry a single level of `x`, so no respondent ever sees
+  both versions of the same cue. The split is 256/235 high/low for brand, 238/253 for
+  reputation, 247/244 for popularity, and all eight combinations of the three levels occur
+  across respondents (48 to 70 each). The thesis states the rule in §3.1: the order of the
+  three slides is random, and so is *"which one out of the two screenshots corresponding to
+  values of a variable"* is shown.
+- **What follows from it.** The manipulation is **within subject across cues and between
+  subjects within a cue**. Every effect of `x` reported anywhere — in the thesis and in this
+  review — is therefore a comparison between different people, and the repeated measures buy
+  precision on the person, not a high-vs-low contrast inside the same person. This is the
+  structural reason why the interactions between focal variables are underpowered (§4.3) and
+  why a within-person perception check was never available (§3.3).
 - **Cross-file consistency.** Merging on `lfdn` between the model files and the ANOVA file
   yields 0 mismatches on `y`, 0 on `x` and 0 on `comp` for all three focal variables.
 - **Subsamples.** The M1 (n = 1) and M2 (n = 3) sample sizes match exactly those expected
@@ -211,8 +226,9 @@ observation:
 | Respondent fixed effects (within) | 1.097 | 0.879 | 0.294 |
 | **Outcome centred by respondent only** | **0.723** | **0.565** | **0.191** |
 
-(Same fixed part in all four, without the involvement controls, so that the only difference
-is how respondents are handled.) The three legitimate estimators bracket each other, as they
+(Same fixed part in all four, without the involvement controls, so that the only difference is
+how respondents are handled. The within estimator is identified because the level of `x` varies
+across a respondent's three cues, not because anyone saw a cue twice: see §2.2.) The three legitimate estimators bracket each other, as they
 should. Centring the outcome by respondent attenuates every effect by about a third — 34%,
 36% and 35% against the within estimate. It is a trap the thesis did not fall into, because
 it centred on the cue, which its models control for, and not on the respondent.

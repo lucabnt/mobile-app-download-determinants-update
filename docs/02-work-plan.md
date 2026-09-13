@@ -488,6 +488,24 @@ checkable.
 
 ## 6. Change log
 
+### 2026-09-13 — The design restated explicitly
+
+**Added**
+
+- §2.2 of the review now states, and verifies on the data, what was implicit everywhere: each
+  focal variable exists in two versions, strong and weak, and each respondent sees exactly one
+  of the two. All 1,473 subject × cue pairs carry a single level of `x`; the high/low split is
+  256/235 (brand), 238/253 (reputation), 247/244 (popularity); all eight combinations of the
+  three levels occur.
+- The consequence is now written down rather than assumed: the manipulation is within subject
+  across cues and between subjects within a cue, so every effect of `x` is a comparison
+  between different people. It is the structural reason behind the underpowered interactions
+  (§4.3) and behind the absence of any within-person perception check (§3.3).
+- The same clarification was added to the opening of the blog post, where a reader could
+  otherwise assume respondents saw both versions of an element.
+
+---
+
 ### 2026-09-12 — The mean-centred ITD, assessed
 
 **Added**
