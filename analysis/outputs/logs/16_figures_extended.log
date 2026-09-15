@@ -15,12 +15,11 @@ Messaggio di avvertimento:
   written: fig_10_sequence.png 
 `height` was translated to `width`.
   written: fig_11_quality.png 
-`height` was translated to `width`.
-  written: fig_12_demographics.png 
+  skipped fig_12: RAW_EXPORT not set
 
 figures now in F:/GitHub/mobile-app-download-determinants-update/analysis/outputs/figures :
  [1] "fig_01_focal_effects.png"       "fig_02_slide6_subgroup.png"     "fig_03_comparison.png"         
  [4] "fig_04_specification_curve.png" "fig_05_pooling_gain.png"        "fig_06_by_position.png"        
  [7] "fig_07_equivalence.png"         "fig_08_heterogeneity.png"       "fig_09_scale_cutpoints.png"    
 [10] "fig_10_sequence.png"            "fig_11_quality.png"             "fig_12_demographics.png"       
-[13] "fig_13_posterior.png"          
+[13] "fig_13_posterior.png"           "fig_14_centring.png"           

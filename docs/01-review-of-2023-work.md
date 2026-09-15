@@ -25,8 +25,8 @@ defects are substantive and change the conclusions.
 
 | # | Problem | Effect on the conclusions |
 |---|---|---|
-| **A** | The repeated-measures ANOVA does not model repeated measures (`Error(lfdn)` with `lfdn` an integer) | The three-way interaction reported as significant **disappears** under the correct specification (F = 0.64, p = 0.63) |
-| **B** | The brand > reputation > popularity ranking is inferred by eyeballing coefficients estimated on different subsamples, with no test of the difference | Under a formal test **brand and reputation are indistinguishable** (p = 0.22). The defensible hierarchy is brand ≈ reputation ≫ popularity |
+| **A** | The repeated-measures ANOVA does not model repeated measures (`Error(lfdn)` with `lfdn` an integer) | The three-way interaction reported as significant is **not confirmed**: χ²(4) = 6.01, p = 0.20 on the mixed model. The split-plot ANOVA divides that same term between its two strata (p = 0.056 between respondents, p = 0.63 within), so neither of those two numbers is the test on its own — §3.1 |
+| **B** | The brand > reputation > popularity ranking is inferred by eyeballing coefficients estimated on different subsamples, with no test of the difference | It depends on the quantity. Averaged over the three judgements **brand and reputation are indistinguishable** (p = 0.22). On the first app shown — the uncontaminated judgement the design was built to measure — **brand does lead** (+0.74, p = 0.037 Holm; +1.28 log-odds, p = 0.004 in the thesis's own sample). The claim needed a scope, not a burial — §3.2 |
 | **C** | The "manipulation check" is reported and, by the author's deliberate choice, not used — but it is not a perception check at all, it is a post-treatment self-report | The thesis's most-quoted result, "popularity is surprisingly ineffective", **is fragile**: among respondents who say they looked at downloads the effect goes from +0.22 (p = 0.075) to +0.51 (p = 0.002). This does not overturn it (§3.3), but it removes the null's solidity |
 
 Three further problems concern the calibration of the evidence rather than its direction:
@@ -287,6 +287,16 @@ The three-way interaction, which the thesis text presents as *"further foundatio
 subsequent analyses"*, **does not survive**. The mixed model confirms this
 (χ² = 6.01, 4 df, p = 0.198).
 
+A caution on that table, added 2026-09-15. Because the level of a cue is assigned **between**
+respondents (§2.2), `aov` with `Error(subject)` cannot place the terms involving *x* in a
+single stratum: it splits them, and prints the three-way interaction twice — F = 2.33
+(p = 0.056) between respondents and F = 0.64 (p = 0.633) within. The column above shows the
+*Within* half. The test that uses both halves is the mixed-model one, p = 0.198, and that is
+the number this review should quote; earlier versions quoted 0.633 alone, which reports the
+half that vanishes and omits the half that does not. The conclusion is unchanged — the
+interaction is not significant and the 2023 claim stays withdrawn — but it does not vanish as
+completely as that figure suggested.
+
 **A related transcription error.** The text reports *F*(2, 4) = 42.187 and *F*(1, 4) =
 60.841. The denominator degrees of freedom are not 4 but 1,454 (the "4" appears to have
 been taken from the *Df* column of another row of the `aov` table). The *F* values and
@@ -322,11 +332,63 @@ The effects estimated on the whole sample:
 **Brand and reputation are not statistically distinguishable.** The thesis's three-step
 hierarchy is really a two-step one: {brand, reputation} ≫ popularity.
 
-That the brand's apparent advantage was largely an artefact of fragmenting the sample is
-visible in the contrast between M1's reputation estimate (0.4986, p < 0.10, on 149
-observations) and the pooled estimate (0.842, p < 0.001, on 491 reputation measures). The
-reputation coefficient **rises by two thirds** once it is estimated using all the available information
-rather than a third of it.
+What the fragmentation cost is visible in the reputation estimate, and it decomposes into two
+halves. M1 puts it at 0.4986 (p < 0.10) on 149 observations; one model on all the data puts the
+**same quantity** — the first app seen — at 0.688, and the average across the three judgements at
+0.842. So of the two-thirds rise, about half is precision recovered on the question the thesis
+was asking, and half is the change of question. Only the first half is a cost of the split
+sample; the second is the difference between two estimands, and is discussed below.
+
+**The scope of the claim — a correction to this section, 2026-09-15.** The author's reason
+for restricting Model 1 to the first app shown was recorded after this section was written:
+the first judgement is the only one **not conditioned by the apps seen before it**. That is a
+design decision protecting an estimand, not an accident of sampling, and it changes what this
+section can fairly claim. [`18_first_exposure.R`](../analysis/R/18_first_exposure.R) works it
+through.
+
+Three points, in order.
+
+1. **The threat is plausible and partly visible.** On the 982 later measurements, the average
+   level seen earlier pulls the current rating *down* — a contrast effect of −0.18 on its own
+   (p = 0.15) and −0.34 with the interaction in the model (p = 0.036); see §2 of
+   [`03-new-analyses.md`](03-new-analyses.md). A design choice does
+   not need a significant threat to be justified; it needs a plausible one, and removing it
+   costs only precision.
+2. **On the quantity the design targeted, the ranking holds.** Tested rather than eyeballed,
+   at first exposure:
+
+   | Contrast, first app shown | Δβ | p (Holm) |
+   |---|---|---|
+   | brand − reputation | **+0.738** | **0.037** |
+   | brand − popularity | **+0.966** | **0.003** |
+   | reputation − popularity | +0.228 | 0.44 |
+
+   From the thesis's own sample of 491 first measurements the gap is larger: +0.979
+   (p = 0.0094), and +1.284 log-odds (p = 0.0039) in the ordinal version. The specification
+   curve agrees and says where: **all four specifications that put brand significantly ahead
+   are first-position ones** (§12.1).
+3. **What was wrong was the fragmentation, not the restriction.** Nine regressions on disjoint
+   subsamples share no parameters, so no contrast between cues can be tested — and none was.
+   One model on all 1,473 answers, with the cue interacted with position, returns the same
+   first-exposure estimate (+0.738 against +0.979, well within one standard error) *and*
+   supplies the test, *and* says what happens afterwards.
+
+So the honest form of finding (B) is a statement with a scope attached. **At first exposure
+brand leads reputation; averaged over the three judgements the two are indistinguishable.**
+The thesis stated the first and presented it as the second — *"generally the most decisive
+element"* — and the first version of this review did the reverse, reporting the average as if
+it refuted the claim. Neither is right on its own.
+
+Two things follow that the 2023 work did not have:
+
+- **M3's β = 1.5028 is not an overall effect.** With `comp_i` and its interaction in the
+  model, that coefficient is the effect at `comp_i` = 0 — first exposure again — not the
+  effect "independently from *n*", as the text reads it.
+- **The M1-to-M2 reversal is still not established.** The interaction that would license
+  "the ranking changes with position" is not significant: χ²(4) = 6.07, p = 0.19 by position,
+  χ²(2) = 4.39, p = 0.11 for first-versus-later. The pattern in the point estimates is
+  suggestive and it is reported as such throughout this review (§6, §12.1), but the ordering
+  at first exposure is the part that the data establishes.
 
 ### 3.3 (C) The manipulation check is reported but not used — and it is not a manipulation check
 
@@ -566,8 +628,11 @@ single model instead of M1 vs M2:
 | Popularity | **0.462 (p = 0.019)** | 0.059 (p = 0.707) |
 
 It is not a reversal: it is a **convergence**. Brand loses a third of its strength
-(1.41 → 0.90), reputation gains a third (0.69 → 0.91), and they end up overlapping. Neither
-overtakes the other in a statistically distinguishable way.
+(1.41 → 0.90), reputation gains a third (0.69 → 0.91), and they end up overlapping. In the
+first column the gap is real — brand leads reputation by +0.74 (p = 0.037 Holm, §3.2) — and in
+the second it is gone: 0.902 against 0.912. What the data does not establish is that the two
+columns differ from each other (the interaction that would say so: p = 0.11), so the movement
+between them is a pattern worth stating, not a demonstrated reversal.
 
 And there is a finding the thesis does not mention at all: **popularity works when the user
 has no alternatives in front of them** (0.462, p = 0.019). It drops to 0.06 once comparison
@@ -656,7 +721,12 @@ in question:
    vary does vary, and the other attributes are held at consistent intermediate levels
    (rating 4.2; downloads 1M+). The one exception is the Fig. A.2 defect (§3.3).
 6. **The limitations are stated honestly** in §3.5, including the main design defect.
-7. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
+7. **The restriction of Model 1 to the first app shown was motivated**, and the estimand it
+   protects — a judgement not conditioned by earlier apps — is the right one for the thesis's
+   question. On that quantity the headline ranking holds under every specification tried
+   (§3.2). What does not follow from the estimand is the fragmentation into nine regressions:
+   one model returns the same quantity and can also test it.
+8. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
    Figure 3.1 changes no estimate and could have been used throughout without consequence
    (§2.5); the involvement measures are centred as they should be; the manipulation check was
    collected and deliberately not used, which was the right decision given what it measures
@@ -676,8 +746,9 @@ For a possible erratum or republication:
 | Location | Current text | Correction |
 |---|---|---|
 | §3.2, ANOVA | *F*(2, 4) = 42.187; *F*(1, 4) = 60.841; *F*(2, 4) = 2.369 | Denominator df = 1,454 |
-| §3.2, ANOVA | Three-way interaction significant (*F*(4) = 2.681, p < 0.05) | Not significant under correct repeated measures (p = 0.63) |
-| §3.2, Abstract | *"developer's brand is generally the most decisive element"* | Brand and reputation indistinguishable; both ≫ popularity |
+| §3.2, ANOVA | Three-way interaction significant (*F*(4) = 2.681, p < 0.05) | Not significant once repeated measures are specified correctly: χ²(4) = 6.01, p = 0.20 |
+| §3.2, Abstract | *"developer's brand is generally the most decisive element"* | True **for the first app shown**, which is what M1 measures (+0.74, p = 0.037); not true as a general statement, where brand and reputation are indistinguishable (p = 0.22). Add the scope |
+| §3.2, M3 | *"when accounting for all the observations (independently from n), the developer's brand was the best predictor (β = 1.5028)"* | With `comp_i` and its interaction in the model that coefficient is the effect at `comp_i` = 0, i.e. first exposure — not an effect independent of *n* |
 | §3.2, Abstract | *"popularity [...] unexpectedly ineffective [...] across all models"* | Not a solid null: it vanishes among those who say they looked at downloads, and the low-popularity stimulus is internally impossible. Present as indeterminate, not as an absent effect |
 | §3.2 | *"reversal between brand and reputation"* | Convergence, not reversal |
 | §3.3 | Download-involvement moderation on reputation | Does not replicate |
@@ -742,7 +813,7 @@ of whether slide 6 is itself moved by the treatment. Scripts:
 [`07_specification_curve.R`](../analysis/R/07_specification_curve.R) and
 [`08_equivalence.R`](../analysis/R/08_equivalence.R).
 
-### 12.1 Brand and reputation are indistinguishable — **kept**
+### 12.1 Brand and reputation are indistinguishable — **kept, with the scope of §3.2**
 
 Every defensible way of estimating the brand-minus-reputation gap was run: 24 specifications
 crossing sample (all 1,473 observations, and each presentation position on its own), model
@@ -756,7 +827,10 @@ off). One ordinal fit was dropped for non-convergence (§12.4), leaving 23.
 | Reputation ahead at p < 0.05 | 0 |
 | Pre-registered rule | below 25% → keep "indistinguishable" |
 
-The rule was fixed before the numbers existed and it returns **keep**: §3.2 stands as written.
+The rule was fixed before the numbers existed and it returns **keep** for the estimand it was
+written about — the average across positions. It does not license dropping the scope: see the
+correction at the end of §3.2, where the same four specifications are read as evidence *for*
+the first-exposure ranking rather than against the average one.
 
 The median estimate by sample, however, shows that the average hides an ordered pattern:
 

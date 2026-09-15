@@ -425,9 +425,11 @@ unchanged: the mistakes are the subject, the reviewer is the hook.
 **Proposed structure.**
 
 1. Context: what the thesis asked, and why the question is still open in 2026.
-2. The result that flattens: brand and reputation are indistinguishable, and the three-step
-   hierarchy had never been tested. Figure 1. **This is the strong piece, not popularity:**
-   it is clean, robust and entirely demonstrable.
+2. The result that flattens: the three-step hierarchy had never been tested, and what it
+   holds for is narrower than the thesis said — brand leads reputation on the first app
+   shown (+0.74, p = 0.037) and not on the average across the three judgements (p = 0.22).
+   Figure 1. **This is the strong piece, not popularity:** it is clean, robust and entirely
+   demonstrable.
 3. The result that dissolves: popularity. Not "it was ineffective and turns out to be
    effective", but "it cannot be determined" — the low-popularity stimulus showed 10K+
    downloads with 84K reviews, and the null vanishes among those who say they looked at that
@@ -491,6 +493,44 @@ checkable.
 ---
 
 ## 6. Change log
+
+### 2026-09-15 — The first-exposure estimand: a correction to finding (B)
+
+The author supplied the reason behind Model 1's restriction to the first app shown: that
+judgement is the only one not conditioned by the apps seen before it. The restriction was
+protecting an estimand. `analysis/R/18_first_exposure.R` works through what follows.
+
+**Corrected**
+
+- **Finding (B) was stated without its scope, and so was its refutation.** Tested on the
+  quantity the design targeted — the first app shown — brand *does* lead reputation: +0.738
+  (p = 0.037 Holm) from the pooled model, +0.979 (p = 0.0094) from the thesis's own 491 first
+  measurements, +1.284 log-odds (p = 0.0039) in the ordinal version. Averaged over the three
+  judgements the two remain indistinguishable (p = 0.22). Both statements are true of
+  different quantities; the review had reported only the second, and the thesis only the
+  first. §3.2 now carries the correction, §1 row B the scope, §9 a point 7 recognising that
+  the restriction was motivated.
+- **The three-way interaction p-value was quoted from half of the test.** Because the cue
+  level is assigned between respondents, `aov` with `Error(subject)` splits that term across
+  strata and prints it twice: p = 0.056 between, p = 0.63 within. The review, the README and
+  the summary tables quoted 0.63 alone. The combined test is the mixed-model one,
+  χ²(4) = 6.01, p = 0.198, and that is now the number everywhere. The conclusion — the
+  interaction is not significant and the 2023 claim stays withdrawn — is unchanged.
+- **§6's "neither overtakes the other" was too flat.** It is true after comparison (0.902 vs
+  0.912) and false before it (+0.74, p = 0.037). What remains unestablished is that the two
+  columns differ from each other (p = 0.11).
+
+**Unchanged**
+
+- The fragmentation criticism, in a narrower and more specific form: the estimand did not
+  require nine disjoint regressions, and those nine make any contrast between cues
+  untestable. One model with a position interaction returns the same first-exposure estimate
+  and supplies the test.
+- The specification curve verdict. Its rule was written about the average across positions and
+  returns "keep" for that quantity; the four significant cells are now read as evidence *for*
+  the first-exposure ranking rather than as a corner of the curve.
+
+---
 
 ### 2026-09-13 — The design restated explicitly
 
@@ -780,8 +820,8 @@ history rewrite with a force-push on an already-published branch — deliberatel
 
 | Original conclusion | Status after the review |
 |---|---|
-| Three-way *i* × *x* × *n* interaction significant | **Withdrawn** — p = 0.63 under correct repeated measures |
-| Brand is the most effective predictor | **Downgraded** — indistinguishable from reputation (p = 0.22) |
+| Three-way *i* × *x* × *n* interaction significant | **Withdrawn** — χ²(4) = 6.01, p = 0.20 under correct repeated measures |
+| Brand is the most effective predictor | **Scoped** — holds for the first app shown (+0.74, p = 0.037), indistinguishable from reputation once the three judgements are averaged (p = 0.22) |
 | Popularity is ineffective in all models | **Requalified** — not a solid null, but not overturned either: see the appendices entry above |
 | Under comparison, reputation overtakes brand | **Reformulated** — they converge, they do not swap |
 | Download involvement strengthens reputation | **Withdrawn** — does not replicate (p = 0.48) |

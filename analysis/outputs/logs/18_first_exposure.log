@@ -1,0 +1,194 @@
+=== 1. IS THE CONTAMINATION THE RESTRICTION PROTECTS AGAINST REAL? ===
+
+The design worry: by the second and third app, the judgement may be made
+against what came before rather than in isolation. Script 10 tested it on
+the 982 later measurements. Summary of what it found:
+
+                       model           term estimate     se p_value
+         A: prior mean level   prior_mean_x   -0.179 0.1241  0.1506
+ B: interaction with history   prior_mean_x   -0.342 0.1629  0.0361
+ B: interaction with history x:prior_mean_x    0.327 0.2121  0.1236
+    C: immediate predecessor         prev_x   -0.128 0.0939  0.1725
+    C: immediate predecessor  prev_focalrep   -0.179 0.1234  0.1471
+    C: immediate predecessor  prev_focalpop   -0.127 0.1180  0.2839
+
+Reading: the average level seen earlier pulls the current rating DOWN
+(a contrast effect), by -0.18 on its own (p = 0.15) and -0.34 once the
+interaction with the current cue is in the model (p = 0.036). Direction as
+the design feared, magnitude not firmly established.
+A design choice does not need a significant threat to be justified: it
+needs a plausible one, and removing it costs only precision. This one is
+plausible and partly visible in the data.
+
+
+=== 2. THREE DIFFERENT QUANTITIES ===
+
+Same data, three estimands. The first is the thesis's target.
+
+ focal first_exposure se_first average_all_three se_average
+ brand         1.4261   0.2200            1.0528     0.1224
+   rep         0.6879   0.2217            0.8425     0.1224
+   pop         0.4597   0.1968            0.2181     0.1223
+
+The two columns answer different questions. Neither is a correction of
+the other: the second averages over judgements the first deliberately
+excludes.
+
+
+=== 3. DOES THE RANKING HOLD AT FIRST EXPOSURE? ===
+
+The test the thesis never ran, run on the quantity the thesis targeted.
+One model, all 1,473 answers, cue x manipulation x position, contrasts
+between cues within each position, Holm-corrected across the three
+comparisons made at that position.
+position = first:
+ x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep      0.7381 0.3124 1282 -0.01075   1.4870   2.363  0.0366
+ high - low      brand - pop      0.9664 0.2954 1280  0.25830   1.6745   3.272  0.0033
+ high - low      rep - pop        0.2283 0.2964 1282 -0.48218   0.9387   0.770  0.4413
+
+position = second:
+ x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep      0.2702 0.2990 1278 -0.44647   0.9868   0.904  0.3663
+ high - low      brand - pop      1.1165 0.2921 1278  0.41627   1.8167   3.822  0.0004
+ high - low      rep - pop        0.8463 0.3101 1279  0.10310   1.5896   2.730  0.0129
+
+position = third:
+ x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep     -0.1904 0.2930 1281 -0.89272   0.5120  -0.650  0.5160
+ high - low      brand - pop      0.5445 0.3154 1285 -0.21158   1.3006   1.726  0.1691
+ high - low      rep - pop        0.7349 0.2983 1285  0.01978   1.4500   2.463  0.0417
+
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+Conf-level adjustment: bonferroni method for 3 estimates 
+P value adjustment: holm method for 3 tests 
+
+--- 3.1 The same contrast from the thesis's own sample (n = 1 only) ---
+OLS on the 491 first measurements (one row per respondent, so there is
+nothing left to cluster), and the ordinal version. This is the thesis's M1
+design, with the contrast between cues finally tested.
+
+ x_f_revpairwise focal_pairwise estimate     SE  df lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep      0.9786 0.3445 482   0.1510   1.8063   2.841  0.0094
+ high - low      brand - pop      1.1159 0.3266 482   0.3313   1.9005   3.417  0.0021
+ high - low      rep - pop        0.1373 0.3259 482  -0.6456   0.9202   0.421  0.6737
+
+Confidence level used: 0.95 
+Conf-level adjustment: bonferroni method for 3 estimates 
+P value adjustment: holm method for 3 tests 
+
+Ordinal (cumulative logit), same contrasts, sign oriented as above:
+ focal_pairwise estimate_log_odds     SE z.ratio   p.value
+    brand - rep             1.284 0.4148 -3.0947 0.0039398
+    brand - pop             1.517 0.3973 -3.8170 0.0004053
+      rep - pop             0.233 0.3895 -0.5982 0.5496808
+
+--- 3.2 What the restriction costs in precision ---
+  brand - reputation at first exposure
+    pooled model, position-specific : +0.7381  (SE 0.3124)
+    n = 1 subsample only            : +0.9786  (SE 0.3445)
+  Same quantity, two ways of getting it. The pooled model borrows the
+  residual and person variance from all 1,473 answers; the subsample fit
+  estimates them from 491. The point estimates are close, so the
+  restriction was not biasing anything -- it was simply leaving the test
+  unavailable, because nine separate regressions share no parameters.
+
+
+=== 4. IS THE GAP REALLY DIFFERENT AT FIRST EXPOSURE? ===
+
+The point estimates say the brand lead shrinks and reverses with position.
+Whether that pattern is established is a separate question: it is the
+three-way cue x manipulation x position interaction.
+
+Data: long
+Models:
+m_no3: y ~ focal * x_f + focal * position + x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f)
+m_sat: y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f)
+      npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
+m_no3   19 5265.2 5365.8 -2613.6    5227.2                     
+m_sat   23 5267.1 5388.9 -2610.6    5221.1 6.0719  4     0.1938
+
+Also as the two-level version (first vs after others):
+Data: long
+Models:
+m_c0: y ~ focal * x_f + focal * comp_f + x_f * comp_f + inv_app + inv_dl + inv_cat + (1 | subj_f)
+m_c: y ~ focal * x_f * comp_f + inv_app + inv_dl + inv_cat + (1 | subj_f)
+     npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
+m_c0   15 5264.0 5343.4 -2617.0    5234.0                     
+m_c    17 5263.6 5353.6 -2614.8    5229.6 4.3874  2     0.1115
+
+So: the first-exposure ranking is established (§3); the claim that the
+ranking CHANGES with position is not. Both statements are needed, and the
+2023 work made the second one -- the M1-to-M2 'reversal' -- on the
+strength of point estimates from disjoint samples.
+
+--- 4.1 A correction to how this review reported the same term ---
+The review quoted the three-way interaction as 'F = 0.64, p = 0.63'. That
+is one of two numbers, not the test. Because the level of the cue is
+assigned between respondents, aov() with Error(subject) splits the term
+across the two strata, and prints it twice:
+
+
+Error: subj_f
+                    Df Sum Sq Mean Sq F value Pr(>F)  
+x_f                  1   20.0  20.037   4.434 0.0358 *
+focal:x_f            2   24.4  12.225   2.705 0.0679 .
+focal:position       4   56.9  14.233   3.149 0.0142 *
+x_f:position         2   14.8   7.395   1.636 0.1958  
+focal:x_f:position   4   42.1  10.515   2.327 0.0555 .
+Residuals          477 2155.7   4.519                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Error: Within
+                    Df Sum Sq Mean Sq F value   Pr(>F)    
+focal                2  208.2  104.08  73.961  < 2e-16 ***
+x_f                  1  139.3  139.29  98.985  < 2e-16 ***
+position             2   11.3    5.67   4.028   0.0181 *  
+focal:x_f            2   27.9   13.94   9.904 5.52e-05 ***
+focal:position       4   12.9    3.21   2.284   0.0586 .  
+x_f:position         2    6.9    3.45   2.450   0.0869 .  
+focal:x_f:position   4    3.6    0.90   0.642   0.6325    
+Residuals          965 1358.0    1.41                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+  between-subject stratum : F = 2.327, p = 0.0555
+  within-subject stratum  : F = 0.642, p = 0.6325
+  combined (mixed model)  : chi-square = 6.01, 4 df, p = 0.198
+
+The conclusion does not change -- the interaction is not significant, and
+the 2023 claim that it was remains withdrawn -- but the honest number is
+the combined one. Quoting 0.63 alone reports the half of the term that
+vanishes and omits the half that does not.
+
+
+=== 5. VERDICT ===
+
+What the 2023 design got right:
+  * the first judgement is the only uncontaminated one, and the threat it
+    protects against is visible in the data (§1);
+  * on that quantity the ranking brand > reputation holds, and holds under
+    every specification tried: +1.05 Likert points (p = 0.0035) and
+    +1.28 log-odds (p = 0.002) in the thesis's own sample, and the same
+    estimate from the pooled model (§3);
+  * Model 3's comp_i interaction was the right instinct: it says the
+    effect depends on whether comparison has happened.
+
+What remains wrong, and is a smaller and more specific charge than the
+review first made:
+  * nine regressions on disjoint subsamples cannot test a difference
+    between cues, and none was tested. The estimand did not require the
+    fragmentation: one model with a position interaction delivers it and
+    the test together (§3.2);
+  * the ranking was then stated without its scope. 'Brand is the most
+    effective' is supported for the first app seen; it is not supported as
+    an average over the three judgements, where brand and reputation are
+    indistinguishable (+0.20, p = 0.22);
+  * M3's x_brand = 1.5028 was read as the effect 'independently from n'.
+    With comp_i and its interaction in the model, that coefficient is the
+    effect at comp_i = 0, i.e. first exposure again -- not an overall
+    effect;
+  * the M1-to-M2 'reversal' is not established: the interaction that would
+    license it is not significant (§4).

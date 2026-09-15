@@ -2,7 +2,8 @@
 # Every figure that helps explain a result, beyond the four already produced by
 # `06_figures.R` and `07_specification_curve.R`.
 #
-#   fig_05_pooling_gain.png   what splitting the sample cost the thesis
+#   fig_05_pooling_gain.png   the same effects three ways: thesis subsamples,
+#                             one model on the first app, one model on all three
 #   fig_06_by_position.png    each cue's effect at each presentation position
 #   fig_07_equivalence.png    null results against the relevance band
 #   fig_08_heterogeneity.png  people differ, and how their baseline relates to it
@@ -59,10 +60,21 @@ m1 <- cf[cf$model %in% c("M1_rep", "M1_pop", "M1_brand") &
 m1$focal <- sub("^M1_", "", m1$model)
 m1$n     <- fit$n_used[match(m1$model, fit$model)]
 a <- data.frame(focal = m1$focal, estimate = m1$estimate, se = m1$se, n = m1$n,
-                approach = "thesis: one regression per cue, split sample")
+                approach = "thesis: one regression per cue")
 b <- data.frame(focal = pool$focal, estimate = pool$estimate, se = pool$SE, n = 1473,
-                approach = "one model on all the data")
-d5 <- rbind(a, b)
+                approach = "one model, all three judgements")
+
+# The middle series: the SAME quantity the thesis aimed at -- the first app
+# seen, judged before any comparison -- estimated from one model on all the
+# data. Without it the figure would charge to the split sample a gap that is
+# partly a change of estimand. See 18_first_exposure.R.
+m_sat5 <- lmer(y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f),
+               data = long, REML = FALSE)
+e5 <- summary(contrast(emmeans(m_sat5, ~ x_f | focal * position), "revpairwise"))
+e5 <- e5[e5$position == "first", ]
+m <- data.frame(focal = as.character(e5$focal), estimate = e5$estimate, se = e5$SE,
+                n = 1473, approach = "one model, first app seen")
+d5 <- rbind(a, m, b)
 d5$focal <- factor(d5$focal, levels = c("brand", "rep", "pop"))
 d5$approach <- factor(d5$approach, levels = unique(d5$approach))
 d5$lo <- d5$estimate - 1.96 * d5$se; d5$hi <- d5$estimate + 1.96 * d5$se
@@ -72,16 +84,19 @@ p5 <- ggplot(d5, aes(estimate, focal, colour = focal, shape = approach)) +
   geom_errorbarh(aes(xmin = lo, xmax = hi), height = 0, linewidth = 0.6,
                  position = position_dodge(width = 0.5)) +
   geom_point(size = 3, position = position_dodge(width = 0.5)) +
-  geom_text(aes(label = paste0("n=", n)), position = position_dodge(width = 0.5),
-            hjust = -0.25, vjust = -0.9, size = 2.8, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(n == 1473, "", paste0("n=", n))),
+            position = position_dodge(width = 0.5),
+            hjust = -0.25, vjust = 1.7, size = 2.8, show.legend = FALSE) +
   scale_y_discrete(labels = LAB, limits = rev(levels(d5$focal))) +
   scale_colour_manual(values = PAL, guide = "none") +
-  scale_shape_manual(values = c(1, 16), name = NULL) +
-  labs(title = "What splitting the sample cost",
-       subtitle = "Same data, same question. Nine regressions on disjoint subsamples, against one model on all of it",
+  scale_shape_manual(values = c(1, 17, 16), name = NULL) +
+  labs(title = "What the split sample cost, and what it changed",
+       subtitle = "The same three effects, estimated three ways",
        x = "Effect on intention to download (1-7 scale), 95% CI", y = NULL,
-       caption = paste("Reputation rises by two thirds once it is estimated from all 491 answers instead of 149.",
-                       "Brand moves the other way: part of its apparent lead was the fragmentation.", sep = "\n")) +
+       caption = paste("Hollow: the thesis - one regression per cue, on its own subsample of first-app answers.",
+                       "Triangle: the same quantity from one model on all 1,473 answers. Same question, more precision.",
+                       "Solid: the average over all three judgements. A different question - and the one where brand and reputation meet.",
+                       sep = "\n")) +
   base_theme
 save_fig(p5, "fig_05_pooling_gain.png")
 
