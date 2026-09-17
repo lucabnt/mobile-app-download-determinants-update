@@ -34,10 +34,10 @@ stimulus:
 | 2023 conclusion | After the review |
 |---|---|
 | Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.74, p = 0.037) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.22). The finding needed its scope |
-| Popularity is ineffective in all models | **Not a solid null**: it vanishes among respondents who say they looked at downloads (β = 0.51, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews |
+| Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.46, p = 0.020), it vanishes among respondents who say they looked at downloads (β = 0.51, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
 | Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.41 → 0.90 vs 0.69 → 0.91) |
 | Three-way interaction significant | **Not confirmed** (χ²(4) = 6.01, p = 0.20) once repeated measures are specified correctly |
-| No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. |
+| No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. — and the terms tested are carryover effects from apps seen earlier, not factorial interactions, since only one cue is manipulated per screen |
 
 Full reasoning and figures: [`docs/01-review-of-2023-work.md`](docs/01-review-of-2023-work.md).
 Each of these conclusions was then stress-tested against criteria fixed before the tests were
@@ -107,6 +107,7 @@ Rscript analysis/R/15_bayesian_brms.R       # the same findings as a full Bayesi
 Rscript analysis/R/16_figures_extended.R    # the explanatory figures
 Rscript analysis/R/17_centering_check.R     # the thesis's mean-centred outcome, assessed
 Rscript analysis/R/18_first_exposure.R      # the first-app-only estimand, and the ranking on it
+Rscript analysis/R/19_model_specifications.R # the thesis's three models, judged one by one
 ```
 
 `15_bayesian_brms.R` picks its Stan backend by trying a trivial model first: `cmdstanr` where it
@@ -145,6 +146,7 @@ document under `docs/`, the corresponding log contains it.
 | `16_figures_extended.R` | eight figures explaining the results | most of these findings are easier to see than to read |
 | `17_centering_check.R` | what the thesis's mean-centred ITD changes, and what it hides | a choice the review had verified without ever assessing it |
 | `18_first_exposure.R` | the ranking tested on the first app shown, where the 2023 design aimed it | restricting to the first judgement protects it from comparison effects; the review had read the restriction as mere fragmentation |
+| `19_model_specifications.R` | M1, M2, M3 and the ANOVA judged separately, against the purpose each states | "fragmentation" was one word for four different decisions, two of which turn out to be sound |
 
 ---
 

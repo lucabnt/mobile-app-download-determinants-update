@@ -431,9 +431,10 @@ unchanged: the mistakes are the subject, the reviewer is the hook.
    Figure 1. **This is the strong piece, not popularity:** it is clean, robust and entirely
    demonstrable.
 3. The result that dissolves: popularity. Not "it was ineffective and turns out to be
-   effective", but "it cannot be determined" — the low-popularity stimulus showed 10K+
-   downloads with 84K reviews, and the null vanishes among those who say they looked at that
-   cue. Figure 2. To be told as a limitation found, not as a discovery.
+   effective", but "it works on the first app seen (+0.46) and after that cannot be
+   determined" — the low-popularity stimulus showed 10K+ downloads with 84K reviews, and the
+   null vanishes among those who say they looked at that cue. Figure 2. To be told as a
+   limitation found, not as a discovery.
 4. The result that improves: the brand/reputation convergence under comparison. Figure 3.
 5. What I learned about analysis: nine regressions on disjoint subsamples waste statistical
    power; 81 uncorrected tests produce noise; a self-report question is not a manipulation
@@ -493,6 +494,80 @@ checkable.
 ---
 
 ## 6. Change log
+
+### 2026-09-17 — The popularity story, cut back to what the positions support
+
+Completeness check before publication: the whole pipeline was re-run in README order. All 19
+scripts exit 0, and every table, figure and derived dataset is byte-identical to the committed
+version (only the run date in `01_replication.log` changes). What the check found was not a
+broken script but an inconsistency of argument: §5 objects to Model 3 merging the second and
+third app, and the review's own popularity verdicts rested on the same merge.
+
+**Added**
+
+- §3b of `08_equivalence.R`: the equivalence verdicts position by position, for all three cues,
+  plus the Holm-corrected pairwise comparisons between positions
+  (`08_equivalence_by_position.csv`). Kept in a separate table so that the pre-registered
+  `comp_f` curve and `fig_07` stay exactly as they were written.
+
+**Corrected**
+
+- **"Popularity works before comparison and dissolves after" is withdrawn.** By position the
+  effect is +0.46 (effect present), −0.23 (inconclusive) and +0.39 (inconclusive); the third app
+  is not measurably different from the first (0.07 apart, p = 0.81), the dip sits on the second
+  app alone, and no pairwise difference between positions survives Holm — for any cue. The
+  +0.06 "at the boundary" verdict is an average of two inconclusive estimates of opposite sign.
+  What survives: popularity moves intention on first exposure, and after that this design cannot
+  say. That still contradicts the 2023 blanket null.
+- §6 and §12.2 of the review rewritten accordingly; the "fallback heuristic" reading, which was
+  mine and not the thesis's, is marked as withdrawn rather than deleted.
+- The post's popularity bullets, its position table (now three columns instead of a merged
+  "after comparison") and its closing line on download counts.
+- `fig_06`: the title claimed "the ranking depends on where in the sequence the app appears" —
+  the interaction that would establish that has p = 0.19 — and the caption said reputation
+  "holds steady and overtakes" brand, which is false in both halves (0.69 → 0.62 → 1.12; the
+  third-app gap is −0.19, p = 0.52). Retitled, and the caption now states that no
+  position difference survives correction.
+- The README row on popularity and §4 of this plan.
+
+---
+
+### 2026-09-16 — The three model definitions, judged one by one
+
+Re-read of §3.4 of the thesis at the author's request, after the estimand behind Model 1 was
+explained. `analysis/R/19_model_specifications.R`; §5 of the review rewritten around it.
+
+**Corrected**
+
+- **The clustering defect is confined to the ANOVA.** Every one of the nine regressions takes
+  exactly one measurement per respondent — verified on the eleven source files — so inside each
+  of them the observations are independent and OLS has the right standard errors. The only
+  analysis that stacks the three measurements is the ANOVA, and it is the one where
+  `Error(lfdn)` failed. §5 now says this explicitly; the first version of §5 left it possible to
+  read "the repeated measures are not modelled" as a charge against all ten analyses.
+- **M3 already was the "use all the data" model, per cue.** Its `x_i` coefficient is the effect
+  at `comp_i` = 0, the same estimand as M1, and the two agree to 0.025 on average with
+  indistinguishable standard errors (0.238 vs 0.243). The precision gain of one pooled model
+  comes from sharing parameters **across cues** (0.213), not from using more positions. So the
+  fragmentation that costs something is the one between cues.
+- **M2's interactions are carryover moderations, not factorial ones.** `x_j` and `x_k` belong to
+  apps seen earlier; only one cue is manipulated per screen. §4.3 and the post now say so. The
+  abstract's "two-way interaction between reputation, popularity and brand" describes a design
+  the thesis did not run.
+- **§5's first bullet was wrong.** The design does not force the fragmentation: M3 is the proof
+  inside the thesis itself. What the design does force is the absence of factorial interactions,
+  and the temptation to compare coefficients by eye.
+
+**Added**
+
+- A verdict per model in §5: M1 sound, M3 the most efficient of the three, M2 the weakest (a
+  third of the data, the order of earlier apps collapsed, MDE 0.76–0.98 s.d., and the 491
+  second-position answers left unused), the ANOVA carrying more weight than its stated
+  preliminary role.
+- `19_effects_by_position.csv`: what `comp_i` collapses — reputation 0.62 at the second app
+  against 1.12 at the third, popularity −0.23 against +0.39.
+
+---
 
 ### 2026-09-15 — The first-exposure estimand: a correction to finding (B)
 

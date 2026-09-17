@@ -1,0 +1,140 @@
+=== 1. HOW MANY ROWS PER RESPONDENT DOES EACH REGRESSION USE? ===
+
+The review's headline defect (A) is that the repeated measures are not
+modelled. That is true of the ANOVA. It is worth establishing, rather than
+assuming, whether it is also true of the nine regressions.
+
+    dataset rows respondents max_rows_per_respondent
+     M1_rep  149         149                       1
+     M1_pop  189         189                       1
+   M1_brand  153         153                       1
+     M2_rep  196         196                       1
+     M2_pop  143         143                       1
+   M2_brand  152         152                       1
+     M3_rep  491         491                       1
+     M3_pop  491         491                       1
+   M3_brand  491         491                       1
+ M ANOVA_RM 1473         491                       3
+
+Every regression takes **one** measurement per respondent: each person
+contributes a single y for a given cue, so inside any one of the nine
+regressions the observations are independent and ordinary least squares is
+the right estimator with the right standard errors. The clustering problem
+exists in exactly one place -- the ANOVA, the only analysis that stacks all
+three measurements -- and that is the one where Error(lfdn) failed.
+
+
+=== 2. DO M1 AND M3 ESTIMATE THE SAME QUANTITY? ===
+
+M1 restricts to n = 1. M3 keeps every observation but carries comp_i and
+x_i * comp_i, so its x_i coefficient is the effect at comp_i = 0 -- which is
+n = 1 again. The two are routes to the same estimand.
+
+   cue M1_estimate  M1_se M3_estimate  M3_se pooled_estimate pooled_se
+ brand      1.5289 0.2355      1.5028 0.2409          1.4261    0.2200
+   rep      0.4986 0.2626      0.4576 0.2690          0.6879    0.2217
+   pop      0.3611 0.2148      0.3677 0.2184          0.4597    0.1968
+
+M1 and M3 agree to within a few hundredths, and their standard errors are
+almost identical: M3 buys no precision on this quantity, because the
+first-exposure effect is still identified by the same first-position
+observations. What M3 adds is the moderation by comparison, which is a
+second question rather than a better answer to the first.
+
+Mean |M1 - M3| across the three cues: 0.0246
+Mean standard error: M1 0.2376, M3 0.2428, one pooled model 0.2128
+
+The precision gain comes from pooling across CUES, not across positions:
+one model shares the residual variance, the respondent variance and the
+involvement coefficients across all 1,473 answers.
+
+
+=== 3. WHAT ONLY A POOLED MODEL CAN DO ===
+
+Nine regressions produce nine coefficient vectors with no covariance
+between them. Any statement of the form 'cue A beats cue B' needs that
+covariance. This is the whole of the gap, and it is not a matter of taste:
+it is what makes the thesis's central claim untestable as written.
+
+ focal_pairwise position estimate t.ratio  p.value
+    brand - rep    first   0.7381  2.3627 0.036580
+    brand - pop    first   0.9664  3.2716 0.003294
+      rep - pop    first   0.2283  0.7702 0.441311
+
+Same quantity M1 targets, plus the comparison M1 cannot make.
+
+
+=== 4. WHAT M2'S INTERACTIONS ACTUALLY ASK ===
+
+x_j and x_k are not two more attributes of the app being judged. They are
+attributes of the OTHER apps, seen on earlier slides. So 'interaction
+between focal variables' here means: does the effect of this app's rating
+depend on how strong the brand of a previous app was? That is a carryover
+moderation, not a factorial interaction -- and a factorial interaction is
+what the abstract's wording suggests to a reader.
+
+Respondents per combination of the two non-focal levels, for i = rep:
+       x_pop
+x_brand   0   1
+      0 112 123
+      1 132 124
+
+Those cells carry the six interaction terms. With 143-196 observations and
+11 predictors the minimum detectable interaction is 0.76-0.98 s.d.
+(05_power_m2_interactions.csv): the question was asked on a sample that
+could not answer it.
+
+Observations M2 leaves unused: 491 of the 982 measurements that have
+at least one app before them -- every n = 2 answer. The same carryover
+question on all 982 is 10_sequence_effects.R.
+
+
+=== 5. WHAT comp_i COLLAPSES ===
+
+M3 codes comparison as first (0) versus second-or-third (1). The effects by
+position say the two halves of that second level are not alike:
+
+ focal position estimate    SE  p.value
+ brand    first    1.426 0.220 1.28e-10
+   rep    first    0.688 0.222 1.96e-03
+   pop    first    0.460 0.197 1.97e-02
+ brand   second    0.888 0.198 8.24e-06
+   rep   second    0.618 0.224 5.85e-03
+   pop   second   -0.229 0.215 2.87e-01
+ brand    third    0.932 0.219 2.31e-05
+   rep    third    1.122 0.194 9.09e-09
+   pop    third    0.388 0.226 8.72e-02
+
+Reputation is 0.62 on the second app and 1.12 on the third; popularity is
+-0.23 and +0.39. Averaging them into one 'after comparison' number is not
+wrong, but it describes a situation no respondent was ever in.
+
+
+=== 6. VERDICT ON THE THREE SPECIFICATIONS ===
+
+M1  Sound. Right estimand (uncontaminated first judgement), right
+    estimator, valid standard errors, and the model the thesis says it
+    relies on. Its limit is 149-189 observations by construction, which
+    makes the involvement moderations underpowered.
+
+M3  The most efficient use of the data among the three, and the one closest
+    to what this review recommends: all 491 measurements of a cue, with
+    comparison as a moderator. Two caveats: its x_i coefficient is the
+    effect at comp_i = 0 and was read as an overall effect, and pooling
+    positions 2 and 3 into one 'after comparison' level hides that the two
+    differ for reputation.
+
+M2  The weakest of the three. The question is legitimate and interesting,
+    but it is asked on a third of the data, it collapses the order of the
+    two earlier apps, and its power is an order of magnitude short of the
+    effects it looks for. The null it produced carries no information.
+
+ANOVA  The only analysis that needed the repeated-measures machinery, and
+    the only one that got it wrong. Its stated role is preliminary -- 'may
+    help in understanding if some effects exist' -- but its three-way
+    interaction was then used as 'further foundations for subsequent
+    analyses', which is more weight than a screening device can carry.
+
+What none of the three can do, individually or together, is compare one cue
+with another. That is the finding of this review, and it is a statement
+about the SET of models, not about any one of them.

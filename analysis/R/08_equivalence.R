@@ -109,6 +109,51 @@ write.csv(out, file.path(DIR_TAB, "08_equivalence.csv"), row.names = FALSE)
 
 cat("\n=== VERDICT COUNTS ===\n"); print(table(out$verdict))
 
+# --- 3b. What "after comparison" averages ------------------------------------
+# Added 2026-09-17. The verdicts above use comp_f, which merges the second and
+# third app into one "after comparison" level. §5 of the review objects to
+# exactly that merge in the thesis's Model 3, so the same objection has to be
+# put to these verdicts. Written to its own table: the main curve and figure 7
+# stay on the pre-registered comp_f split, and this is the diagnostic beside it.
+cat("\n\n=== THE SAME VERDICTS, POSITION BY POSITION ===\n\n")
+cat("comp_f = 'after others' is the average of the second and third app. If the\n")
+cat("two differ, that average describes a situation no respondent was ever in.\n\n")
+m_pos <- lmer(y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f),
+              data = long, REML = FALSE)
+e3 <- as.data.frame(summary(contrast(emmeans(m_pos, ~ x_f | focal * position), "revpairwise")))
+byp <- list()
+for (f in c("brand", "rep", "pop")) for (p in levels(long$position)) {
+  r <- e3[e3$focal == f & e3$position == p, ]
+  byp[[paste(f, p)]] <- cbind(
+    verdict(sprintf("%s effect, app shown %s", f, p), r$estimate, r$SE, r$df, f),
+    position = p)
+}
+byp <- do.call(rbind, byp)
+print(byp[, c("estimand", "estimate", "se", "ci90_lo", "ci90_hi", "flip_point",
+              "p_value", "verdict")], digits = 3, row.names = FALSE)
+write.csv(byp, file.path(DIR_TAB, "08_equivalence_by_position.csv"), row.names = FALSE)
+
+cat("\nAre the positions different from each other? Pairwise, Holm-corrected\n")
+cat("within each cue:\n\n")
+dpos <- summary(contrast(emmeans(m_pos, ~ x_f * position | focal),
+                         interaction = c("revpairwise", "pairwise")),
+                by = "focal", adjust = "holm")
+print(as.data.frame(dpos)[, c("focal", "position_pairwise", "estimate", "SE",
+                              "t.ratio", "p.value")], digits = 3, row.names = FALSE)
+
+cat("\nReading, for popularity -- the cue whose null this section is about:\n")
+cat("  * first app  +0.46, effect present;\n")
+cat("  * second app -0.23, inconclusive;\n")
+cat("  * third app  +0.39, inconclusive, and NOT different from the first\n")
+cat("    (difference 0.07, p = 0.81).\n")
+cat("So 'popularity works before comparison and dissolves after' is not what the\n")
+cat("data says. The drop is confined to the second app, no pairwise difference\n")
+cat("survives Holm, and the +0.06 'at the boundary' verdict above is an average\n")
+cat("of two inconclusive estimates of opposite sign. What survives is narrower:\n")
+cat("popularity moves intention on first exposure, and after that this design\n")
+cat("cannot say -- which is still enough to deny the 2023 claim that popularity\n")
+cat("is ineffective throughout.\n")
+
 # --- 4. Reporting test (task 2.4, point 1) ----------------------------------
 cat("\n\n=== REPORTING TEST: is slide 6 itself affected by the manipulation? ===\n")
 cat("Logistic mixed model manip_ok ~ focal * x + (1|subject), all three focal variables.\n")

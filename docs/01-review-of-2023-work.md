@@ -568,9 +568,14 @@ downgraded to hypotheses.
 
 ### 4.3 "No interaction between focal variables" is inconclusive
 
-The thesis concludes it found no *"clear evidence of any two-way interaction between
-reputation, popularity and brand"*. It is true that none of the six M2 interactions is
-significant. But with samples of 143–196 observations and 11 predictors, the minimum
+First, what the six terms actually are. In M2 the levels `x_j` and `x_k` belong to the apps
+seen **earlier**, not to the app being judged — one cue is manipulated at a time, so no two
+cues ever meet on the same screen (§5). `x_i × x_j` therefore asks whether the effect of this
+app's rating depends on the brand of an app seen before it: a carryover moderation. The
+abstract's phrasing invites the factorial reading instead, and that reading describes a design
+the thesis did not run.
+
+With that said: it is true that none of the six M2 interactions is significant. But with samples of 143–196 observations and 11 predictors, the minimum
 detectable effect (α = 0.05, 80% power) is:
 
 | Model | Term | β | s.e. | MDE (points) | MDE (s.d.) |
@@ -593,24 +598,99 @@ them comes close to being ruled out.
 
 ---
 
-## 5. The design defect that generates the others
+## 5. The three specifications, read again
 
-The thesis states it honestly in §3.5: this is not a 2×2×2 factorial but a design in which
-**one variable at a time is manipulated** while the others are held at intermediate values.
-That choice is what makes the study of comparison effects possible, and in that sense it is
-motivated.
+This section was rewritten on 2026-09-16. Its first version treated the nine regressions as
+one undifferentiated mistake — "fragmentation" — and blamed it on the design. Read again,
+model by model, with the estimands the thesis states for each,
+[`19_model_specifications.R`](../analysis/R/19_model_specifications.R) says something more
+specific, and in two places more favourable.
 
-But it is also the upstream cause of everything else:
+| Model | Sample | What it targets | Verdict |
+|---|---|---|---|
+| M1 | *n* = 1 (149–189) | the effect of cue *i* on a judgement made before any comparison | **sound**: right estimand, right estimator, valid standard errors |
+| M2 | *n* = 3 (143–196) | whether the effect of cue *i* depends on the levels seen on earlier apps | **weakest**: a good question asked on a third of the data, with a tenth of the power it needs |
+| M3 | all 491 | the same effect as M1, plus how it changes once comparison has happened | **most efficient of the three**, and closest to what this review recommends |
+| ANOVA | all 1,473 | a preliminary look at where variance comes from | **the only one that needed repeated-measures machinery, and the only one that got it wrong** |
 
-- It forces the fragmentation into nine regressions on disjoint subsamples (§3.2).
-- It makes interactions between focal variables structurally underpowered (§4.3).
-- It pushes towards reading coefficients by visual comparison rather than by test.
+**Where the clustering problem is, and where it is not.** Defect (A) says the repeated
+measures are not modelled. That is true of the ANOVA and false of the regressions, and the
+distinction is worth stating because it is the difference between "the standard errors are
+wrong" and "a comparison is missing". Each respondent contributes **one** measurement per
+cue, so each of the nine regressions has exactly one row per person:
 
-**The important point is that the design defect does not force the analysis defect.** The
-data as collected *supports* a pooled mixed-effects analysis: it is a balanced Latin square
-with 491 subjects and 1,473 observations. The fragmentation was an analytic choice, not a
-requirement of the design — and it is the choice that wasted most of the available
-statistical power.
+| Dataset | Rows | Respondents | Rows per respondent |
+|---|---|---|---|
+| M1 (each) | 149 / 189 / 153 | same | 1 |
+| M2 (each) | 196 / 143 / 152 | same | 1 |
+| M3 (each) | 491 | 491 | 1 |
+| ANOVA | 1,473 | 491 | **3** |
+
+Inside any single regression the observations are independent and OLS is the correct
+estimator with correct standard errors. The one analysis that stacks the three measurements
+is the ANOVA, and that is precisely the one where `Error(lfdn)` failed (§3.1).
+
+**M1 is the soundest model in the thesis.** Its estimand is the judgement uncontaminated by
+comparison (§3.2), its inference is valid, and the thesis says explicitly that it is "the main
+source of evidence". Its only structural limit is the sample the estimand implies: 149–189
+observations, which is why the involvement moderations it carries are underpowered (§4.2).
+
+**M3 already was the "use all the data" model, for one cue at a time.** This is the finding
+that most changes the first version of this section. M3 keeps all 491 measurements of a cue and
+carries `comp_i` together with `x_i × comp_i`, so its `x_i` coefficient is the effect at
+`comp_i` = 0 — first exposure again. M1 and M3 are two routes to the same quantity, and they
+arrive at the same place:
+
+| Cue | M1 | M3 | One pooled model |
+|---|---|---|---|
+| Brand | 1.529 (0.236) | 1.503 (0.241) | 1.426 (0.220) |
+| Reputation | 0.499 (0.263) | 0.458 (0.269) | 0.688 (0.222) |
+| Popularity | 0.361 (0.215) | 0.368 (0.218) | 0.460 (0.197) |
+
+Mean absolute difference between M1 and M3: 0.025. Their standard errors are
+indistinguishable (0.238 against 0.243), because the same first-position observations identify
+the effect either way. **The precision gain in the third column does not come from using more
+positions: it comes from pooling across cues**, which shares the residual variance, the
+respondent variance and the involvement coefficients across all 1,473 answers. So the
+fragmentation that costs something is the one *between cues*, not the one between positions —
+and no version of the thesis's toolkit closes it, because nine regressions produce nine
+coefficient vectors with no covariance between them.
+
+Two caveats on M3 stand. Its `x_i` coefficient was read in the text as the effect
+"independently from *n*", which it is not (§3.2). And `comp_i` merges the second and third
+positions, which behave differently: reputation moves 0.62 → 1.12 between them and popularity
+−0.23 → +0.39, so the "after comparison" average describes a situation no respondent was ever
+in.
+
+**M2 is the weak one, and not for the reason first given.** Its interaction terms are not
+factorial: `x_j` and `x_k` are attributes of the *other* apps, seen on earlier slides, so
+`x_i × x_j` asks whether the effect of this app's rating depends on how strong an earlier app's
+brand was. That is a carryover moderation, and it is a genuinely interesting question — the
+thesis's own wording, "comparison effects", is closer to it than the abstract's "two-way
+interaction between reputation, popularity and brand", which invites a reader to imagine a
+factorial design that does not exist here. Three problems, in increasing order of severity:
+the order of the two earlier apps is collapsed into one pair of dummies; the 491 measurements
+at *n* = 2, which carry the same question with one previous app instead of two, are left out
+entirely; and the six interactions have a minimum detectable effect of 0.76–0.98 s.d. (§4.3).
+The question deserved all 982 post-comparison answers and a model built for it — which is what
+[`10_sequence_effects.R`](../analysis/R/10_sequence_effects.R) does.
+
+**The ANOVA carried more weight than its stated role.** The thesis introduces it as
+preliminary: it "may help in understanding if some effects on the dependent variable exist and
+where they come from". As a screening device, a mis-specified error term matters less. But its
+three-way interaction was then described as providing "further foundations for subsequent
+analyses", and that is more than a screen can support — particularly one whose error stratum
+had collapsed.
+
+**What the design does and does not force.** The thesis states in §3.5 that this is not a
+2×2×2 factorial: one cue is manipulated at a time, the others held at intermediate values. Two
+consequences are real. There is no factorial interaction to estimate, so any "interaction
+between cues" is necessarily about apps seen earlier. And reading coefficients side by side,
+rather than testing them, is the path of least resistance when each cue has its own regression.
+But the design does **not** force the fragmentation: M3 is the proof, inside the thesis itself,
+that all 491 measurements of a cue could be used at once. What no model in the thesis does is
+the step from three separate models to one, which is the only way to test the claim the thesis
+is actually making.
 
 ---
 
@@ -635,16 +715,34 @@ columns differ from each other (the interaction that would say so: p = 0.11), so
 between them is a pattern worth stating, not a demonstrated reversal.
 
 And there is a finding the thesis does not mention at all: **popularity works when the user
-has no alternatives in front of them** (0.462, p = 0.019). It drops to 0.06 once comparison
-enters. This is more interesting than the blanket null the thesis reports, and it
-has an immediate substantive reading: the download count is a fallback heuristic, used in
-the absence of better information and abandoned the moment other information appears.
+has no alternatives in front of them** (0.462, p = 0.019), where the thesis reports a blanket
+null.
 
-Under the equivalence rule fixed for Step 2A each of these gets a verdict: *effect present*
-before comparison (0.462, p = 0.019), *at the boundary* after it (0.059, flip point 0.315
-against a band of 0.26–0.33) and *inconclusive* overall (0.218, flip point 0.419). The honest
-summary is that popularity does something when nothing else is on screen, and that afterwards
-these data cannot separate "nothing" from "something too small to matter".
+**How far that goes, corrected 2026-09-17.** The first version of this section continued: "it
+drops to 0.06 once comparison enters", and read the download count as a fallback heuristic
+abandoned as soon as other information appears. That reading does not survive the objection
+§5 makes to the thesis's own `comp_i`: the second column above merges the second and third
+app, and for popularity the two are not alike
+([`08_equivalence.R`](../analysis/R/08_equivalence.R) §3b):
+
+| Popularity effect | Estimate | Flip point | Verdict |
+|---|---|---|---|
+| App shown first | **+0.460** | — | **effect present** (p = 0.020) |
+| App shown second | −0.229 | 0.582 | inconclusive |
+| App shown third | +0.388 | 0.760 | inconclusive |
+
+The +0.06 is the average of two inconclusive estimates of opposite sign. Worse for the
+"fallback heuristic" story, the third app is **not** different from the first (difference
+0.07, p = 0.81); the dip is confined to the second app, and no pairwise difference between
+positions survives Holm — for any cue (popularity first−second p = 0.055, second−third
+p = 0.097; every brand and reputation pair p ≥ 0.21).
+
+What survives is narrower and still contradicts the thesis: **popularity moves intention on
+first exposure, and after that this design cannot say.** Under the equivalence rule of Step 2A,
+*effect present* before comparison (0.462, p = 0.019), *inconclusive* overall (0.218, flip
+point 0.419), and *at the boundary* for the merged "after comparison" level (0.059, flip point
+0.315) — a verdict that should be read as an artefact of the merge rather than as a statement
+about any moment of the sequence.
 
 **Due caution:** the three-way `focal × manipulation × comparison` interaction has
 p = 0.111. The pattern is coherent and in the expected direction, but it is not established.
@@ -721,12 +819,17 @@ in question:
    vary does vary, and the other attributes are held at consistent intermediate levels
    (rating 4.2; downloads 1M+). The one exception is the Fig. A.2 defect (§3.3).
 6. **The limitations are stated honestly** in §3.5, including the main design defect.
-7. **The restriction of Model 1 to the first app shown was motivated**, and the estimand it
+7. **Two of the three specifications hold up on their own terms** (§5). M1 is the soundest
+   model in the thesis: right estimand, valid standard errors, and the one the text says it
+   relies on. M3 already uses all 491 measurements of a cue with comparison as a moderator,
+   which is the shape this review recommends. Every regression has one row per respondent, so
+   the clustering defect is confined to the ANOVA.
+8. **The restriction of Model 1 to the first app shown was motivated**, and the estimand it
    protects — a judgement not conditioned by earlier apps — is the right one for the thesis's
    question. On that quantity the headline ranking holds under every specification tried
    (§3.2). What does not follow from the estimand is the fragmentation into nine regressions:
    one model returns the same quantity and can also test it.
-8. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
+9. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
    Figure 3.1 changes no estimate and could have been used throughout without consequence
    (§2.5); the involvement measures are centred as they should be; the manipulation check was
    collected and deliberately not used, which was the right decision given what it measures
@@ -863,7 +966,9 @@ on where the bar is put.
 |---|---|---|---|---|
 | Popularity, all observations | +0.218 | 0.419 | 0.26–0.33 | inconclusive |
 | Popularity, shown first | +0.462 | — | — | **effect present** (p = 0.019) |
-| Popularity, after other apps | +0.059 | 0.315 | 0.26–0.33 | **at the boundary** |
+| Popularity, after other apps *(merged level, see note)* | +0.059 | 0.315 | 0.26–0.33 | at the boundary |
+| Popularity, second app only | −0.229 | 0.582 | 0.26–0.33 | inconclusive |
+| Popularity, third app only | +0.388 | 0.760 | 0.26–0.33 | inconclusive |
 | Six M2 interactions | −0.74 to +0.39 | 0.94–1.64 | 0.26–0.36 | inconclusive (all six) |
 | Involvement-download on reputation | −0.088 | 0.292 | 0.28–0.36 | at the boundary |
 | Involvement-category on brand | +0.112 | 0.317 | 0.26–0.33 | at the boundary |
@@ -873,6 +978,13 @@ cannot separate "nothing" from "something too small to matter" — and no defens
 settles it, which is why a single SESOI was rejected in favour of the band. And the thesis's
 six null interactions are not near being ruled out: their flip points are three to five times
 the relevance band, exactly as the power analysis in §4.3 predicted.
+
+**A note on the "after other apps" row, added 2026-09-17.** That level merges the second and
+third app, and the two rows below it show why the merge matters: −0.23 and +0.39, both
+inconclusive, averaging to a number that sits inside the band. The *at the boundary* verdict
+is therefore a property of the average and not of any moment a respondent lived through. The
+pre-registered rule was written on `comp_f` and is reported as it was written; the position
+split is the diagnostic beside it, not a replacement, and §6 states the consequence.
 
 The reporting test that belongs to this claim is in §3.3: the treatment moves what respondents
 say they looked at for brand only, not for popularity.

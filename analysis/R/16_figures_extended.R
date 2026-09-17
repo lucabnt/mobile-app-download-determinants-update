@@ -113,11 +113,12 @@ p6 <- ggplot(e6, aes(position, estimate, colour = focal, group = focal)) +
   geom_point(size = 3) +
   scale_colour_manual(values = PAL, name = NULL, labels = LAB) +
   scale_x_discrete(labels = c(first = "1st app seen", second = "2nd", third = "3rd")) +
-  labs(title = "The ranking depends on where in the sequence the app appears",
+  labs(title = "Each cue's effect at each point in the sequence",
        subtitle = "Effect of moving each cue from its weak to its strong version, by position",
        x = NULL, y = "Effect on intention to download (1-7 scale), 95% CI",
-       caption = paste("Brand dominates on the first app seen and fades; reputation holds steady and overtakes it.",
-                       "Popularity works only before the respondent has anything to compare against.", sep = "\n")) +
+       caption = paste("Brand is strongest on the first app seen, reputation on the third, and popularity moves only on the first.",
+                       "No difference between positions survives correction for the three comparisons - for any cue (08_equivalence.R).",
+                       "Read this as the shape of a pattern, not as an established ranking by position.", sep = "\n")) +
   base_theme
 save_fig(p6, "fig_06_by_position.png")
 

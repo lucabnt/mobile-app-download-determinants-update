@@ -33,6 +33,50 @@ at the boundary  effect present    inconclusive
               3               1               7 
 
 
+=== THE SAME VERDICTS, POSITION BY POSITION ===
+
+comp_f = 'after others' is the average of the second and third app. If the
+two differ, that average describes a situation no respondent was ever in.
+
+                       estimand estimate    se ci90_lo ci90_hi flip_point  p_value        verdict
+  brand effect, app shown first    1.426 0.220  1.0640   1.788      1.788 1.28e-10 effect present
+ brand effect, app shown second    0.888 0.198  0.5614   1.214      1.214 8.24e-06 effect present
+  brand effect, app shown third    0.932 0.219  0.5710   1.293      1.293 2.31e-05 effect present
+    rep effect, app shown first    0.688 0.222  0.3230   1.053      1.053 1.96e-03 effect present
+   rep effect, app shown second    0.618 0.224  0.2494   0.986      0.986 5.85e-03 effect present
+    rep effect, app shown third    1.122 0.194  0.8031   1.442      1.442 9.09e-09 effect present
+    pop effect, app shown first    0.460 0.197  0.1357   0.784      0.784 1.97e-02 effect present
+   pop effect, app shown second   -0.229 0.215 -0.5819   0.125      0.582 2.87e-01   inconclusive
+    pop effect, app shown third    0.388 0.226  0.0149   0.760      0.760 8.72e-02   inconclusive
+
+Are the positions different from each other? Pairwise, Holm-corrected
+within each cue:
+
+ focal position_pairwise estimate    SE t.ratio p.value
+ brand    first - second   0.5383 0.296   1.817  0.2084
+ brand     first - third   0.4940 0.311   1.591  0.2239
+ brand    second - third  -0.0443 0.296  -0.150  0.8810
+   rep    first - second   0.0703 0.315   0.223  0.8234
+   rep     first - third  -0.4345 0.295  -1.475  0.2809
+   rep    second - third  -0.5048 0.296  -1.704  0.2657
+   pop    first - second   0.6883 0.291   2.364  0.0546
+   pop     first - third   0.0721 0.300   0.240  0.8101
+   pop    second - third  -0.6163 0.312  -1.975  0.0970
+
+Reading, for popularity -- the cue whose null this section is about:
+  * first app  +0.46, effect present;
+  * second app -0.23, inconclusive;
+  * third app  +0.39, inconclusive, and NOT different from the first
+    (difference 0.07, p = 0.81).
+So 'popularity works before comparison and dissolves after' is not what the
+data says. The drop is confined to the second app, no pairwise difference
+survives Holm, and the +0.06 'at the boundary' verdict above is an average
+of two inconclusive estimates of opposite sign. What survives is narrower:
+popularity moves intention on first exposure, and after that this design
+cannot say -- which is still enough to deny the 2023 claim that popularity
+is ineffective throughout.
+
+
 === REPORTING TEST: is slide 6 itself affected by the manipulation? ===
 Logistic mixed model manip_ok ~ focal * x + (1|subject), all three focal variables.
 The checks count 1, 2 and 3 boxes, so high-vs-low is compared WITHIN a focal
