@@ -48,9 +48,13 @@ cat("against what came before rather than in isolation. Script 10 tested it on\n
 cat("the 982 later measurements. Summary of what it found:\n\n")
 seq10 <- read.csv(file.path(DIR_TAB, "10_sequence_effects.csv"))
 print(seq10[, c("model", "term", "estimate", "se", "p_value")], digits = 3, row.names = FALSE)
+sA <- seq10[seq10$model == "A: prior mean level" & seq10$term == "prior_mean_x", ]
+sB <- seq10[seq10$model == "B: interaction with history" & seq10$term == "prior_mean_x", ]
 cat("\nReading: the average level seen earlier pulls the current rating DOWN\n")
-cat("(a contrast effect), by -0.18 on its own (p = 0.15) and -0.34 once the\n")
-cat("interaction with the current cue is in the model (p = 0.036). Direction as\n")
+cat(sprintf("(a contrast effect), by %.2f on its own (p = %.2f) and %.2f once the\n",
+            sA$estimate, sA$p_value, sB$estimate))
+cat(sprintf("interaction with the current cue is in the model (p = %.3f). Direction as\n",
+            sB$p_value))
 cat("the design feared, magnitude not firmly established.\n")
 cat("A design choice does not need a significant threat to be justified: it\n")
 cat("needs a plausible one, and removing it costs only precision. This one is\n")
@@ -159,23 +163,41 @@ cat("is one of two numbers, not the test. Because the level of the cue is\n")
 cat("assigned between respondents, aov() with Error(subject) splits the term\n")
 cat("across the two strata, and prints it twice:\n\n")
 a_corr <- aov(y ~ focal * x_f * position + Error(subj_f), data = long)
-print(summary(a_corr))
-cat("\n  between-subject stratum : F = 2.327, p = 0.0555\n")
-cat("  within-subject stratum  : F = 0.642, p = 0.6325\n")
-cat("  combined (mixed model)  : chi-square = 6.01, 4 df, p = 0.198\n\n")
+sa <- summary(a_corr)
+print(sa)
+strat <- function(s) {
+  t <- s[[1]]; r <- trimws(rownames(t)) == "focal:x_f:position"
+  c(F = t[r, "F value"], p = t[r, "Pr(>F)"])
+}
+b3 <- strat(sa[["Error: subj_f"]]); w3 <- strat(sa[["Error: Within"]])
+l3 <- anova(m_no3, m_sat)
+cat(sprintf("\n  between-subject stratum : F = %.3f, p = %.4f\n", b3[["F"]], b3[["p"]]))
+cat(sprintf("  within-subject stratum  : F = %.3f, p = %.4f\n", w3[["F"]], w3[["p"]]))
+cat(sprintf("  combined (mixed model)  : LRT chi-square = %.2f, 4 df, p = %.3f\n",
+            l3$Chisq[2], l3$`Pr(>Chisq)`[2]))
+cat("  (04_corrected_inference.R reports the Wald version of the same test.)\n\n")
 cat("The conclusion does not change -- the interaction is not significant, and\n")
 cat("the 2023 claim that it was remains withdrawn -- but the honest number is\n")
 cat("the combined one. Quoting 0.63 alone reports the half of the term that\n")
 cat("vanishes and omits the half that does not.\n")
 
+avg <- as.data.frame(summary(contrast(emmeans(m_avg, ~ x_f * focal),
+                     interaction = c("revpairwise", "pairwise")), adjust = "holm"))
+avg <- avg[avg[[2]] == "brand - rep", ]
+co1 <- co_t[co_t[[2]] == "brand - rep", ]
+cs1 <- as.data.frame(summary(ct, adjust = "holm"))
+cs1 <- cs1[cs1[[2]] == "brand - rep", ]
+
 cat("\n\n=== 5. VERDICT ===\n\n")
 cat("What the 2023 design got right:\n")
 cat("  * the first judgement is the only uncontaminated one, and the threat it\n")
 cat("    protects against is visible in the data (§1);\n")
-cat("  * on that quantity the ranking brand > reputation holds, and holds under\n")
-cat("    every specification tried: +1.05 Likert points (p = 0.0035) and\n")
-cat("    +1.28 log-odds (p = 0.002) in the thesis's own sample, and the same\n")
-cat("    estimate from the pooled model (§3);\n")
+cat("  * on that quantity the ranking brand > reputation holds under every\n")
+cat(sprintf("    specification tried: %+.2f points (p = %.4f, Holm) from the pooled model,\n",
+            bp$estimate[1], bp$p.value[1]))
+cat(sprintf("    %+.2f (p = %.4f) and %+.2f log-odds (p = %.4f) in the thesis's own\n",
+            cs1$estimate, cs1$p.value, co1$estimate_log_odds, co1$p.value))
+cat("    sample of first measurements (§3);\n")
 cat("  * Model 3's comp_i interaction was the right instinct: it says the\n")
 cat("    effect depends on whether comparison has happened.\n\n")
 cat("What remains wrong, and is a smaller and more specific charge than the\n")
@@ -187,7 +209,7 @@ cat("    the test together (§3.2);\n")
 cat("  * the ranking was then stated without its scope. 'Brand is the most\n")
 cat("    effective' is supported for the first app seen; it is not supported as\n")
 cat("    an average over the three judgements, where brand and reputation are\n")
-cat("    indistinguishable (+0.20, p = 0.22);\n")
+cat(sprintf("    indistinguishable (%+.2f, p = %.2f);\n", avg$estimate, avg$p.value))
 cat("  * M3's x_brand = 1.5028 was read as the effect 'independently from n'.\n")
 cat("    With comp_i and its interaction in the model, that coefficient is the\n")
 cat("    effect at comp_i = 0, i.e. first exposure again -- not an overall\n")

@@ -53,7 +53,8 @@ of the data. The rest holds. Detail in `01-review-of-2023-work.md` §1.
 were not revised afterwards. Verdicts: §12 of the review. Claim 1 **kept** (brand ahead in 4 of
 23 specifications, below the 25% bar), claim 2 **confirmed and made precise** (popularity is an
 effect before comparison, at the boundary after it), claim 3 **stays a hypothesis** (6 of 12
-significant, below the 9 of 12 bar).
+significant, below the 9 of 12 bar — 8 of 12 after the covariate correction of 2026-09-18,
+still below it).
 
 ### Why this step, and why now
 
@@ -220,8 +221,8 @@ heterogeneity) is a publishable result.
 
 **Outcome (2026-09-12): the prediction above was wrong, and is left standing rather than
 quietly edited.** Respondents do differ in how much the manipulation moves them
-(χ² = 10.29, 2 df, p = 0.0058; sensitivity s.d. 0.56 against average effects of 0.22–1.05), and
-the correlation between baseline and sensitivity is −0.61: the people most inclined to download
+(χ² = 9.47, 2 df, p = 0.0088; sensitivity s.d. 0.57 against average effects of 0.22–1.05), and
+the correlation between baseline and sensitivity is −0.59: the people most inclined to download
 anything are the least moved by the cues. The third specification, a personal level for each
 cue, is saturated by construction and genuinely not estimable. See §3 of [`03-new-analyses.md`](03-new-analyses.md).
 
@@ -324,9 +325,9 @@ Upgrading the R environment first is preferable.
 
 **Outcome (2026-09-12): completed with a full Bayesian model.** The task was first closed with
 the authorised approximation and then reopened when `cmdstanr` was installed. The models were
-fitted in Stan: four chains of 2,000 iterations, weakly informative priors, largest R-hat 1.010
-and no divergent transitions. Brand is ahead of reputation with probability 88.8% overall, 98.6%
-before any comparison and 51.1% after one. See §7 of [`03-new-analyses.md`](03-new-analyses.md).
+fitted in Stan: four chains of 2,000 iterations, weakly informative priors, largest R-hat 1.005
+and no divergent transitions. Brand is ahead of reputation with probability 86.4% overall, 98.6%
+before any comparison and 47.6% after one. See §7 of [`03-new-analyses.md`](03-new-analyses.md).
 
 **Why `rstan` could not fit it, accurately.** An earlier version of this entry said
 RTools was missing. That was true when it was written and is no longer the reason. RTools 4.5 was
@@ -356,7 +357,8 @@ clear message only if neither compiles.
 
 **What the comparison bought.** The approximation was kept rather than deleted, and the script
 compares the two sets of probabilities. Across sixteen statements the largest disagreement is
-**2.9 percentage points** and every other one is below 1.2. That is the only way to know whether
+**3.9 percentage points** (2.9 before the covariate correction of 2026-09-18), and twelve of
+the sixteen are below 1.9. That is the only way to know whether
 the work done while Stan was unavailable was resting on anything — and it was.
 
 ---
@@ -379,7 +381,7 @@ confirming.
 
 **Outcome (2026-09-12).** The scale is demonstrably not a ruler — the widest step between
 cutpoints is 1.95 times the narrowest — and it changes nothing: the effect on the probability of
-answering 5 or more differs by 0.8 to 3.1 percentage points between the two treatments, with the
+answering 5 or more differs by 0.7 to 3.0 percentage points between the two treatments, with the
 ranking intact. See §4 of [`03-new-analyses.md`](03-new-analyses.md).
 
 ---
@@ -427,7 +429,7 @@ unchanged: the mistakes are the subject, the reviewer is the hook.
 1. Context: what the thesis asked, and why the question is still open in 2026.
 2. The result that flattens: the three-step hierarchy had never been tested, and what it
    holds for is narrower than the thesis said — brand leads reputation on the first app
-   shown (+0.74, p = 0.037) and not on the average across the three judgements (p = 0.22).
+   shown (+0.76, p = 0.031) and not on the average across the three judgements (p = 0.24).
    Figure 1. **This is the strong piece, not popularity:** it is clean, robust and entirely
    demonstrable.
 3. The result that dissolves: popularity. Not "it was ineffective and turns out to be
@@ -494,6 +496,69 @@ checkable.
 ---
 
 ## 6. Change log
+
+### 2026-09-18 — A data error found by an independent review, and everything re-run
+
+An independent re-computation of the review (`review/verdict.md`, written without reading the
+scripts) found a real error in this repository's data preparation. The response, with every
+point accepted or contested on the evidence, is `review/response.md`.
+
+**The error.** For the 18 respondents with a mean-imputed involvement scale, `M ANOVA_RM.csv`
+stores the centred score as −mean (the missing value treated as 0), where the nine model files
+store 0. The values are impossible on a 1–7 scale. The thesis is unaffected — its regressions
+read the model files and its ANOVA does not use involvement — but `03_build_derived.R` copied the
+columns from the ANOVA file, so every pooled model in this review with involvement controls
+carried the 18 values. The cross-file check of the data audit had stopped at `y`, `x` and
+`comp`.
+
+**Fixed**
+
+- `03_build_derived.R` rebuilds the covariates from the model files and asserts agreement.
+- `02_data_audit.R` §4b: cross-file agreement, possible range and zero mean for every centred
+  column.
+- `05_robustness.R` §D.6: the headline estimates without the 18 imputed respondents (no claim
+  changes).
+- The whole pipeline re-run; every number in the review, the new-analyses document, the README,
+  the post and the standing sections of this plan updated. Entries of this change log and the
+  pre-registration reasoning of Step 2A (the 0.315 that motivated the band) are left as written:
+  they record what was known when they were written. The summary table of thesis conclusions in
+  the 2026-09-09 entry has always been kept current, and still is.
+
+**What moved**
+
+- Two verdicts: both involvement moderations go from *at the boundary* to **equivalent to
+  zero** (flip points 0.229 and 0.247, below the band). The post's "neither can be ruled out"
+  became "both fall inside the margin fixed as too small to matter".
+- The convergence curve: 8 of 12 specifications significant instead of 6, still below the
+  9-of-12 bar.
+- Full Bayesian against approximation: largest disagreement 3.9 percentage points, not 2.9.
+- Numbers at the second or third decimal: first-exposure brand − reputation +0.755 (p = 0.031),
+  average brand − reputation p = 0.240, three-way χ²(4) = 6.31 (p = 0.177), heterogeneity
+  χ² = 9.47 (p = 0.0088, r = −0.59), and the rest listed in `review/response.md`.
+
+**Found by the re-run, unrelated to the data error**
+
+- Fixed text that no longer matched the numbers beside it, because it had been typed instead of
+  computed: the reading in `11_heterogeneity.R` still said the sensitivity question "cannot be
+  answered", written before the model was run, printed under a significant test; captions in
+  `06_figures.R` and readings in 08, 18 and 19 quoted numbers by hand. All now quote the fitted
+  values.
+- An off-by-one label in `12_response_scale.R`: the widest and narrowest bands are the ones that
+  produce an answer of 6 and of 3, not "the step into the top category" and "into the third".
+  The same wording is corrected in the new-analyses document, the post and `fig_09`.
+- §11 of the review still listed scripts 01–06 and R 4.2.2. Rewritten, with §11.1: the exact
+  model behind every quoted number, which is the part of the verdict's problem 2 that holds.
+
+**Not done here**
+
+- `13_demographics_quality.R` needs the private export and was not re-run: §5–6 of the
+  new-analyses document, `fig_11`, `fig_12` and the post's sentence on students are still on the old
+  covariates, and say so.
+- Whether to version `review/`, and whether to publish anonymised item-level data (scale items,
+  the nine slide-6 boxes) so that claims #37 and #48 become checkable: both are the author's
+  decision.
+
+---
 
 ### 2026-09-17 — The popularity story, cut back to what the positions support
 
@@ -895,12 +960,12 @@ history rewrite with a force-push on an already-published branch — deliberatel
 
 | Original conclusion | Status after the review |
 |---|---|
-| Three-way *i* × *x* × *n* interaction significant | **Withdrawn** — χ²(4) = 6.01, p = 0.20 under correct repeated measures |
-| Brand is the most effective predictor | **Scoped** — holds for the first app shown (+0.74, p = 0.037), indistinguishable from reputation once the three judgements are averaged (p = 0.22) |
+| Three-way *i* × *x* × *n* interaction significant | **Withdrawn** — χ²(4) = 6.31, p = 0.18 under correct repeated measures |
+| Brand is the most effective predictor | **Scoped** — holds for the first app shown (+0.76, p = 0.031), indistinguishable from reputation once the three judgements are averaged (p = 0.24) |
 | Popularity is ineffective in all models | **Requalified** — not a solid null, but not overturned either: see the appendices entry above |
 | Under comparison, reputation overtakes brand | **Reformulated** — they converge, they do not swap |
-| Download involvement strengthens reputation | **Withdrawn** — does not replicate (p = 0.48) |
-| Category involvement favours brand | **Withdrawn** — does not replicate (p = 0.37) |
+| Download involvement strengthens reputation | **Withdrawn** — does not replicate (p = 0.84), and equivalent to zero under every defensible threshold |
+| Category involvement favours brand | **Withdrawn** — does not replicate (p = 0.74), and equivalent to zero under every defensible threshold |
 | No interaction between focal variables | **Requalified** — inconclusive, not null (MDE ≥ 0.76 s.d.) |
 
 **Unchanged**

@@ -10,24 +10,24 @@ Check that the history is exogenous: it must be unrelated to who the
 respondent is, because the levels were randomised. Correlation of
 prior_mean_x with the three involvement measures:
 inv_app  inv_dl inv_cat 
--0.0509 -0.0005  0.0031 
+-0.0528 -0.0224 -0.0190 
 
 
 --- Model A: does the average level seen earlier shift the current ITD? ---
 y ~ focal * x + position + prior_mean_x + involvement + (1 | subject)
 
-                 Estimate Std. Error       df     t value      Pr(>|t|)
-(Intercept)    4.65886179 0.13874065 977.4016 33.57964536 5.220076e-165
-focalrep      -0.98261192 0.14851769 742.4373 -6.61612723  7.058048e-11
-focalpop      -0.13155657 0.15583687 758.4615 -0.84419418  3.988271e-01
-x              0.89188183 0.15708402 867.0851  5.67773742  1.861697e-08
-positionthird -0.06083934 0.07834365 489.3612 -0.77657022  4.377876e-01
-prior_mean_x  -0.17861278 0.12413584 804.4742 -1.43884940  1.505821e-01
-inv_app        0.11379365 0.05199977 488.9088  2.18834893  2.911667e-02
-inv_dl        -0.06524176 0.04447505 488.4232 -1.46692947  1.430388e-01
-inv_cat        0.12952685 0.04811679 487.6650  2.69192646  7.348304e-03
-focalrep:x     0.01708787 0.22169503 856.1594  0.07707829  9.385793e-01
-focalpop:x    -0.87089040 0.22810337 850.0238 -3.81796381  1.443290e-04
+                 Estimate Std. Error       df    t value      Pr(>|t|)
+(Intercept)    4.64436397 0.13844954 977.4967 33.5455355 8.791870e-165
+focalrep      -0.99086864 0.14840112 743.8809 -6.6769622  4.773182e-11
+focalpop      -0.14361359 0.15573868 759.6546 -0.9221447  3.567459e-01
+x              0.88114942 0.15690983 868.4508  5.6156418  2.635930e-08
+positionthird -0.06106974 0.07835620 489.0804 -0.7793862  4.361292e-01
+prior_mean_x  -0.17477726 0.12387793 802.9182 -1.4108830  1.586664e-01
+inv_app        0.11859057 0.05793759 487.7604  2.0468674  4.120648e-02
+inv_dl        -0.06891457 0.04609035 487.7089 -1.4952061  1.355074e-01
+inv_cat        0.18520163 0.05655618 487.2075  3.2746488  1.133228e-03
+focalrep:x     0.04064930 0.22140189 858.3751  0.1835996  8.543709e-01
+focalpop:x    -0.84935709 0.22785961 851.9271 -3.7275456  2.061227e-04
 
 Likelihood-ratio test for adding the history term:
 Data: later
@@ -35,26 +35,26 @@ Models:
 mA0: y ~ focal * x + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
 mA: y ~ focal * x + position + prior_mean_x + inv_app + inv_dl + inv_cat + (1 | subj_f)
     npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
-mA0   12 3608.5 3667.2 -1792.3    3584.5                     
-mA    13 3608.5 3672.0 -1791.2    3582.5 2.0616  1     0.1511
+mA0   12 3605.7 3664.4 -1790.9    3581.7                     
+mA    13 3605.7 3669.3 -1789.9    3579.7 1.9824  1     0.1591
 
 
 --- Model B: does what came before change how much the current cue matters? ---
 as model A, plus x * prior_mean_x
 
-                  Estimate Std. Error       df     t value      Pr(>|t|)
-(Intercept)     4.74228440 0.14866369 981.6997 31.89941205 8.547788e-154
-focalrep       -0.98904111 0.14847733 744.0914 -6.66122638  5.280315e-11
-focalpop       -0.13253851 0.15573300 758.9344 -0.85106246  3.950031e-01
-x               0.72612641 0.19005362 873.1281  3.82063975  1.425357e-04
-prior_mean_x   -0.34188262 0.16293630 968.9027 -2.09825940  3.614068e-02
-positionthird  -0.05885207 0.07833776 489.0454 -0.75126066  4.528572e-01
-inv_app         0.11129655 0.05191054 489.0905  2.14400671  3.252467e-02
-inv_dl         -0.06622116 0.04438178 488.1053 -1.49207972  1.363243e-01
-inv_cat         0.12964666 0.04801091 487.1949  2.70035819  7.167573e-03
-focalrep:x      0.01701938 0.22151199 856.8703  0.07683278  9.387745e-01
-focalpop:x     -0.87942404 0.22798930 850.6830 -3.85730400  1.233009e-04
-x:prior_mean_x  0.32690276 0.21209083 860.4010  1.54133374  1.236033e-01
+                  Estimate Std. Error       df    t value      Pr(>|t|)
+(Intercept)     4.72775347 0.14839900 981.7102 31.8583914 1.624497e-153
+focalrep       -0.99730777 0.14836025 745.5327 -6.7222035  3.559420e-11
+focalpop       -0.14449650 0.15563415 760.1373 -0.9284370  3.534757e-01
+x               0.71581076 0.18979646 874.9709  3.7714652  1.732035e-04
+prior_mean_x   -0.33771982 0.16265993 968.3201 -2.0762324  3.813580e-02
+positionthird  -0.05907902 0.07835006 488.7707 -0.7540392  4.511888e-01
+inv_app         0.11671020 0.05782338 487.5836  2.0183913  4.409755e-02
+inv_dl         -0.06984128 0.04599319 487.3699 -1.5185134  1.295334e-01
+inv_cat         0.18462088 0.05643335 486.7728  3.2714854  1.145773e-03
+focalrep:x      0.04047789 0.22121839 859.0712  0.1829771  8.548592e-01
+focalpop:x     -0.85815155 0.22775032 852.5441 -3.7679489  1.759178e-04
+x:prior_mean_x  0.32628475 0.21186206 862.2358  1.5400811  1.239075e-01
 
 Likelihood-ratio test for adding the interaction:
 Data: later
@@ -62,37 +62,37 @@ Models:
 mA: y ~ focal * x + position + prior_mean_x + inv_app + inv_dl + inv_cat + (1 | subj_f)
 mB: y ~ focal * x + x * prior_mean_x + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
    npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
-mA   13 3608.5 3672.0 -1791.2    3582.5                     
-mB   14 3608.1 3676.6 -1790.0    3580.1 2.3709  1     0.1236
+mA   13 3605.7 3669.3 -1789.9    3579.7                     
+mB   14 3605.4 3673.8 -1788.7    3577.4 2.3671  1     0.1239
 
 
 --- Model C: only the app seen immediately before ---
 y ~ focal * x + position + prev_x + prev_focal + involvement + (1 | subject)
 
-                 Estimate Std. Error       df     t value      Pr(>|t|)
-(Intercept)    4.78888402 0.17142403 893.1078 27.93589655 6.366569e-124
-focalrep      -1.06545706 0.15892389 720.3361 -6.70419689  4.091360e-11
-focalpop      -0.21214001 0.17082773 753.1399 -1.24183587  2.146837e-01
-x              0.88511536 0.15748330 882.2123  5.62037611  2.555533e-08
-positionthird -0.06375805 0.07868509 488.9395 -0.81029397  4.181654e-01
-prev_x        -0.12821489 0.09392222 941.9101 -1.36511773  1.725420e-01
-prev_focalrep -0.17909380 0.12338346 651.7984 -1.45152194  1.471157e-01
-prev_focalpop -0.12653234 0.11798733 621.8739 -1.07242312  2.839460e-01
-inv_app        0.11674525 0.05189760 488.5366  2.24953084  2.492320e-02
-inv_dl        -0.06418710 0.04440751 487.5781 -1.44541100  1.489849e-01
-inv_cat        0.12758608 0.04805602 487.2654  2.65494501  8.191749e-03
-focalrep:x     0.00261235 0.22181876 857.2094  0.01177696  9.906063e-01
-focalpop:x    -0.85074302 0.22855798 851.9671 -3.72221981  2.104482e-04
+                 Estimate Std. Error       df    t value      Pr(>|t|)
+(Intercept)    4.77679755 0.17120601 893.0079 27.9008754 1.082532e-123
+focalrep      -1.07714718 0.15876340 722.3175 -6.7846065  2.425640e-11
+focalpop      -0.22451471 0.17068216 754.7426 -1.3153964  1.887762e-01
+x              0.87460278 0.15730146 883.6030  5.5600422  3.572950e-08
+positionthird -0.06358945 0.07869566 488.6687 -0.8080427  4.194592e-01
+prev_x        -0.12371248 0.09382015 942.5488 -1.3186132  1.876188e-01
+prev_focalrep -0.18696124 0.12328606 653.5761 -1.5164832  1.298807e-01
+prev_focalpop -0.12561710 0.11796360 622.3232 -1.0648802  2.873432e-01
+inv_app        0.12162868 0.05783789 487.7126  2.1029241  3.598420e-02
+inv_dl        -0.06764089 0.04601011 486.6878 -1.4701312  1.421724e-01
+inv_cat        0.18423040 0.05645707 486.1061  3.2631942  1.179188e-03
+focalrep:x     0.02640541 0.22152902 859.3723  0.1191961  9.051478e-01
+focalpop:x    -0.82758132 0.22831709 853.7744 -3.6247016  3.064143e-04
 
 
 === SUMMARY ===
                        model           term estimate     se  df p_value  reading
-         A: prior mean level   prior_mean_x   -0.179 0.1241 804  0.1506 contrast
- B: interaction with history   prior_mean_x   -0.342 0.1629 969  0.0361 contrast
- B: interaction with history x:prior_mean_x    0.327 0.2121 860  0.1236        -
-    C: immediate predecessor         prev_x   -0.128 0.0939 942  0.1725 contrast
-    C: immediate predecessor  prev_focalrep   -0.179 0.1234 652  0.1471        -
-    C: immediate predecessor  prev_focalpop   -0.127 0.1180 622  0.2839        -
+         A: prior mean level   prior_mean_x   -0.175 0.1239 803  0.1587 contrast
+ B: interaction with history   prior_mean_x   -0.338 0.1627 968  0.0381 contrast
+ B: interaction with history x:prior_mean_x    0.326 0.2119 862  0.1239        -
+    C: immediate predecessor         prev_x   -0.124 0.0938 943  0.1876 contrast
+    C: immediate predecessor  prev_focalrep   -0.187 0.1233 654  0.1299        -
+    C: immediate predecessor  prev_focalpop   -0.126 0.1180 622  0.2873        -
 
 A negative coefficient on prior_mean_x or prev_x means CONTRAST: apps shown
 after strong ones are rated lower. A positive one means ASSIMILATION.

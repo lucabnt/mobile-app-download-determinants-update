@@ -31,9 +31,9 @@ x_i * comp_i, so its x_i coefficient is the effect at comp_i = 0 -- which is
 n = 1 again. The two are routes to the same estimand.
 
    cue M1_estimate  M1_se M3_estimate  M3_se pooled_estimate pooled_se
- brand      1.5289 0.2355      1.5028 0.2409          1.4261    0.2200
-   rep      0.4986 0.2626      0.4576 0.2690          0.6879    0.2217
-   pop      0.3611 0.2148      0.3677 0.2184          0.4597    0.1968
+ brand      1.5289 0.2355      1.5028 0.2409          1.4392    0.2199
+   rep      0.4986 0.2626      0.4576 0.2690          0.6837    0.2216
+   pop      0.3611 0.2148      0.3677 0.2184          0.4502    0.1967
 
 M1 and M3 agree to within a few hundredths, and their standard errors are
 almost identical: M3 buys no precision on this quantity, because the
@@ -57,9 +57,9 @@ covariance. This is the whole of the gap, and it is not a matter of taste:
 it is what makes the thesis's central claim untestable as written.
 
  focal_pairwise position estimate t.ratio  p.value
-    brand - rep    first   0.7381  2.3627 0.036580
-    brand - pop    first   0.9664  3.2716 0.003294
-      rep - pop    first   0.2283  0.7702 0.441311
+    brand - rep    first   0.7555  2.4188 0.031422
+    brand - pop    first   0.9890  3.3488 0.002505
+      rep - pop    first   0.2335  0.7879 0.430874
 
 Same quantity M1 targets, plus the comparison M1 cannot make.
 
@@ -95,18 +95,18 @@ M3 codes comparison as first (0) versus second-or-third (1). The effects by
 position say the two halves of that second level are not alike:
 
  focal position estimate    SE  p.value
- brand    first    1.426 0.220 1.28e-10
-   rep    first    0.688 0.222 1.96e-03
-   pop    first    0.460 0.197 1.97e-02
- brand   second    0.888 0.198 8.24e-06
-   rep   second    0.618 0.224 5.85e-03
-   pop   second   -0.229 0.215 2.87e-01
- brand    third    0.932 0.219 2.31e-05
-   rep    third    1.122 0.194 9.09e-09
-   pop    third    0.388 0.226 8.72e-02
+ brand    first    1.439 0.220 8.68e-11
+   rep    first    0.684 0.222 2.08e-03
+   pop    first    0.450 0.197 2.23e-02
+ brand   second    0.881 0.198 9.64e-06
+   rep   second    0.635 0.224 4.63e-03
+   pop   second   -0.217 0.214 3.12e-01
+ brand    third    0.918 0.219 3.06e-05
+   rep    third    1.128 0.194 7.53e-09
+   pop    third    0.397 0.226 7.96e-02
 
-Reputation is 0.62 on the second app and 1.12 on the third; popularity is
--0.23 and +0.39. Averaging them into one 'after comparison' number is not
+Reputation is 0.63 on the second app and 1.13 on the third; popularity is
+-0.22 and +0.40. Averaging them into one 'after comparison' number is not
 wrong, but it describes a situation no respondent was ever in.
 
 

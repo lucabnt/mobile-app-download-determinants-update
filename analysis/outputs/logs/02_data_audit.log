@@ -50,6 +50,27 @@ subjects with duplicated n: 0
   pop    merged n=491 | y mismatches=0 | x mismatches=0 | comp!=(n>1)=0
   brand  merged n=491 | y mismatches=0 | x mismatches=0 | comp!=(n>1)=0
 
+## 4b. The involvement covariates, across files and against their own range
+(i) ANOVA file vs M3_rep, one row per respondent:
+  inv_app  mismatches= 5 | all of them mean-imputed cases: TRUE | ANOVA value there = -mean (-5.3285)
+  inv_dl   mismatches= 3 | all of them mean-imputed cases: TRUE | ANOVA value there = -mean (-4.6933)
+  inv_cat  mismatches=11 | all of them mean-imputed cases: TRUE | ANOVA value there = -mean (-4.4802)
+
+(ii)-(iii) range and centring of each centred column:
+  ANOVA file inv_app  mean -0.05426 | min -5.329 (possible -4.329) | out of range: 5
+  ANOVA file inv_dl   mean -0.02868 | min -4.693 (possible -3.693) | out of range: 3
+  ANOVA file inv_cat  mean -0.10037 | min -4.480 (possible -3.480) | out of range: 11
+  M3_rep     inv_app  mean -0.00000 | min -3.662 (possible -4.329) | out of range: 0
+  M3_rep     inv_dl   mean -0.00000 | min -3.693 (possible -3.693) | out of range: 0
+  M3_rep     inv_cat  mean +0.00000 | min -3.480 (possible -3.480) | out of range: 0
+
+Verdict: the nine model files agree with one another and are correctly
+centred, which is why the thesis's regressions are unaffected; the thesis's
+ANOVA does not use involvement at all. The ANOVA file encodes the 18
+mean-imputed respondents as if the missing score had been 0, so its
+centred value is -mean, outside the possible range. 03_build_derived.R
+therefore rebuilds the covariates from M3_rep instead of copying them.
+
 ## 5. M1 (n=1) and M2 (n=3) subsamples: expected vs actual sizes
   rep     n=1 expected 149 / file M1 149 ok |  n=3 expected 196 / file M2 196 ok
   pop     n=1 expected 189 / file M1 189 ok |  n=3 expected 143 / file M2 143 ok

@@ -19,15 +19,15 @@ focal     0   1
 Subjects ticking all three boxes: 163 of 491
 
                         sample focal estimate     SE lower.CL upper.CL   p.value
-1    all observations (N=1473) brand   1.0528 0.1224  0.81260   1.2929 2.322e-17
-2    all observations (N=1473)   rep   0.8425 0.1224  0.60238   1.0826 9.135e-12
-3    all observations (N=1473)   pop   0.2181 0.1223 -0.02184   0.4580 7.478e-02
-4     box ticked only (N=1007) brand   1.3812 0.1566  1.07388   1.6885 5.731e-18
-5     box ticked only (N=1007)   rep   1.0983 0.1445  0.81474   1.3819 7.457e-14
-6     box ticked only (N=1007)   pop   0.5067 0.1618  0.18919   0.8242 1.794e-03
-7 subjects ticking 3/3 (N=489) brand   1.3441 0.2080  0.93533   1.7530 2.866e-10
-8 subjects ticking 3/3 (N=489)   rep   1.2420 0.2071  0.83492   1.6490 4.341e-09
-9 subjects ticking 3/3 (N=489)   pop   0.5166 0.2064  0.11093   0.9223 1.269e-02
+1    all observations (N=1473) brand   1.0499 0.1224  0.80979   1.2900 2.753e-17
+2    all observations (N=1473)   rep   0.8476 0.1223  0.60758   1.0876 6.767e-12
+3    all observations (N=1473)   pop   0.2212 0.1222 -0.01858   0.4611 7.055e-02
+4     box ticked only (N=1007) brand   1.3822 0.1566  1.07481   1.6896 5.545e-18
+5     box ticked only (N=1007)   rep   1.1120 0.1446  0.82830   1.3958 3.840e-14
+6     box ticked only (N=1007)   pop   0.4938 0.1619  0.17610   0.8115 2.354e-03
+7 subjects ticking 3/3 (N=489) brand   1.3470 0.2077  0.93874   1.7552 2.486e-10
+8 subjects ticking 3/3 (N=489)   rep   1.2414 0.2067  0.83501   1.6477 4.154e-09
+9 subjects ticking 3/3 (N=489)   pop   0.5059 0.2061  0.10083   0.9109 1.450e-02
 
 
 === D.2 MIXED-EFFECTS ORDINAL LOGIT ===
@@ -41,41 +41,41 @@ formula: y_ord ~ focal * x_f + position + inv_app + inv_dl + inv_cat +      (1 |
 data:    long
 
  link  threshold nobs logLik   AIC     niter       max.grad cond.H 
- logit flexible  1473 -2496.39 5026.78 2567(12700) 1.92e-03 1.5e+02
+ logit flexible  1473 -2495.01 5024.01 2276(11246) 3.51e-03 1.5e+02
 
 Random effects:
  Groups Name        Variance Std.Dev.
- subj_f (Intercept) 2.727    1.651   
+ subj_f (Intercept) 2.703    1.644   
 Number of groups:  subj_f 491 
 
 Coefficients:
                  Estimate Std. Error z value Pr(>|z|)    
-focalrep         -1.18899    0.18398  -6.462 1.03e-10 ***
-focalpop         -0.06508    0.18099  -0.360  0.71917    
-x_fhigh           1.71153    0.19918   8.593  < 2e-16 ***
-positionsecond   -0.18441    0.11852  -1.556  0.11971    
-positionthird    -0.29509    0.11935  -2.472  0.01342 *  
-inv_app           0.32739    0.07916   4.136 3.54e-05 ***
-inv_dl           -0.13324    0.06796  -1.960  0.04994 *  
-inv_cat           0.21211    0.07303   2.904  0.00368 ** 
-focalrep:x_fhigh -0.41416    0.27226  -1.521  0.12822    
-focalpop:x_fhigh -1.33780    0.27414  -4.880 1.06e-06 ***
+focalrep         -1.19679    0.18386  -6.509 7.56e-11 ***
+focalpop         -0.07083    0.18084  -0.392 0.695305    
+x_fhigh           1.70286    0.19917   8.550  < 2e-16 ***
+positionsecond   -0.18590    0.11853  -1.568 0.116783    
+positionthird    -0.29653    0.11934  -2.485 0.012964 *  
+inv_app           0.34128    0.08818   3.870 0.000109 ***
+inv_dl           -0.15033    0.07061  -2.129 0.033261 *  
+inv_cat           0.31233    0.08601   3.631 0.000282 ***
+focalrep:x_fhigh -0.39599    0.27228  -1.454 0.145841    
+focalpop:x_fhigh -1.32543    0.27394  -4.838 1.31e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Threshold coefficients:
     Estimate Std. Error z value
-1|2  -4.4433     0.2352 -18.895
-2|3  -2.6760     0.1907 -14.029
-3|4  -1.6864     0.1787  -9.435
-4|5  -0.2988     0.1714  -1.743
-5|6   1.1379     0.1747   6.513
-6|7   3.0653     0.2001  15.322
+1|2  -4.4169     0.2346 -18.825
+2|3  -2.6457     0.1901 -13.920
+3|4  -1.6550     0.1781  -9.293
+4|5  -0.2672     0.1710  -1.562
+5|6   1.1675     0.1746   6.687
+6|7   3.0925     0.2003  15.441
 
 Odds ratios of the manipulation effect, by focal variable:
-  brand   log-odds = +1.7115   OR = 5.537
-  rep     log-odds = +1.2974   OR = 3.660
-  pop     log-odds = +0.3737   OR = 1.453
+  brand   log-odds = +1.7029   OR = 5.490
+  rep     log-odds = +1.3069   OR = 3.695
+  pop     log-odds = +0.3774   OR = 1.459
 
 ORs > 1 mean a higher probability of high ITD under the high level.
 
@@ -138,40 +138,57 @@ Analysis of Deviance Table (Type III Wald chisquare tests)
 
 Response: y
                       Chisq Df Pr(>Chisq)    
-(Intercept)       1894.0419  1  < 2.2e-16 ***
-focal               62.7578  2  2.357e-14 ***
-x_f                 79.1307  1  < 2.2e-16 ***
-inv_app              2.8205  1    0.09306 .  
-inv_dl               1.6206  1    0.20300    
-inv_cat              0.3333  1    0.56375    
-position             8.8681  2    0.01187 *  
-focal:x_f           26.0329  2  2.223e-06 ***
-focal:inv_app        1.8119  2    0.40416    
-x_f:inv_app          1.2374  1    0.26598    
-focal:inv_dl         6.3436  2    0.04193 *  
-x_f:inv_dl           0.1348  1    0.71346    
-focal:inv_cat        2.6255  2    0.26907    
-x_f:inv_cat          0.8253  1    0.36365    
-focal:x_f:inv_app    1.7959  2    0.40741    
-focal:x_f:inv_dl     1.4094  2    0.49426    
-focal:x_f:inv_cat    2.3832  2    0.30373    
+(Intercept)       1883.9421  1  < 2.2e-16 ***
+focal               62.0777  2  3.311e-14 ***
+x_f                 75.7339  1  < 2.2e-16 ***
+inv_app              2.0586  1    0.15135    
+inv_dl               1.3069  1    0.25296    
+inv_cat              2.0141  1    0.15584    
+position             8.5710  2    0.01377 *  
+focal:x_f           25.3182  2  3.178e-06 ***
+focal:inv_app        2.0142  2    0.36528    
+x_f:inv_app          1.2015  1    0.27303    
+focal:inv_dl         5.6207  2    0.06018 .  
+x_f:inv_dl           0.2440  1    0.62131    
+focal:inv_cat        1.2516  2    0.53484    
+x_f:inv_cat          0.1128  1    0.73703    
+focal:x_f:inv_app    0.7775  2    0.67791    
+focal:x_f:inv_dl     1.0511  2    0.59123    
+focal:x_f:inv_cat    0.8722  2    0.64656    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Slope of the manipulation effect against each involvement measure
-(change in the high-vs-low effect per +1 s.d. of involvement):
+(change in the high-vs-low effect per +1 point of the 1-7 involvement scale;
+08_equivalence.R rescales the two contested ones to per +1 s.d.):
  moderator focal estimate    SE lower.CL upper.CL p.value
-   inv_app brand    0.119 0.108  -0.0933    0.332 0.27124
-   inv_app   rep    0.260 0.108   0.0487    0.472 0.01595
-   inv_app   pop    0.324 0.108   0.1121    0.536 0.00276
+   inv_app brand    0.131 0.121 -0.10594    0.368  0.2783
+   inv_app   rep    0.246 0.121  0.00975    0.483  0.0413
+   inv_app   pop    0.272 0.120  0.03643    0.508  0.0237
 
  moderator focal estimate     SE lower.CL upper.CL p.value
-    inv_dl brand  -0.0335 0.0922   -0.214    0.147   0.716
-    inv_dl   rep  -0.0655 0.0918   -0.246    0.115   0.476
-    inv_dl   pop   0.0795 0.0920   -0.101    0.260   0.388
+    inv_dl brand  -0.0472 0.0966   -0.237    0.142   0.625
+    inv_dl   rep  -0.0188 0.0957   -0.207    0.169   0.844
+    inv_dl   pop   0.0848 0.0959   -0.103    0.273   0.377
 
- moderator focal estimate     SE lower.CL upper.CL p.value
-   inv_cat brand   0.0894 0.0995  -0.1058    0.285  0.3689
-   inv_cat   rep   0.1725 0.1000  -0.0236    0.369  0.0846
-   inv_cat   pop  -0.0404 0.0995  -0.2357    0.155  0.6845
+ moderator focal estimate    SE lower.CL upper.CL p.value
+   inv_cat brand  0.03906 0.118  -0.1916    0.270   0.740
+   inv_cat   rep  0.14817 0.118  -0.0824    0.379   0.208
+   inv_cat   pop  0.00174 0.117  -0.2285    0.232   0.988
 
+
+
+=== D.6 WITHOUT THE 18 MEAN-IMPUTED RESPONDENTS ===
+
+18 respondents have at least one involvement scale replaced by the sample
+mean (review §2.4). Their covariate is now correct (03_build_derived.R), but
+an imputed value is still an assumption. The estimates that carry the
+review's claims, with and without them:
+
+respondents flagged: 18 
+
+                 sample n_resp brand    rep    pop brand_minus_rep_all  p_all brand_minus_rep_first p_first
+                all 491    491 1.050 0.8476 0.2212              0.2023 0.2398                0.7555 0.03142
+ without the 18 imputed    473 1.096 0.8858 0.2361              0.2102 0.2311                0.7466 0.03859
+
+If a claim changes between the two rows, it rests on the imputation.

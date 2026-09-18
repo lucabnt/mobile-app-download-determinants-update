@@ -190,8 +190,8 @@ p9 <- ggplot(d9, aes(value, kind, colour = kind)) +
   labs(title = "The 1-7 scale is not a ruler",
        subtitle = "Where each answer boundary sits on the underlying intention scale",
        x = "Underlying intention (log-odds)", y = NULL,
-       caption = paste("The step into the top category is nearly twice the step into category 3:",
-                       "respondents avoid the ends. Correcting for it changes the effects by under 3 percentage points.",
+       caption = paste("An answer of 6 covers nearly twice as much underlying intention as an answer of 3:",
+                       "respondents stop one short of the ends. Correcting for it changes the effects by about 3 percentage points at most.",
                        sep = "\n")) +
   base_theme + theme(axis.text.y = element_text(size = 9))
 save_fig(p9, "fig_09_scale_cutpoints.png", h = 3.8)

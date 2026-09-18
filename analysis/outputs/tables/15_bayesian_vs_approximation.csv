@@ -1,17 +1,17 @@
 "question","probability_approximation","probability_full","difference_pp"
-"brand is ahead of reputation AFTER other apps were seen",0.48212,0.511,2.888
-"the brand-reputation gap shrinks once other apps are seen",0.973665,0.962,-1.1665
-"the popularity effect is smaller than 0.26 points AFTER comparison",0.883465,0.87325,-1.0215
-"the popularity effect is smaller than 0.26 points",0.63606,0.63175,-0.430999999999993
-"brand is ahead of reputation BEFORE any comparison",0.98948,0.9855,-0.397999999999998
-"the popularity effect is smaller than 0.33 points",0.82167,0.81825,-0.341999999999998
-"brand is ahead of reputation",0.890905,0.8875,-0.340499999999999
-"the full ranking brand > reputation > popularity holds",0.890815,0.8875,-0.331500000000007
-"the popularity effect is positive BEFORE any comparison",0.99067,0.993,0.232999999999994
-"popularity effect is positive",0.963445,0.96475,0.1305
-"brand and reputation are within 0.33 points of each other",0.75675,0.756,-0.0750000000000028
-"brand and reputation are within 0.26 points of each other",0.61217,0.6125,0.0330000000000052
-"reputation is ahead of popularity",0.99991,1,0.00900000000000345
+"brand and reputation are within 0.26 points of each other",0.62899,0.66825,3.926
+"brand is ahead of reputation AFTER other apps were seen",0.44132,0.476,3.468
+"brand and reputation are within 0.33 points of each other",0.77165,0.8035,3.185
+"the popularity effect is smaller than 0.26 points",0.6269,0.6005,-2.64
+"the full ranking brand > reputation > popularity holds",0.881495,0.8635,-1.7995
+"brand is ahead of reputation",0.881625,0.86375,-1.7875
+"the popularity effect is smaller than 0.33 points",0.81561,0.80325,-1.23599999999999
+"the brand-reputation gap shrinks once other apps are seen",0.978755,0.971,-0.775500000000007
+"brand is ahead of reputation BEFORE any comparison",0.99123,0.986,-0.523000000000007
+"the popularity effect is smaller than 0.26 points AFTER comparison",0.87485,0.87875,0.390000000000001
+"popularity effect is positive",0.96552,0.96725,0.173000000000001
+"the popularity effect is positive BEFORE any comparison",0.989875,0.99025,0.0375000000000014
+"reputation is ahead of popularity",0.99987,0.99975,-0.0120000000000009
 "brand effect is positive",1,1,0
 "brand is ahead of popularity",1,1,0
 "reputation effect is positive",1,1,0

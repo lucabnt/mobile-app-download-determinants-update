@@ -138,8 +138,11 @@ byp <- as.data.frame(summary(contrast(emmeans(m_sat, ~ x_f | focal * position),
 print(byp[, c("focal", "position", "estimate", "SE", "p.value")], digits = 3,
       row.names = FALSE)
 write.csv(byp, file.path(DIR_TAB, "19_effects_by_position.csv"), row.names = FALSE)
-cat("\nReputation is 0.62 on the second app and 1.12 on the third; popularity is\n")
-cat("-0.23 and +0.39. Averaging them into one 'after comparison' number is not\n")
+g <- function(f, p) byp$estimate[byp$focal == f & byp$position == p]
+cat(sprintf("\nReputation is %.2f on the second app and %.2f on the third; popularity is\n",
+            g("rep", "second"), g("rep", "third")))
+cat(sprintf("%+.2f and %+.2f. Averaging them into one 'after comparison' number is not\n",
+            g("pop", "second"), g("pop", "third")))
 cat("wrong, but it describes a situation no respondent was ever in.\n")
 
 cat("\n\n=== 6. VERDICT ON THE THREE SPECIFICATIONS ===\n\n")

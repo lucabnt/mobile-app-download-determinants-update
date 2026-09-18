@@ -55,41 +55,41 @@ Linear mixed model fit by REML ['lmerMod']
 Formula: y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 |      subj_f)
    Data: long
 
-REML criterion at convergence: 5269.3
+REML criterion at convergence: 5266.4
 
 Scaled residuals: 
      Min       1Q   Median       3Q      Max 
--3.10004 -0.58057  0.03734  0.60559  2.77263 
+-3.10175 -0.57369  0.03878  0.60306  2.78465 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- subj_f   (Intercept) 0.9842   0.9921  
- Residual             1.4117   1.1882  
+ subj_f   (Intercept) 0.9763   0.9881  
+ Residual             1.4123   1.1884  
 Number of obs: 1473, groups:  subj_f, 491
 
 Fixed effects:
                                 Estimate Std. Error t value
-(Intercept)                      4.18456    0.16725  25.019
-focalrep                        -0.27700    0.22811  -1.214
-focalpop                         0.33448    0.21650   1.545
-x_fhigh                          1.42618    0.21979   6.489
-positionsecond                   0.35444    0.21803   1.626
-positionthird                    0.34978    0.22723   1.539
-inv_app                          0.18312    0.04812   3.805
-inv_dl                          -0.07627    0.04117  -1.853
-inv_cat                          0.13776    0.04453   3.093
-focalrep:x_fhigh                -0.73851    0.31217  -2.366
-focalpop:x_fhigh                -0.96666    0.29518  -3.275
-focalrep:positionsecond         -0.54738    0.32261  -1.697
-focalpop:positionsecond         -0.25283    0.31209  -0.810
-focalrep:positionthird          -0.81176    0.31728  -2.559
-focalpop:positionthird          -0.74327    0.32071  -2.318
-x_fhigh:positionsecond          -0.53857    0.29603  -1.819
-x_fhigh:positionthird           -0.49425    0.31034  -1.593
-focalrep:x_fhigh:positionsecond  0.46855    0.43475   1.078
-focalpop:x_fhigh:positionsecond -0.14997    0.41343  -0.363
-focalrep:x_fhigh:positionthird   0.92916    0.42932   2.164
-focalpop:x_fhigh:positionthird   0.42231    0.43030   0.981
+(Intercept)                      4.15914    0.16712  24.887
+focalrep                        -0.27958    0.22801  -1.226
+focalpop                         0.34716    0.21640   1.604
+x_fhigh                          1.43928    0.21978   6.549
+positionsecond                   0.36344    0.21788   1.668
+positionthird                    0.35571    0.22718   1.566
+inv_app                          0.18825    0.05364   3.509
+inv_dl                          -0.08455    0.04266  -1.982
+inv_cat                          0.19620    0.05234   3.749
+focalrep:x_fhigh                -0.75589    0.31210  -2.422
+focalpop:x_fhigh                -0.98924    0.29509  -3.352
+focalrep:positionsecond         -0.56251    0.32224  -1.746
+focalpop:positionsecond         -0.27475    0.31184  -0.881
+focalrep:positionthird          -0.80440    0.31718  -2.536
+focalpop:positionthird          -0.77035    0.32068  -2.402
+x_fhigh:positionsecond          -0.55865    0.29598  -1.887
+x_fhigh:positionthird           -0.52193    0.31031  -1.682
+focalrep:x_fhigh:positionsecond  0.51000    0.43470   1.173
+focalpop:x_fhigh:positionsecond -0.10848    0.41323  -0.263
+focalrep:x_fhigh:positionthird   0.96689    0.42906   2.253
+focalpop:x_fhigh:positionthird   0.46913    0.43024   1.090
 
 Correlation matrix not shown by default, as p = 21 > 12.
 Use print(summary(m_mix), correlation=TRUE)  or
@@ -97,23 +97,23 @@ Use print(summary(m_mix), correlation=TRUE)  or
 
 
 Between-subject variance / total (ICC):
-  ICC = 0.4108 (subject var = 0.9842, residual = 1.4117)
+  ICC = 0.4088 (subject var = 0.9763, residual = 1.4123)
 
 --- A.4 Type II Anova on the mixed model (Wald chi-square) ---
 Analysis of Deviance Table (Type II Wald chisquare tests)
 
 Response: y
                       Chisq Df Pr(>Chisq)    
-focal              134.7905  2  < 2.2e-16 ***
-x_f                 99.0561  1  < 2.2e-16 ***
-position             7.5631  2  0.0227879 *  
-inv_app             14.4806  1  0.0001416 ***
-inv_dl               3.4320  1  0.0639462 .  
-inv_cat              9.5687  1  0.0019792 ** 
-focal:x_f           26.8039  2  1.512e-06 ***
-focal:position       5.5924  4  0.2317222    
-x_f:position         7.7646  2  0.0206032 *  
-focal:x_f:position   6.0094  4  0.1984456    
+focal              134.7380  2  < 2.2e-16 ***
+x_f                 99.6017  1  < 2.2e-16 ***
+position             7.5585  2  0.0228398 *  
+inv_app             12.3164  1  0.0004490 ***
+inv_dl               3.9274  1  0.0475060 *  
+inv_cat             14.0516  1  0.0001779 ***
+focal:x_f           26.5293  2  1.735e-06 ***
+focal:position       5.5987  4  0.2311847    
+x_f:position         7.4938  2  0.0235913 *  
+focal:x_f:position   6.3114  4  0.1770665    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -151,44 +151,44 @@ Formula: y ~ focal * x_f + position + inv_app + inv_dl + inv_cat + (1 |      sub
    Data: long
 
       AIC       BIC    logLik -2*log(L)  df.resid 
-   5266.4    5335.2   -2620.2    5240.4      1460 
+   5264.2    5333.0   -2619.1    5238.2      1460 
 
 Scaled residuals: 
      Min       1Q   Median       3Q      Max 
--3.05081 -0.58135  0.04452  0.60120  2.70014 
+-3.04798 -0.57642  0.05195  0.60598  2.71641 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- subj_f   (Intercept) 0.989    0.9945  
- Residual             1.407    1.1863  
+ subj_f   (Intercept) 0.9825   0.9912  
+ Residual             1.4074   1.1863  
 Number of obs: 1473, groups:  subj_f, 491
 
 Fixed effects:
                  Estimate Std. Error t value
-(Intercept)       4.55607    0.10552  43.179
-focalrep         -0.77295    0.11502  -6.720
-focalpop         -0.01415    0.11684  -0.121
-x_fhigh           1.05277    0.12190   8.636
-positionsecond   -0.13880    0.07589  -1.829
-positionthird    -0.20528    0.07610  -2.697
-inv_app           0.17906    0.04805   3.727
-inv_dl           -0.07725    0.04114  -1.878
-inv_cat           0.13876    0.04452   3.117
-focalrep:x_fhigh -0.21029    0.17133  -1.227
-focalpop:x_fhigh -0.83470    0.17327  -4.817
+(Intercept)       4.53615    0.10536  43.053
+focalrep         -0.77695    0.11500  -6.756
+focalpop         -0.01726    0.11681  -0.148
+x_fhigh           1.04988    0.12186   8.616
+positionsecond   -0.13882    0.07589  -1.829
+positionthird    -0.20524    0.07610  -2.697
+inv_app           0.18437    0.05361   3.439
+inv_dl           -0.08535    0.04267  -2.000
+inv_cat           0.19646    0.05238   3.751
+focalrep:x_fhigh -0.20229    0.17127  -1.181
+focalpop:x_fhigh -0.82863    0.17321  -4.784
 
 Correlation of Fixed Effects:
             (Intr) foclrp foclpp x_fhgh pstnsc pstnth inv_pp inv_dl inv_ct fclr:_
-focalrep    -0.567                                                               
-focalpop    -0.588  0.520                                                        
-x_fhigh     -0.612  0.546  0.551                                                 
-positinscnd -0.396  0.034  0.051  0.020                                          
-positinthrd -0.372 -0.034  0.043  0.022  0.499                                   
-inv_app      0.007  0.004  0.005  0.012  0.000  0.000                            
-inv_dl       0.002  0.001  0.011  0.009  0.000  0.000 -0.181                     
-inv_cat      0.037  0.003  0.005  0.001  0.000  0.000 -0.211  0.010              
-fclrp:x_fhg  0.426 -0.750 -0.394 -0.703 -0.013  0.003 -0.006 -0.001 -0.005       
-fclpp:x_fhg  0.435 -0.395 -0.760 -0.711 -0.012 -0.018 -0.007 -0.014 -0.007  0.510
+focalrep    -0.568                                                               
+focalpop    -0.589  0.520                                                        
+x_fhigh     -0.613  0.546  0.551                                                 
+positinscnd -0.397  0.034  0.051  0.020                                          
+positinthrd -0.373 -0.034  0.043  0.022  0.499                                   
+inv_app     -0.001 -0.003 -0.006  0.001  0.000  0.000                            
+inv_dl      -0.008  0.005  0.010  0.014  0.000  0.000 -0.168                     
+inv_cat     -0.005  0.004  0.009  0.007  0.000  0.000 -0.198 -0.048              
+fclrp:x_fhg  0.427 -0.750 -0.394 -0.703 -0.013  0.003  0.004 -0.006 -0.005       
+fclpp:x_fhg  0.436 -0.395 -0.760 -0.711 -0.012 -0.018  0.008 -0.013 -0.012  0.510
 
 --- B.1 Is the focal x manipulation interaction needed? (LRT) ---
 Data: long
@@ -196,23 +196,23 @@ Models:
 m_pool0: y ~ focal + x_f + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
 m_pool: y ~ focal * x_f + position + inv_app + inv_dl + inv_cat + (1 | subj_f)
         npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)    
-m_pool0   11 5287.4 5345.7 -2632.7    5265.4                         
-m_pool    13 5266.4 5335.2 -2620.2    5240.4 25.021  2  3.687e-06 ***
+m_pool0   11 5285.0 5343.2 -2631.5    5263.0                         
+m_pool    13 5264.2 5333.0 -2619.1    5238.2 24.803  2  4.113e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 --- B.2 Manipulation effect (high vs low) within each focal variable ---
 focal = brand:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low    1.053 0.122 1267   0.8126    1.293   8.600 <0.0001
+ high - low    1.050 0.122 1268   0.8098    1.290   8.579 <0.0001
 
 focal = rep:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low    0.842 0.122 1268   0.6024    1.083   6.884 <0.0001
+ high - low    0.848 0.122 1269   0.6076    1.088   6.928 <0.0001
 
 focal = pop:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low    0.218 0.122 1268  -0.0218    0.458   1.783  0.0748
+ high - low    0.221 0.122 1269  -0.0186    0.461   1.810  0.0706
 
 Results are averaged over the levels of: position 
 Degrees-of-freedom method: kenward-roger 
@@ -221,9 +221,9 @@ Confidence level used: 0.95
 --- B.3 Pairwise comparison of the effects (Holm correction) ---
 This is the test the thesis never runs: does brand really beat reputation?
  x_f_revpairwise focal_revpairwise estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low      rep - brand         -0.210 0.172 1254   -0.623    0.202  -1.222  0.2218
- high - low      pop - brand         -0.835 0.174 1280   -1.252   -0.418  -4.797 <0.0001
- high - low      pop - rep           -0.624 0.171 1244   -1.035   -0.214  -3.645  0.0006
+ high - low      rep - brand         -0.202 0.172 1255   -0.615    0.210  -1.176  0.2398
+ high - low      pop - brand         -0.829 0.174 1281   -1.246   -0.412  -4.764 <0.0001
+ high - low      pop - rep           -0.626 0.171 1245   -1.037   -0.216  -3.657  0.0005
 
 Results are averaged over the levels of: position 
 Degrees-of-freedom method: kenward-roger 
@@ -232,9 +232,9 @@ Conf-level adjustment: bonferroni method for 3 estimates
 P value adjustment: holm method for 3 tests 
 
 --- B.4 Effect sizes in standard-deviation units ---
-  brand   beta = +1.0528  (s.d. of y = 1.5879)  d = +0.663
-  rep     beta = +0.8425  (s.d. of y = 1.7095)  d = +0.493
-  pop     beta = +0.2181  (s.d. of y = 1.5691)  d = +0.139
+  brand   beta = +1.0499  (s.d. of y = 1.5879)  d = +0.661
+  rep     beta = +0.8476  (s.d. of y = 1.7095)  d = +0.496
+  pop     beta = +0.2212  (s.d. of y = 1.5691)  d = +0.141
 
 
 === (C) EFFECT OF COMPARISON (POSITION) ON THE RANKING ===
@@ -245,44 +245,44 @@ Analysis of Deviance Table (Type III Wald chisquare tests)
 
 Response: y
                     Chisq Df Pr(>Chisq)    
-(Intercept)      633.9252  1  < 2.2e-16 ***
-focal              8.2171  2  0.0164313 *  
-x_f               41.4048  1  1.238e-10 ***
-comp_f             3.2680  1  0.0706455 .  
-inv_app           14.4678  1  0.0001426 ***
-inv_dl             3.4472  1  0.0633587 .  
-inv_cat            9.5540  1  0.0019951 ** 
-focal:x_f         10.8939  2  0.0043093 ** 
-focal:comp_f       6.8347  2  0.0327987 *  
-x_f:comp_f         3.6915  1  0.0546898 .  
-focal:x_f:comp_f   4.4003  2  0.1107886    
+(Intercept)      627.3326  1  < 2.2e-16 ***
+focal              8.6421  2  0.0132859 *  
+x_f               42.1548  1  8.433e-11 ***
+comp_f             3.4112  1  0.0647566 .  
+inv_app           12.0927  1  0.0005062 ***
+inv_dl             3.9546  1  0.0467442 *  
+inv_cat           14.2701  1  0.0001584 ***
+focal:x_f         11.4110  2  0.0033275 ** 
+focal:comp_f       6.9915  2  0.0303260 *  
+x_f:comp_f         4.0347  1  0.0445726 *  
+focal:x_f:comp_f   4.6769  2  0.0964770 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Manipulation effect by focal variable and comparison position:
 focal = brand, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   1.4072 0.220 1271   0.9757    1.839   6.398 <0.0001
+ high - low   1.4198 0.220 1272   0.9883    1.851   6.455 <0.0001
 
 focal = rep, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   0.6910 0.222 1273   0.2560    1.126   3.117  0.0019
+ high - low   0.6866 0.222 1275   0.2517    1.121   3.097  0.0020
 
 focal = pop, comp_f = shown_first:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   0.4615 0.197 1271   0.0753    0.848   2.344  0.0192
+ high - low   0.4523 0.197 1273   0.0663    0.838   2.299  0.0217
 
 focal = brand, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   0.9015 0.147 1273   0.6127    1.190   6.125 <0.0001
+ high - low   0.8912 0.147 1274   0.6025    1.180   6.056 <0.0001
 
 focal = rep, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   0.9122 0.147 1273   0.6247    1.200   6.226 <0.0001
+ high - low   0.9223 0.146 1275   0.6350    1.210   6.297 <0.0001
 
 focal = pop, comp_f = after_others:
  contrast   estimate    SE   df lower.CL upper.CL t.ratio p.value
- high - low   0.0585 0.156 1275  -0.2471    0.364   0.376  0.7072
+ high - low   0.0694 0.156 1276  -0.2360    0.375   0.446  0.6557
 
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 

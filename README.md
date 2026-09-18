@@ -33,10 +33,10 @@ stimulus:
 
 | 2023 conclusion | After the review |
 |---|---|
-| Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.74, p = 0.037) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.22). The finding needed its scope |
-| Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.46, p = 0.020), it vanishes among respondents who say they looked at downloads (β = 0.51, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
-| Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.41 → 0.90 vs 0.69 → 0.91) |
-| Three-way interaction significant | **Not confirmed** (χ²(4) = 6.01, p = 0.20) once repeated measures are specified correctly |
+| Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.76, p = 0.031) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.24). The finding needed its scope |
+| Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.45, p = 0.022), it vanishes among respondents who say they looked at downloads (β = 0.49, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
+| Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.42 → 0.89 vs 0.69 → 0.92) |
+| Three-way interaction significant | **Not confirmed** (χ²(4) = 6.31, p = 0.18) once repeated measures are specified correctly |
 | No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. — and the terms tested are carryover effects from apps seen earlier, not factorial interactions, since only one cue is manipulated per screen |
 
 Full reasoning and figures: [`docs/01-review-of-2023-work.md`](docs/01-review-of-2023-work.md).
@@ -129,10 +129,10 @@ document under `docs/`, the corresponding log contains it.
 |---|---|---|
 | `00_setup.R` | shared paths and helpers | the original CSVs carry a UTF-8 BOM that must be handled on read |
 | `01_replication.R` | replication of the 9 regressions and the ANOVA | verify the 2023 work is reproducible before criticising it |
-| `02_data_audit.R` | structure, cross-file consistency, descriptives, imputations, redundancies | separate data problems from analysis problems |
-| `03_build_derived.R` | `long_measures.csv` (1,473 × 19), `wide_subjects.csv` (491 × 17) | the original files are fragmented per model; long format enables pooled analysis |
+| `02_data_audit.R` | structure, cross-file consistency (every shared column, with range and centring checks), descriptives, imputations, redundancies | separate data problems from analysis problems |
+| `03_build_derived.R` | `long_measures.csv` (1,473 × 19), `wide_subjects.csv` (491 × 17) | the original files are fragmented per model; long format enables pooled analysis. Involvement covariates come from the model files: the ANOVA file encodes 18 imputed respondents incorrectly |
 | `04_corrected_inference.R` | correct repeated-measures ANOVA, mixed model, contrasts | the original specification does not model repeated measures, and the ranking is never tested |
-| `05_robustness.R` | checks on slide 6, ordinal scale, multiplicity, power | four checks the original work does not contain |
+| `05_robustness.R` | checks on slide 6, ordinal scale, multiplicity, power, involvement moderation, and the estimates without the 18 mean-imputed respondents | checks the original work does not contain |
 | `06_figures.R` | three figures | communicating the corrected estimates |
 | `07_specification_curve.R` | the brand-vs-reputation contrast under all 24 defensible specifications | shows whether the ranking is a finding or an analytic choice |
 | `08_equivalence.R` | equivalence verdicts on the null results, plus the slide-6 reporting test | "not significant" is not the same as "no effect" |
@@ -142,7 +142,7 @@ document under `docs/`, the corresponding log contains it.
 | `12_response_scale.R` | cutpoints of the 1–7 scale, and whether the spacing matters | ordinary regression assumes a ruler; this tests the assumption |
 | `13_demographics_quality.R` | demographic moderation and response-quality robustness (optional) | the thesis collected demographics and never used them |
 | `14_posterior_probabilities.R` | the findings restated as probabilities | "89% likely" answers the question a reader asks; a p-value does not |
-| `15_bayesian_brms.R` | the same findings as a full Bayesian model, and a comparison against the approximation | the two agree within 2.9 percentage points, which is how we know the approximation was sound |
+| `15_bayesian_brms.R` | the same findings as a full Bayesian model, and a comparison against the approximation | the two agree within 3.9 percentage points, which is how we know the approximation was sound |
 | `16_figures_extended.R` | eight figures explaining the results | most of these findings are easier to see than to read |
 | `17_centering_check.R` | what the thesis's mean-centred ITD changes, and what it hides | a choice the review had verified without ever assessing it |
 | `18_first_exposure.R` | the ranking tested on the first app shown, where the 2023 design aimed it | restricting to the first judgement protects it from comparison effects; the review had read the restriction as mere fragmentation |

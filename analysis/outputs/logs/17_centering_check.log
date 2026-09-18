@@ -46,34 +46,34 @@ The Latin square is near-balanced but not exactly balanced (random
 assignment, not a fixed rotation), so the orthogonality is approximate.
 
 --- 3.2 Same mixed model, raw outcome vs centred outcome ---
-               term       raw   centred   se_raw se_centred  difference
-1       (Intercept)  4.556074 -0.411340 0.105516   0.105516 -4.9674e+00
-2          focalrep -0.772955  0.147616 0.115023   0.115023  9.2057e-01
-3          focalpop -0.014153  0.427802 0.116839   0.116839  4.4196e-01
-4           x_fhigh  1.052767  1.052767 0.121898   0.121898  4.7111e-11
-5    positionsecond -0.138798 -0.138798 0.075889   0.075889  7.8559e-13
-6     positionthird -0.205280 -0.205280 0.076101   0.076101  1.0330e-12
-7           inv_app  0.179057  0.179057 0.048047   0.048047  3.3251e-13
-8            inv_dl -0.077246 -0.077246 0.041135   0.041135 -4.6185e-14
-9           inv_cat  0.138764  0.138764 0.044521   0.044521 -3.1788e-13
-10 focalrep:x_fhigh -0.210290 -0.210290 0.171326   0.171326 -9.8733e-12
-11 focalpop:x_fhigh -0.834700 -0.834700 0.173268   0.173268  3.2615e-11
+               term      raw  centred   se_raw se_centred  difference
+1       (Intercept)  4.53615 -0.43126 0.105361   0.105361 -4.9674e+00
+2          focalrep -0.77695  0.14363 0.115002   0.115002  9.2057e-01
+3          focalpop -0.01726  0.42470 0.116814   0.116814  4.4196e-01
+4           x_fhigh  1.04988  1.04988 0.121858   0.121858  6.4722e-11
+5    positionsecond -0.13882 -0.13882 0.075888   0.075888  1.1264e-12
+6     positionthird -0.20524 -0.20524 0.076100   0.076100  1.3574e-12
+7           inv_app  0.18437  0.18437 0.053608   0.053608  6.5573e-13
+8            inv_dl -0.08535 -0.08535 0.042670   0.042670  2.2202e-13
+9           inv_cat  0.19646  0.19646 0.052379   0.052379 -1.8416e-13
+10 focalrep:x_fhigh -0.20229 -0.20229 0.171273   0.171273 -2.3693e-11
+11 focalpop:x_fhigh -0.82863 -0.82863 0.173206   0.173206  3.3685e-11
 
 Expected shift if centring only moves the cue intercepts:
   focalrep  +0.920570   (observed +0.920570)
   focalpop  +0.441955   (observed +0.441955)
 
-Every other coefficient: largest absolute change 4.71e-11
-Standard errors: largest absolute change 2.10e-11
-Variance components identical to 1.38e-09
+Every other coefficient: largest absolute change 6.47e-11
+Standard errors: largest absolute change 2.80e-11
+Variance components identical to 1.76e-09
 
 --- 3.3 The manipulation effect by cue, both scales ---
   focal effect_raw       p_raw effect_centred   p_centred
-1 brand   1.052767 2.32170e-17       1.052767 2.32170e-17
-2   rep   0.842477 9.13461e-12       0.842477 9.13461e-12
-3   pop   0.218068 7.47825e-02       0.218068 7.47825e-02
+1 brand   1.049879 2.75329e-17       1.049879 2.75329e-17
+2   rep   0.847593 6.76711e-12       0.847593 6.76711e-12
+3   pop   0.221249 7.05536e-02       0.221249 7.05536e-02
 
-Largest difference in the effects that carry the thesis's ranking: 7.97e-11
+Largest difference in the effects that carry the thesis's ranking: 9.84e-11
 
 --- 3.4 The repeated-measures ANOVA, both scales ---
 

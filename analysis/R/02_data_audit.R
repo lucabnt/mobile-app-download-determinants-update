@@ -74,6 +74,41 @@ for (v in c("rep","pop","brand")) {
               sum(k[[paste0("comp_", v)]] != as.integer(k$n > 1))))
 }
 
+cat("\n## 4b. The involvement covariates, across files and against their own range\n")
+# Added 2026-09-18 after an independent review (review/verdict.md, problem 1)
+# found what section 4 missed: it compared y, x and comp and stopped there,
+# while every pooled model in this review also uses the three involvement
+# columns of the ANOVA file. Three checks, applied to every centred column:
+#   (i)   the same respondent carries the same value in every file;
+#   (ii)  the value lies inside what a 1-7 scale can produce once centred;
+#   (iii) a column declared mean-centred has mean zero.
+cat("(i) ANOVA file vs M3_rep, one row per respondent:\n")
+a1 <- anv[!duplicated(anv$lfdn), c("lfdn", "inv_app_mc", "inv_dl_mc", "inv_cat_mc")]
+k  <- merge(a1, m3$rep[, c("lfdn", "inv_app", "inv_dl", "inv_cat",
+                           "inv_app_mc", "inv_dl_mc", "inv_cat_mc")],
+            by = "lfdn", suffixes = c("_anova", "_m3"))
+for (v in c("inv_app", "inv_dl", "inv_cat")) {
+  d   <- abs(k[[paste0(v, "_mc_anova")]] - k[[paste0(v, "_mc_m3")]])
+  bad <- k$lfdn[d > 1e-6]
+  imp <- k$lfdn[abs(k[[v]] - mean(m3$rep[[v]])) < 1e-6]
+  cat(sprintf("  %-8s mismatches=%2d | all of them mean-imputed cases: %s | ANOVA value there = -mean (%.4f)\n",
+              v, length(bad), setequal(bad, imp),
+              if (length(bad)) unique(round(k[[paste0(v, "_mc_anova")]][d > 1e-6], 4)) else NA))
+}
+cat("\n(ii)-(iii) range and centring of each centred column:\n")
+for (src in c("ANOVA file", "M3_rep")) for (v in c("inv_app", "inv_dl", "inv_cat")) {
+  x   <- if (src == "ANOVA file") a1[[paste0(v, "_mc")]] else m3$rep[[paste0(v, "_mc")]]
+  lo  <- 1 - mean(m3$rep[[v]]); hi <- 7 - mean(m3$rep[[v]])
+  cat(sprintf("  %-10s %-8s mean %+.5f | min %+.3f (possible %+.3f) | out of range: %d\n",
+              src, v, mean(x), min(x), lo, sum(x < lo - 1e-9 | x > hi + 1e-9)))
+}
+cat("\nVerdict: the nine model files agree with one another and are correctly\n")
+cat("centred, which is why the thesis's regressions are unaffected; the thesis's\n")
+cat("ANOVA does not use involvement at all. The ANOVA file encodes the 18\n")
+cat("mean-imputed respondents as if the missing score had been 0, so its\n")
+cat("centred value is -mean, outside the possible range. 03_build_derived.R\n")
+cat("therefore rebuilds the covariates from M3_rep instead of copying them.\n")
+
 cat("\n## 5. M1 (n=1) and M2 (n=3) subsamples: expected vs actual sizes\n")
 for (v in c("rep","pop","brand")) {
   a  <- anv[anv$i_name == v, ]

@@ -5,16 +5,16 @@ against what came before rather than in isolation. Script 10 tested it on
 the 982 later measurements. Summary of what it found:
 
                        model           term estimate     se p_value
-         A: prior mean level   prior_mean_x   -0.179 0.1241  0.1506
- B: interaction with history   prior_mean_x   -0.342 0.1629  0.0361
- B: interaction with history x:prior_mean_x    0.327 0.2121  0.1236
-    C: immediate predecessor         prev_x   -0.128 0.0939  0.1725
-    C: immediate predecessor  prev_focalrep   -0.179 0.1234  0.1471
-    C: immediate predecessor  prev_focalpop   -0.127 0.1180  0.2839
+         A: prior mean level   prior_mean_x   -0.175 0.1239  0.1587
+ B: interaction with history   prior_mean_x   -0.338 0.1627  0.0381
+ B: interaction with history x:prior_mean_x    0.326 0.2119  0.1239
+    C: immediate predecessor         prev_x   -0.124 0.0938  0.1876
+    C: immediate predecessor  prev_focalrep   -0.187 0.1233  0.1299
+    C: immediate predecessor  prev_focalpop   -0.126 0.1180  0.2873
 
 Reading: the average level seen earlier pulls the current rating DOWN
-(a contrast effect), by -0.18 on its own (p = 0.15) and -0.34 once the
-interaction with the current cue is in the model (p = 0.036). Direction as
+(a contrast effect), by -0.17 on its own (p = 0.16) and -0.34 once the
+interaction with the current cue is in the model (p = 0.038). Direction as
 the design feared, magnitude not firmly established.
 A design choice does not need a significant threat to be justified: it
 needs a plausible one, and removing it costs only precision. This one is
@@ -26,9 +26,9 @@ plausible and partly visible in the data.
 Same data, three estimands. The first is the thesis's target.
 
  focal first_exposure se_first average_all_three se_average
- brand         1.4261   0.2200            1.0528     0.1224
-   rep         0.6879   0.2217            0.8425     0.1224
-   pop         0.4597   0.1968            0.2181     0.1223
+ brand         1.4392   0.2199            1.0499     0.1224
+   rep         0.6837   0.2216            0.8476     0.1223
+   pop         0.4502   0.1967            0.2212     0.1222
 
 The two columns answer different questions. Neither is a correction of
 the other: the second averages over judgements the first deliberately
@@ -42,22 +42,22 @@ One model, all 1,473 answers, cue x manipulation x position, contrasts
 between cues within each position, Holm-corrected across the three
 comparisons made at that position.
 position = first:
- x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
- high - low      brand - rep      0.7381 0.3124 1282 -0.01075   1.4870   2.363  0.0366
- high - low      brand - pop      0.9664 0.2954 1280  0.25830   1.6745   3.272  0.0033
- high - low      rep - pop        0.2283 0.2964 1282 -0.48218   0.9387   0.770  0.4413
+ x_f_revpairwise focal_pairwise estimate     SE   df  lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep      0.7555 0.3123 1283  0.006764   1.5042   2.419  0.0314
+ high - low      brand - pop      0.9890 0.2953 1282  0.281054   1.6969   3.349  0.0025
+ high - low      rep - pop        0.2335 0.2963 1283 -0.476815   0.9438   0.788  0.4309
 
 position = second:
- x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
- high - low      brand - rep      0.2702 0.2990 1278 -0.44647   0.9868   0.904  0.3663
- high - low      brand - pop      1.1165 0.2921 1278  0.41627   1.8167   3.822  0.0004
- high - low      rep - pop        0.8463 0.3101 1279  0.10310   1.5896   2.730  0.0129
+ x_f_revpairwise focal_pairwise estimate     SE   df  lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep      0.2461 0.2989 1278 -0.470472   0.9627   0.823  0.4105
+ high - low      brand - pop      1.0976 0.2920 1280  0.397668   1.7976   3.759  0.0005
+ high - low      rep - pop        0.8515 0.3100 1280  0.108363   1.5947   2.747  0.0122
 
 position = third:
- x_f_revpairwise focal_pairwise estimate     SE   df lower.CL upper.CL t.ratio p.value
- high - low      brand - rep     -0.1904 0.2930 1281 -0.89272   0.5120  -0.650  0.5160
- high - low      brand - pop      0.5445 0.3154 1285 -0.21158   1.3006   1.726  0.1691
- high - low      rep - pop        0.7349 0.2983 1285  0.01978   1.4500   2.463  0.0417
+ x_f_revpairwise focal_pairwise estimate     SE   df  lower.CL upper.CL t.ratio p.value
+ high - low      brand - rep     -0.2107 0.2928 1284 -0.912655   0.4913  -0.719  0.4720
+ high - low      brand - pop      0.5203 0.3153 1286 -0.235591   1.2763   1.650  0.1984
+ high - low      rep - pop        0.7310 0.2982 1286  0.016089   1.4460   2.451  0.0431
 
 Degrees-of-freedom method: kenward-roger 
 Confidence level used: 0.95 
@@ -70,9 +70,9 @@ nothing left to cluster), and the ordinal version. This is the thesis's M1
 design, with the contrast between cues finally tested.
 
  x_f_revpairwise focal_pairwise estimate     SE  df lower.CL upper.CL t.ratio p.value
- high - low      brand - rep      0.9786 0.3445 482   0.1510   1.8063   2.841  0.0094
- high - low      brand - pop      1.1159 0.3266 482   0.3313   1.9005   3.417  0.0021
- high - low      rep - pop        0.1373 0.3259 482  -0.6456   0.9202   0.421  0.6737
+ high - low      brand - rep      1.0154 0.3448 482   0.1871   1.8437   2.945  0.0068
+ high - low      brand - pop      1.1703 0.3267 482   0.3855   1.9551   3.582  0.0011
+ high - low      rep - pop        0.1549 0.3261 482  -0.6285   0.9383   0.475  0.6350
 
 Confidence level used: 0.95 
 Conf-level adjustment: bonferroni method for 3 estimates 
@@ -80,14 +80,14 @@ P value adjustment: holm method for 3 tests
 
 Ordinal (cumulative logit), same contrasts, sign oriented as above:
  focal_pairwise estimate_log_odds     SE z.ratio   p.value
-    brand - rep             1.284 0.4148 -3.0947 0.0039398
-    brand - pop             1.517 0.3973 -3.8170 0.0004053
-      rep - pop             0.233 0.3895 -0.5982 0.5496808
+    brand - rep            1.3569 0.4168 -3.2558 0.0022617
+    brand - pop            1.6114 0.3985 -4.0436 0.0001579
+      rep - pop            0.2545 0.3896 -0.6532 0.5136511
 
 --- 3.2 What the restriction costs in precision ---
   brand - reputation at first exposure
-    pooled model, position-specific : +0.7381  (SE 0.3124)
-    n = 1 subsample only            : +0.9786  (SE 0.3445)
+    pooled model, position-specific : +0.7555  (SE 0.3123)
+    n = 1 subsample only            : +1.0154  (SE 0.3448)
   Same quantity, two ways of getting it. The pooled model borrows the
   residual and person variance from all 1,473 answers; the subsample fit
   estimates them from 491. The point estimates are close, so the
@@ -106,17 +106,19 @@ Models:
 m_no3: y ~ focal * x_f + focal * position + x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f)
 m_sat: y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f)
       npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
-m_no3   19 5265.2 5365.8 -2613.6    5227.2                     
-m_sat   23 5267.1 5388.9 -2610.6    5221.1 6.0719  4     0.1938
+m_no3   19 5263.3 5363.9 -2612.6    5225.3                     
+m_sat   23 5264.9 5386.7 -2609.4    5218.9 6.3737  4     0.1729
 
 Also as the two-level version (first vs after others):
 Data: long
 Models:
 m_c0: y ~ focal * x_f + focal * comp_f + x_f * comp_f + inv_app + inv_dl + inv_cat + (1 | subj_f)
 m_c: y ~ focal * x_f * comp_f + inv_app + inv_dl + inv_cat + (1 | subj_f)
-     npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)
-m_c0   15 5264.0 5343.4 -2617.0    5234.0                     
-m_c    17 5263.6 5353.6 -2614.8    5229.6 4.3874  2     0.1115
+     npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)  
+m_c0   15 5262.0 5341.4 -2616.0    5232.0                       
+m_c    17 5261.3 5351.3 -2613.7    5227.3 4.6609  2    0.09725 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 So: the first-exposure ranking is established (§3); the claim that the
 ranking CHANGES with position is not. Both statements are needed, and the
@@ -156,7 +158,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
   between-subject stratum : F = 2.327, p = 0.0555
   within-subject stratum  : F = 0.642, p = 0.6325
-  combined (mixed model)  : chi-square = 6.01, 4 df, p = 0.198
+  combined (mixed model)  : LRT chi-square = 6.37, 4 df, p = 0.173
+  (04_corrected_inference.R reports the Wald version of the same test.)
 
 The conclusion does not change -- the interaction is not significant, and
 the 2023 claim that it was remains withdrawn -- but the honest number is
@@ -169,10 +172,10 @@ vanishes and omits the half that does not.
 What the 2023 design got right:
   * the first judgement is the only uncontaminated one, and the threat it
     protects against is visible in the data (§1);
-  * on that quantity the ranking brand > reputation holds, and holds under
-    every specification tried: +1.05 Likert points (p = 0.0035) and
-    +1.28 log-odds (p = 0.002) in the thesis's own sample, and the same
-    estimate from the pooled model (§3);
+  * on that quantity the ranking brand > reputation holds under every
+    specification tried: +0.76 points (p = 0.0314, Holm) from the pooled model,
+    +1.02 (p = 0.0068) and +1.36 log-odds (p = 0.0023) in the thesis's own
+    sample of first measurements (§3);
   * Model 3's comp_i interaction was the right instinct: it says the
     effect depends on whether comparison has happened.
 
@@ -185,7 +188,7 @@ review first made:
   * the ranking was then stated without its scope. 'Brand is the most
     effective' is supported for the first app seen; it is not supported as
     an average over the three judgements, where brand and reputation are
-    indistinguishable (+0.20, p = 0.22);
+    indistinguishable (+0.20, p = 0.24);
   * M3's x_brand = 1.5028 was read as the effect 'independently from n'.
     With comp_i and its interaction in the model, that coefficient is the
     effect at comp_i = 0, i.e. first exposure again -- not an overall

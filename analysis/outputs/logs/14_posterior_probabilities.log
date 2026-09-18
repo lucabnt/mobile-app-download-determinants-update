@@ -2,26 +2,26 @@
 draws: 2e+05 | relevance band: 0.26 - 0.33 Likert points
 
 --- point estimates the draws are centred on ---
-  brand +1.053 | reputation +0.843 | popularity +0.218
+  brand +1.050 | reputation +0.848 | popularity +0.221
 
 --- probabilities ---
  question                                                           probability_pct
  brand effect is positive                                           100.0%         
  reputation effect is positive                                      100.0%         
- popularity effect is positive                                      96.3%          
- brand is ahead of reputation                                       89.1%          
+ popularity effect is positive                                      96.6%          
+ brand is ahead of reputation                                       88.2%          
  brand is ahead of popularity                                       100.0%         
  reputation is ahead of popularity                                  100.0%         
- the full ranking brand > reputation > popularity holds             89.1%          
- brand and reputation are within 0.26 points of each other          61.2%          
- brand and reputation are within 0.33 points of each other          75.7%          
- the popularity effect is smaller than 0.26 points                  63.6%          
- the popularity effect is smaller than 0.33 points                  82.2%          
- brand is ahead of reputation BEFORE any comparison                 98.9%          
- brand is ahead of reputation AFTER other apps were seen            48.2%          
- the brand-reputation gap shrinks once other apps are seen          97.4%          
- the popularity effect is positive BEFORE any comparison            99.1%          
- the popularity effect is smaller than 0.26 points AFTER comparison 88.3%          
+ the full ranking brand > reputation > popularity holds             88.1%          
+ brand and reputation are within 0.26 points of each other          62.9%          
+ brand and reputation are within 0.33 points of each other          77.2%          
+ the popularity effect is smaller than 0.26 points                  62.7%          
+ the popularity effect is smaller than 0.33 points                  81.6%          
+ brand is ahead of reputation BEFORE any comparison                 99.1%          
+ brand is ahead of reputation AFTER other apps were seen            44.1%          
+ the brand-reputation gap shrinks once other apps are seen          97.9%          
+ the popularity effect is positive BEFORE any comparison            99.0%          
+ the popularity effect is smaller than 0.26 points AFTER comparison 87.5%          
 
 === HOW TO READ THIS ===
 These are statements about the effects given the data, not about hypothetical

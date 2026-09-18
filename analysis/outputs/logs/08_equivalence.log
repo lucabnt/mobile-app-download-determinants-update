@@ -3,34 +3,34 @@ band: 0.26-0.33 Likert points on the popularity outcome (s.d. = 1.5691)
      = 0.1657-0.2103 s.d., applied in s.d. units to every other outcome
 
                                   estimand estimate    se ci90_lo ci90_hi flip_point band_lo band_hi p_value
-       popularity effect, all observations   0.2181 0.122  0.0168   0.419      0.419   0.260   0.330  0.0748
-            popularity effect, shown first   0.4615 0.197  0.1374   0.785      0.785   0.260   0.330  0.0192
-           popularity effect, after others   0.0585 0.156 -0.1979   0.315      0.315   0.260   0.330  0.7072
-     M2 interaction x_rep:x_brand (M2_rep)   0.1660 0.467 -0.6066   0.939      0.939   0.283   0.360  0.7228
-       M2 interaction x_rep:x_pop (M2_rep)  -0.3708 0.461 -1.1323   0.391      1.132   0.283   0.360  0.4219
-     M2 interaction x_pop:x_brand (M2_pop)   0.3916 0.546 -0.5137   1.297      1.297   0.260   0.330  0.4749
-       M2 interaction x_pop:x_rep (M2_pop)  -0.7437 0.539 -1.6370   0.150      1.637   0.260   0.330  0.1702
-   M2 interaction x_brand:x_rep (M2_brand)   0.2510 0.507 -0.5888   1.091      1.091   0.263   0.334  0.6215
-   M2 interaction x_brand:x_pop (M2_brand)  -0.6766 0.511 -1.5228   0.170      1.523   0.263   0.334  0.1878
-    moderation inv_dl on rep (per +1 s.d.)  -0.0884 0.124 -0.2922   0.115      0.292   0.283   0.360  0.4755
- moderation inv_cat on brand (per +1 s.d.)   0.1121 0.125 -0.0932   0.317      0.317   0.263   0.334  0.3689
-         verdict
-    inconclusive
-  effect present
- at the boundary
-    inconclusive
-    inconclusive
-    inconclusive
-    inconclusive
-    inconclusive
-    inconclusive
- at the boundary
- at the boundary
+       popularity effect, all observations   0.2212 0.122   0.020   0.422      0.422   0.260   0.330  0.0706
+            popularity effect, shown first   0.4523 0.197   0.128   0.776      0.776   0.260   0.330  0.0217
+           popularity effect, after others   0.0694 0.156  -0.187   0.326      0.326   0.260   0.330  0.6557
+     M2 interaction x_rep:x_brand (M2_rep)   0.1660 0.467  -0.607   0.939      0.939   0.283   0.360  0.7228
+       M2 interaction x_rep:x_pop (M2_rep)  -0.3708 0.461  -1.132   0.391      1.132   0.283   0.360  0.4219
+     M2 interaction x_pop:x_brand (M2_pop)   0.3916 0.546  -0.514   1.297      1.297   0.260   0.330  0.4749
+       M2 interaction x_pop:x_rep (M2_pop)  -0.7437 0.539  -1.637   0.150      1.637   0.260   0.330  0.1702
+   M2 interaction x_brand:x_rep (M2_brand)   0.2510 0.507  -0.589   1.091      1.091   0.263   0.334  0.6215
+   M2 interaction x_brand:x_pop (M2_brand)  -0.6766 0.511  -1.523   0.170      1.523   0.263   0.334  0.1878
+    moderation inv_dl on rep (per +1 s.d.)  -0.0244 0.124  -0.229   0.180      0.229   0.283   0.360  0.8444
+ moderation inv_cat on brand (per +1 s.d.)   0.0415 0.125  -0.164   0.247      0.247   0.263   0.334  0.7398
+            verdict
+       inconclusive
+     effect present
+    at the boundary
+       inconclusive
+       inconclusive
+       inconclusive
+       inconclusive
+       inconclusive
+       inconclusive
+ equivalent to zero
+ equivalent to zero
 
 === VERDICT COUNTS ===
 
-at the boundary  effect present    inconclusive 
-              3               1               7 
+   at the boundary     effect present equivalent to zero       inconclusive 
+                 1                  1                  2                  7 
 
 
 === THE SAME VERDICTS, POSITION BY POSITION ===
@@ -39,38 +39,39 @@ comp_f = 'after others' is the average of the second and third app. If the
 two differ, that average describes a situation no respondent was ever in.
 
                        estimand estimate    se ci90_lo ci90_hi flip_point  p_value        verdict
-  brand effect, app shown first    1.426 0.220  1.0640   1.788      1.788 1.28e-10 effect present
- brand effect, app shown second    0.888 0.198  0.5614   1.214      1.214 8.24e-06 effect present
-  brand effect, app shown third    0.932 0.219  0.5710   1.293      1.293 2.31e-05 effect present
-    rep effect, app shown first    0.688 0.222  0.3230   1.053      1.053 1.96e-03 effect present
-   rep effect, app shown second    0.618 0.224  0.2494   0.986      0.986 5.85e-03 effect present
-    rep effect, app shown third    1.122 0.194  0.8031   1.442      1.442 9.09e-09 effect present
-    pop effect, app shown first    0.460 0.197  0.1357   0.784      0.784 1.97e-02 effect present
-   pop effect, app shown second   -0.229 0.215 -0.5819   0.125      0.582 2.87e-01   inconclusive
-    pop effect, app shown third    0.388 0.226  0.0149   0.760      0.760 8.72e-02   inconclusive
+  brand effect, app shown first    1.439 0.220  1.0771   1.801      1.801 8.68e-11 effect present
+ brand effect, app shown second    0.881 0.198  0.5545   1.207      1.207 9.64e-06 effect present
+  brand effect, app shown third    0.918 0.219  0.5565   1.279      1.279 3.06e-05 effect present
+    rep effect, app shown first    0.684 0.222  0.3188   1.049      1.049 2.08e-03 effect present
+   rep effect, app shown second    0.635 0.224  0.2665   1.003      1.003 4.63e-03 effect present
+    rep effect, app shown third    1.128 0.194  0.8090   1.447      1.447 7.53e-09 effect present
+    pop effect, app shown first    0.450 0.197  0.1264   0.774      0.774 2.23e-02 effect present
+   pop effect, app shown second   -0.217 0.214 -0.5698   0.136      0.570 3.12e-01   inconclusive
+    pop effect, app shown third    0.397 0.226  0.0246   0.770      0.770 7.96e-02   inconclusive
 
 Are the positions different from each other? Pairwise, Holm-corrected
 within each cue:
 
  focal position_pairwise estimate    SE t.ratio p.value
- brand    first - second   0.5383 0.296   1.817  0.2084
- brand     first - third   0.4940 0.311   1.591  0.2239
- brand    second - third  -0.0443 0.296  -0.150  0.8810
-   rep    first - second   0.0703 0.315   0.223  0.8234
-   rep     first - third  -0.4345 0.295  -1.475  0.2809
-   rep    second - third  -0.5048 0.296  -1.704  0.2657
-   pop    first - second   0.6883 0.291   2.364  0.0546
-   pop     first - third   0.0721 0.300   0.240  0.8101
-   pop    second - third  -0.6163 0.312  -1.975  0.0970
+ brand    first - second   0.5583 0.296   1.885  0.1790
+ brand     first - third   0.5216 0.311   1.680  0.1865
+ brand    second - third  -0.0367 0.296  -0.124  0.9012
+   rep    first - second   0.0489 0.315   0.155  0.8765
+   rep     first - third  -0.4446 0.294  -1.510  0.2878
+   rep    second - third  -0.4935 0.296  -1.666  0.2878
+   pop    first - second   0.6670 0.291   2.292  0.0661
+   pop     first - third   0.0530 0.300   0.177  0.8598
+   pop    second - third  -0.6140 0.312  -1.968  0.0985
 
 Reading, for popularity -- the cue whose null this section is about:
-  * first app  +0.46, effect present;
-  * second app -0.23, inconclusive;
-  * third app  +0.39, inconclusive, and NOT different from the first
-    (difference 0.07, p = 0.81).
+  * first  app +0.45, effect present
+  * second app -0.22, inconclusive
+  * third  app +0.40, inconclusive
+  * third vs first: difference 0.05, p = 0.86 (Holm)
+  * smallest Holm-corrected p between positions, any cue: 0.066
 So 'popularity works before comparison and dissolves after' is not what the
 data says. The drop is confined to the second app, no pairwise difference
-survives Holm, and the +0.06 'at the boundary' verdict above is an average
+survives Holm, and the +0.07 'at the boundary' verdict above is an average
 of two inconclusive estimates of opposite sign. What survives is narrower:
 popularity moves intention on first exposure, and after that this design
 cannot say -- which is still enough to deny the 2023 claim that popularity

@@ -2,8 +2,8 @@
 brms 2.23.0 | backend cmdstanr | CmdStan 2.39.0 | 4 chains x 2000 iterations
 
 --- convergence ---
-  fit1: max Rhat = 1.0013 | min bulk ESS = 1561 | divergent transitions = 0
-  fit2: max Rhat = 1.0096 | min bulk ESS = 1198 | divergent transitions = 0
+  fit1: max Rhat = 1.0018 | min bulk ESS = 1571 | divergent transitions = 0
+  fit2: max Rhat = 1.0051 | min bulk ESS = 1215 | divergent transitions = 0
   Rhat near 1.00 and a large effective sample size mean the sampler explored
   the posterior properly; divergent transitions should be zero.
 
@@ -11,61 +11,61 @@ brms 2.23.0 | backend cmdstanr | CmdStan 2.39.0 | 4 chains x 2000 iterations
  question                                                           probability_pct
  brand effect is positive                                           100.0%         
  reputation effect is positive                                      100.0%         
- popularity effect is positive                                      96.5%          
- brand is ahead of reputation                                       88.8%          
+ popularity effect is positive                                      96.7%          
+ brand is ahead of reputation                                       86.4%          
  brand is ahead of popularity                                       100.0%         
  reputation is ahead of popularity                                  100.0%         
- the full ranking brand > reputation > popularity holds             88.8%          
- brand and reputation are within 0.26 points of each other          61.3%          
- brand and reputation are within 0.33 points of each other          75.6%          
- the popularity effect is smaller than 0.26 points                  63.2%          
- the popularity effect is smaller than 0.33 points                  81.8%          
+ the full ranking brand > reputation > popularity holds             86.4%          
+ brand and reputation are within 0.26 points of each other          66.8%          
+ brand and reputation are within 0.33 points of each other          80.3%          
+ the popularity effect is smaller than 0.26 points                  60.1%          
+ the popularity effect is smaller than 0.33 points                  80.3%          
  brand is ahead of reputation BEFORE any comparison                 98.6%          
- brand is ahead of reputation AFTER other apps were seen            51.1%          
- the brand-reputation gap shrinks once other apps are seen          96.2%          
- the popularity effect is positive BEFORE any comparison            99.3%          
- the popularity effect is smaller than 0.26 points AFTER comparison 87.3%          
+ brand is ahead of reputation AFTER other apps were seen            47.6%          
+ the brand-reputation gap shrinks once other apps are seen          97.1%          
+ the popularity effect is positive BEFORE any comparison            99.0%          
+ the popularity effect is smaller than 0.26 points AFTER comparison 87.9%          
 
 --- posterior summaries of the three effects (Likert points) ---
         cue median lower95 upper95
-      brand   1.05  0.8067   1.284
- reputation   0.84  0.5956   1.079
- popularity   0.22 -0.0183   0.458
+      brand  1.040  0.7974   1.272
+ reputation  0.855  0.6093   1.092
+ popularity  0.230 -0.0156   0.466
 
 --- full Bayesian model vs the normal approximation ---
                                                            question probability_approximation probability_full
-            brand is ahead of reputation AFTER other apps were seen                     0.482            0.511
-          the brand-reputation gap shrinks once other apps are seen                     0.974            0.962
- the popularity effect is smaller than 0.26 points AFTER comparison                     0.883            0.873
-                  the popularity effect is smaller than 0.26 points                     0.636            0.632
-                 brand is ahead of reputation BEFORE any comparison                     0.989            0.986
-                  the popularity effect is smaller than 0.33 points                     0.822            0.818
-                                       brand is ahead of reputation                     0.891            0.887
-             the full ranking brand > reputation > popularity holds                     0.891            0.887
-            the popularity effect is positive BEFORE any comparison                     0.991            0.993
-                                      popularity effect is positive                     0.963            0.965
-          brand and reputation are within 0.33 points of each other                     0.757            0.756
-          brand and reputation are within 0.26 points of each other                     0.612            0.613
+          brand and reputation are within 0.26 points of each other                     0.629            0.668
+            brand is ahead of reputation AFTER other apps were seen                     0.441            0.476
+          brand and reputation are within 0.33 points of each other                     0.772            0.803
+                  the popularity effect is smaller than 0.26 points                     0.627            0.601
+             the full ranking brand > reputation > popularity holds                     0.881            0.864
+                                       brand is ahead of reputation                     0.882            0.864
+                  the popularity effect is smaller than 0.33 points                     0.816            0.803
+          the brand-reputation gap shrinks once other apps are seen                     0.979            0.971
+                 brand is ahead of reputation BEFORE any comparison                     0.991            0.986
+ the popularity effect is smaller than 0.26 points AFTER comparison                     0.875            0.879
+                                      popularity effect is positive                     0.966            0.967
+            the popularity effect is positive BEFORE any comparison                     0.990            0.990
                                   reputation is ahead of popularity                     1.000            1.000
                                            brand effect is positive                     1.000            1.000
                                        brand is ahead of popularity                     1.000            1.000
                                       reputation effect is positive                     1.000            1.000
  difference_pp
-         2.888
-        -1.167
-        -1.021
-        -0.431
-        -0.398
-        -0.342
-        -0.340
-        -0.332
-         0.233
-         0.131
-        -0.075
-         0.033
-         0.009
-         0.000
-         0.000
-         0.000
+        3.9260
+        3.4680
+        3.1850
+       -2.6400
+       -1.7995
+       -1.7875
+       -1.2360
+       -0.7755
+       -0.5230
+        0.3900
+        0.1730
+        0.0375
+       -0.0120
+        0.0000
+        0.0000
+        0.0000
 
-largest disagreement: 2.9 percentage points
+largest disagreement: 3.9 percentage points

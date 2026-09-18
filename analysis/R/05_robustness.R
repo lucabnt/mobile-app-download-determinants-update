@@ -6,6 +6,7 @@
 #   D.4 power analysis: what effect was detectable? (relevant to the claim
 #       "no interaction between focal variables")
 #   D.5 involvement moderation estimated on a single pooled model
+#   D.6 the headline estimates without the 18 mean-imputed respondents
 #
 # Output: analysis/outputs/tables/05_*.csv, analysis/outputs/logs/05_robustness.log
 # ----------------------------------------------------------------------------
@@ -125,7 +126,8 @@ m_inv <- lmer(y ~ focal * x_f * inv_app + focal * x_f * inv_dl + focal * x_f * i
 print(car::Anova(m_inv, type = "III"))
 
 cat("\nSlope of the manipulation effect against each involvement measure\n")
-cat("(change in the high-vs-low effect per +1 s.d. of involvement):\n")
+cat("(change in the high-vs-low effect per +1 point of the 1-7 involvement scale;\n")
+cat("08_equivalence.R rescales the two contested ones to per +1 s.d.):\n")
 for (v in c("inv_app", "inv_dl", "inv_cat")) {
   tr <- emtrends(m_inv, ~ x_f | focal, var = v)
   ct <- as.data.frame(summary(contrast(tr, "revpairwise"), infer = c(TRUE, TRUE)))
@@ -134,6 +136,37 @@ for (v in c("inv_app", "inv_dl", "inv_cat")) {
         digits = 3, row.names = FALSE)
   cat("\n")
 }
+
+cat("\n\n=== D.6 WITHOUT THE 18 MEAN-IMPUTED RESPONDENTS ===\n\n")
+cat("18 respondents have at least one involvement scale replaced by the sample\n")
+cat("mean (review §2.4). Their covariate is now correct (03_build_derived.R), but\n")
+cat("an imputed value is still an assumption. The estimates that carry the\n")
+cat("review's claims, with and without them:\n\n")
+m3r <- read_orig("M3_rep.csv")
+imputed <- unique(unlist(lapply(c("inv_app", "inv_dl", "inv_cat"), function(v)
+  m3r$lfdn[abs(m3r[[v]] - mean(m3r[[v]])) < 1e-6])))
+cat("respondents flagged:", length(imputed), "\n\n")
+sens_fit <- function(d, tag) {
+  m  <- fit_pool(d)
+  e  <- eff_by_focal(m, tag)
+  pw <- as.data.frame(summary(contrast(emmeans(m, ~ x_f * focal),
+                      interaction = c("revpairwise", "pairwise")), adjust = "holm"))
+  ms <- lmer(y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f),
+             data = d, REML = FALSE)
+  pf <- as.data.frame(summary(contrast(emmeans(ms, ~ x_f * focal | position),
+                      interaction = c("revpairwise", "pairwise")), by = "position",
+                      adjust = "holm"))
+  pf <- pf[pf$position == "first", ]
+  data.frame(sample = tag, n_resp = length(unique(d$subject)),
+             brand = e$estimate[1], rep = e$estimate[2], pop = e$estimate[3],
+             brand_minus_rep_all = pw$estimate[1], p_all = pw$p.value[1],
+             brand_minus_rep_first = pf$estimate[1], p_first = pf$p.value[1])
+}
+sens <- rbind(sens_fit(long, "all 491"),
+              sens_fit(long[!long$subject %in% imputed, ], "without the 18 imputed"))
+print(sens, digits = 4, row.names = FALSE)
+write.csv(sens, file.path(DIR_TAB, "05_sensitivity_imputed.csv"), row.names = FALSE)
+cat("\nIf a claim changes between the two rows, it rests on the imputation.\n")
 
 sink(type = "message"); sink(); close(con)
 cat("Done. Log in analysis/outputs/logs/05_robustness.log\n")

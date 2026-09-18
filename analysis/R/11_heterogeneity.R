@@ -111,15 +111,26 @@ cat("\n=== SUMMARY ===\n")
 print(out, digits = 4, row.names = FALSE)
 write.csv(out, file.path(DIR_TAB, "11_heterogeneity.csv"), row.names = FALSE)
 
+# The reading follows the test instead of preceding it. Until 2026-09-18 this
+# block was fixed text written before the model was run, predicting that the
+# sensitivity question could not be answered; the log then printed that
+# prediction directly under a significant test. The prediction is kept, in
+# docs/02-work-plan.md task 2.2, as a record of what was expected.
+slope_p <- out$lrt_p[out$model == "+ own sensitivity to the manipulation"]
 cat("\n=== HOW TO READ THIS ===\n")
-cat("Respondents clearly differ in their baseline enthusiasm. Whether they differ\n")
-cat("in their SENSITIVITY to the cues is a question this design cannot answer:\n")
-cat("with three answers per person there is almost nothing left to estimate an\n")
-cat("individual slope from, and the third specification is saturated by\n")
-cat("construction - each person sees each cue exactly once, so a per-person level\n")
-cat("for each cue would need as many parameters as there are observations.\n")
-cat("This is a limit of the experiment, not evidence that everybody reacts alike.\n")
-cat("Answering it needs several apps per cue per respondent.\n")
+cat("Respondents clearly differ in their baseline enthusiasm.\n")
+if (isTRUE(slope_p < 0.05)) {
+  cat(sprintf("They also differ in their SENSITIVITY to the cues: letting each respondent\n"))
+  cat(sprintf("have their own effect of the manipulation improves the fit (p = %.4f,\n", slope_p))
+  cat("conservative at the boundary). That answers the question for sensitivity\n")
+  cat("to the manipulation in general, not cue by cue.\n")
+} else {
+  cat(sprintf("Individual sensitivity to the cues is not established (p = %.3f).\n", slope_p))
+}
+cat("The cue-by-cue version cannot be estimated at all: the third specification\n")
+cat("is saturated by construction - each person sees each cue exactly once, so a\n")
+cat("per-person level for each cue would need as many parameters as there are\n")
+cat("observations. Answering it needs several apps per cue per respondent.\n")
 
 sink(type = "message"); sink(); close(con)
 cat("Done. Log in analysis/outputs/logs/11_heterogeneity.log\n")

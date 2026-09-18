@@ -80,15 +80,15 @@ convincing on its own.
 
 | Model | Term | Estimate | SE | p |
 |---|---|---|---|---|
-| A | average strength seen earlier | −0.179 | 0.124 | 0.151 |
-| B | average strength seen earlier | −0.342 | 0.163 | **0.036** |
-| B | its interaction with the current app | +0.327 | 0.212 | 0.124 |
-| C | strength of the immediately preceding app | −0.128 | 0.094 | 0.173 |
+| A | average strength seen earlier | −0.175 | 0.124 | 0.159 |
+| B | average strength seen earlier | −0.338 | 0.163 | **0.038** |
+| B | its interaction with the current app | +0.326 | 0.212 | 0.124 |
+| C | strength of the immediately preceding app | −0.124 | 0.094 | 0.188 |
 
 **How to read it, carefully.** The one result below 0.05 is the second row, and it is *not* the
 headline it looks like. In model B the term measures the contrast effect **when the current app
 is itself weak**; the interaction says the effect roughly disappears when the current app is
-strong (−0.342 + 0.327 ≈ −0.015). That reading is only licensed if the interaction is real, and
+strong (−0.338 + 0.326 ≈ −0.012). That reading is only licensed if the interaction is real, and
 the interaction is not significant (p = 0.124). Reporting "seeing strong apps earlier lowers the
 rating of weak apps by a third of a point" would be selecting the one framing in which a number
 crosses a threshold.
@@ -126,24 +126,24 @@ cues.
 | Model | Estimable | Fit vs baseline |
 |---|---|---|
 | own baseline only | yes | — |
-| \+ own sensitivity to the manipulation | yes | **χ² = 10.29, 2 df, p = 0.0058** |
+| \+ own sensitivity to the manipulation | yes | **χ² = 9.47, 2 df, p = 0.0088** |
 | \+ own level for each cue | **no** | — |
 
 The middle model is the finding. Its variance components:
 
 | Component | Standard deviation |
 |---|---|
-| Personal baseline | 1.146 |
-| Personal sensitivity to the manipulation | **0.557** |
-| Correlation between the two | **−0.61** |
-| Remaining noise | 1.152 |
+| Personal baseline | 1.135 |
+| Personal sensitivity to the manipulation | **0.568** |
+| Correlation between the two | **−0.59** |
+| Remaining noise | 1.151 |
 
 **How to read it.** Respondents really do differ in how much the cues move them, and the spread
-is substantial: a sensitivity standard deviation of 0.56 against average effects of 1.05 (brand),
-0.84 (reputation) and 0.22 (popularity). Someone one standard deviation below average barely
+is substantial: a sensitivity standard deviation of 0.57 against average effects of 1.05 (brand),
+0.85 (reputation) and 0.22 (popularity). Someone one standard deviation below average barely
 responds to the manipulation at all.
 
-The correlation of −0.61 is the more interesting half. People with a high baseline — those
+The correlation of −0.59 is the more interesting half. People with a high baseline — those
 inclined to download almost anything — are moved *less* by the cues. The cues do their work on
 the undecided, which is a different managerial message from "brand adds a point to everyone".
 
@@ -187,15 +187,17 @@ on a footing that does not depend on the spacing says whether it matters.
 
 | Cutpoint | Estimate | Gap to the next |
 |---|---|---|
-| 1 \| 2 | −4.44 | 1.77 |
-| 2 \| 3 | −2.68 | 0.99 |
-| 3 \| 4 | −1.69 | 1.39 |
-| 4 \| 5 | −0.30 | 1.44 |
-| 5 \| 6 | 1.14 | 1.93 |
-| 6 \| 7 | 3.07 | — |
+| 1 \| 2 | −4.42 | 1.77 |
+| 2 \| 3 | −2.65 | 0.99 |
+| 3 \| 4 | −1.66 | 1.39 |
+| 4 \| 5 | −0.27 | 1.44 |
+| 5 \| 6 | 1.17 | 1.93 |
+| 6 \| 7 | 3.09 | — |
 
-The widest step is **1.95 times** the narrowest. Moving a respondent from 5 to 6, or from 6 to 7,
-takes roughly twice as much underlying intention as moving them from 2 to 3. Respondents avoid
+The widest answer band is **1.94 times** the narrowest. The range of underlying intention that
+produces an answer of 6 — from the 5 | 6 cutpoint to the 6 | 7 cutpoint — is nearly twice as
+wide as the range that produces a 3. (An earlier version described this as moving a respondent
+"from 2 to 3"; the narrow band is the one that yields a 3, one step further along.) Respondents avoid
 the ends of the scale, exactly as the literature on rating scales expects.
 
 ![Where each answer boundary sits on the underlying intention scale, against what an equally spaced scale would look like.](../analysis/outputs/figures/fig_09_scale_cutpoints.png)
@@ -210,9 +212,9 @@ comparable points of the curve.
 
 | Cue | Assuming equal spacing | Without that assumption | Difference |
 |---|---|---|---|
-| Brand | 25.9 pp | 27.2 pp | 1.4 |
-| Reputation | 19.3 pp | 22.4 pp | 3.1 |
-| Popularity | 5.9 pp | 6.7 pp | 0.8 |
+| Brand | 25.9 pp | 27.1 pp | 1.3 |
+| Reputation | 19.5 pp | 22.6 pp | 3.0 |
+| Popularity | 6.0 pp | 6.7 pp | 0.7 |
 
 The ranking, the magnitudes and the gap between the first two and the third all survive. **The
 equal-spacing assumption is not driving any conclusion of this review** — which is worth knowing
@@ -227,6 +229,14 @@ on it.
 ---
 
 ## 5. Does it depend on who is looking?
+
+> **Not yet re-run on the corrected covariates (2026-09-18).** This section comes from
+> `13_demographics_quality.R`, which needs the private questionnaire export and was not part
+> of the re-run that followed the involvement-covariate correction (review §2.2). Its numbers
+> are still the pre-correction ones. Every other section of this document has been
+> re-run. Command, for whoever holds the export:
+> `RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R`, then the
+> same for `16_figures_extended.R`, which draws `fig_11` and `fig_12` from its output.
 
 **Question.** Do age, gender, education or occupation change how much each cue matters?
 
@@ -275,6 +285,14 @@ cannot tell them apart.
 ---
 
 ## 6. Does response quality change anything?
+
+> **Not yet re-run on the corrected covariates (2026-09-18).** This section comes from
+> `13_demographics_quality.R`, which needs the private questionnaire export and was not part
+> of the re-run that followed the involvement-covariate correction (review §2.2). Its numbers
+> are still the pre-correction ones; for the full-sample column below the corrected values are 1.050, 0.848 and 0.221. Every other section of this document has been
+> re-run. Command, for whoever holds the export:
+> `RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R`, then the
+> same for `16_figures_extended.R`, which draws `fig_11` and `fig_12` from its output.
 
 **Question.** Some respondents rushed, and some gave the same answer to every item of a scale.
 Do the conclusions depend on keeping them?
@@ -338,9 +356,10 @@ own compilation wrapper, for reasons documented in §2.6 of
 
 The approximation was kept rather than deleted, and the two are compared in
 [`15_bayesian_brms.R`](../analysis/R/15_bayesian_brms.R). They agree: across sixteen statements
-the largest disagreement is **2.9 percentage points**, and every other one is below 1.2. That
-comparison is worth more than either result alone, because it is the only way to know whether the
-months of work done on the approximation were resting on anything.
+the largest disagreement is **3.9 percentage points**, four exceed 2.5, and the other twelve are
+below 1.9. (Before the covariate correction of 2026-09-18 the largest was 2.9.) That comparison is
+worth more than either result alone, because it is the only way to know whether the work done on
+the approximation was resting on anything.
 
 **What came back.**
 
@@ -348,19 +367,19 @@ months of work done on the approximation were resting on anything.
 |---|---|---|
 | The brand effect is positive | 100% | 100% |
 | The reputation effect is positive | 100% | 100% |
-| The popularity effect is positive | 96.5% | 96.3% |
-| Brand is ahead of reputation | **88.8%** | 89.1% |
+| The popularity effect is positive | 96.7% | 96.6% |
+| Brand is ahead of reputation | **86.4%** | 88.2% |
 | Brand is ahead of popularity | 100% | 100% |
-| The whole ranking brand > reputation > popularity holds | 88.8% | 89.1% |
-| Brand and reputation are within 0.33 points of each other | 75.6% | 75.7% |
-| The popularity effect is smaller than 0.33 points | 81.8% | 82.2% |
-| Brand is ahead of reputation **before** any comparison | **98.6%** | 98.9% |
-| Brand is ahead of reputation **after** other apps were seen | **51.1%** | 48.2% |
-| The brand–reputation gap shrinks once other apps are seen | 96.2% | 97.4% |
-| The popularity effect is positive before any comparison | 99.3% | 99.1% |
+| The whole ranking brand > reputation > popularity holds | 86.4% | 88.1% |
+| Brand and reputation are within 0.33 points of each other | 80.4% | 77.2% |
+| The popularity effect is smaller than 0.33 points | 80.3% | 81.6% |
+| Brand is ahead of reputation **before** any comparison | **98.6%** | 99.1% |
+| Brand is ahead of reputation **after** other apps were seen | **47.6%** | 44.1% |
+| The brand–reputation gap shrinks once other apps are seen | 97.1% | 97.9% |
+| The popularity effect is positive before any comparison | 99.0% | 99.0% |
 
-The posterior medians are 1.05 for brand (95% interval 0.81 to 1.28), 0.84 for reputation (0.60
-to 1.08) and 0.22 for popularity (−0.02 to 0.46) — the same numbers the frequentist models give,
+The posterior medians are 1.04 for brand (95% interval 0.80 to 1.27), 0.86 for reputation (0.61
+to 1.09) and 0.23 for popularity (−0.02 to 0.47) — the same numbers the frequentist models give,
 which is what should happen when the priors are this weak.
 
 ![The full posterior of each effect. Overlap between two curves is what "not distinguishable" looks like.](../analysis/outputs/figures/fig_13_posterior.png)
@@ -370,11 +389,11 @@ looks like.*
 
 **How to read it, and how not to.** These numbers are not new evidence. They come from the same
 model and the same data as the frequentist results, so they cannot disagree with them — only
-phrase them differently. "Brand ahead of reputation: 89.1%" is the same fact as "p = 0.22 for the
-difference": a two-sided p of 0.22 corresponds to about 0.11 on one side, and 1 − 0.11 ≈ 0.89. If
+phrase them differently. "Brand ahead of reputation: 88.2%" is the same fact as "p = 0.24 for the
+difference": a two-sided p of 0.24 corresponds to about 0.12 on one side, and 1 − 0.12 ≈ 0.88. If
 the p-value did not convince you, this should not convince you either.
 
-What the reformulation genuinely adds is the last four rows. "98.6% before comparison, 51.1%
+What the reformulation genuinely adds is the last four rows. "98.6% before comparison, 47.6%
 after" states the position-dependence of the ranking (review §12.1) in a form that needs no
 training to read: before the user has seen anything else, brand almost certainly leads; once they
 have, it is a coin toss.

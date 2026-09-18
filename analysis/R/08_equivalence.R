@@ -141,14 +141,23 @@ dpos <- summary(contrast(emmeans(m_pos, ~ x_f * position | focal),
 print(as.data.frame(dpos)[, c("focal", "position_pairwise", "estimate", "SE",
                               "t.ratio", "p.value")], digits = 3, row.names = FALSE)
 
+# The reading quotes the numbers computed above rather than typing them in, so
+# that it cannot drift from the table it describes when the data change.
+dp  <- as.data.frame(dpos)
+pp  <- byp[byp$focal == "pop", ]
+p13 <- dp[dp$focal == "pop" & dp$position_pairwise == "first - third", ]
+aft <- out[out$estimand == "popularity effect, after others", ]
 cat("\nReading, for popularity -- the cue whose null this section is about:\n")
-cat("  * first app  +0.46, effect present;\n")
-cat("  * second app -0.23, inconclusive;\n")
-cat("  * third app  +0.39, inconclusive, and NOT different from the first\n")
-cat("    (difference 0.07, p = 0.81).\n")
+for (i in seq_len(nrow(pp)))
+  cat(sprintf("  * %-6s app %+.2f, %s\n", pp$position[i], pp$estimate[i], pp$verdict[i]))
+cat(sprintf("  * third vs first: difference %.2f, p = %.2f (Holm)\n",
+            abs(p13$estimate), p13$p.value))
+cat(sprintf("  * smallest Holm-corrected p between positions, any cue: %.3f\n",
+            min(dp$p.value)))
 cat("So 'popularity works before comparison and dissolves after' is not what the\n")
 cat("data says. The drop is confined to the second app, no pairwise difference\n")
-cat("survives Holm, and the +0.06 'at the boundary' verdict above is an average\n")
+cat(sprintf("survives Holm, and the %+.2f '%s' verdict above is an average\n",
+            aft$estimate, aft$verdict))
 cat("of two inconclusive estimates of opposite sign. What survives is narrower:\n")
 cat("popularity moves intention on first exposure, and after that this design\n")
 cat("cannot say -- which is still enough to deny the 2023 claim that popularity\n")

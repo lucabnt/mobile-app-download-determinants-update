@@ -58,9 +58,12 @@ cat("\n--- Estimated cutpoints of the latent intention scale ---\n")
 print(tab, digits = 3, row.names = FALSE)
 write.csv(tab, file.path(DIR_TAB, "12_scale_thresholds.csv"), row.names = FALSE)
 
-cat(sprintf("\nWidest category is %.2f times the narrowest (%s vs %s).\n",
-            max(widths) / min(widths),
-            names(widths)[which.max(widths)], names(widths)[which.min(widths)]))
+# widths[k] is the distance between cutpoints k|k+1 and k+1|k+2, i.e. the span
+# of latent intention over which the answer is k+1. Labelled by that answer: the
+# earlier label printed the upper cutpoint's name, which read as a category one
+# step off.
+cat(sprintf("\nWidest answer category is %.2f times the narrowest (answer %d vs answer %d).\n",
+            max(widths) / min(widths), which.max(widths) + 1L, which.min(widths) + 1L))
 cat("A perfect ruler would give a ratio of 1. The wider a category, the more\n")
 cat("underlying intention has to change before the answer moves by one point.\n")
 

@@ -43,6 +43,12 @@ eff_tab <- function(m, tag) {
 # --- Figure 1: manipulation effect by focal variable -------------------------
 m_all <- fit_pool(long)
 e1 <- eff_tab(m_all, "all observations")
+# Captions quote the fitted numbers instead of typing them in: typed numbers
+# went stale when the involvement covariates were corrected on 2026-09-18.
+pw1 <- as.data.frame(summary(contrast(emmeans(m_all, ~ x_f * focal),
+                     interaction = c("revpairwise", "pairwise")), adjust = "holm"))
+p_br <- pw1$p.value[pw1[[2]] == "brand - rep"]
+p_pop <- max(pw1$p.value[pw1[[2]] %in% c("brand - pop", "rep - pop")])
 e1$focal <- factor(e1$focal, levels = c("brand", "rep", "pop"))
 
 p1 <- ggplot(e1, aes(x = focal, y = estimate, colour = focal)) +
@@ -54,8 +60,9 @@ p1 <- ggplot(e1, aes(x = focal, y = estimate, colour = focal)) +
   labs(title = "How far intention to download moves from the low to the high level",
        subtitle = "Mixed-effects model on all 1,473 observations, random intercept by respondent",
        x = NULL, y = "Difference in ITD (1-7 scale), 95% CI",
-       caption = paste("Brand and reputation are not statistically distinguishable (p = 0.22).",
-                       "Both beat popularity (p < 0.001).",
+       caption = paste(sprintf("Brand and reputation are not statistically distinguishable (p = %.2f).", p_br),
+                       sprintf("Both beat popularity (p %s).",
+                               if (p_pop < 0.001) "< 0.001" else sprintf("= %.3f", p_pop)),
                        sep = "\n")) +
   theme_thesis
 ggsave(file.path(DIR_FIG, "fig_01_focal_effects.png"), p1,
@@ -66,6 +73,8 @@ m_ok <- fit_pool(long[long$manip_ok == 1, ])
 e2 <- rbind(e1, eff_tab(m_ok, "says they used the cue"))
 e2$focal <- factor(e2$focal, levels = c("brand", "rep", "pop"))
 e2$sample <- factor(e2$sample, levels = c("all observations", "says they used the cue"))
+pa <- e2[e2$focal == "pop" & e2$sample == "all observations", ]
+ps <- e2[e2$focal == "pop" & e2$sample == "says they used the cue", ]
 
 p2 <- ggplot(e2, aes(x = focal, y = estimate, colour = focal, shape = sample)) +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.4) +
@@ -79,7 +88,8 @@ p2 <- ggplot(e2, aes(x = focal, y = estimate, colour = focal, shape = sample)) +
   labs(title = "The popularity null is not as solid as it looks",
        subtitle = "Same estimates, restricted to respondents who say they considered that cue (slide 6)",
        x = NULL, y = "Difference in ITD (1-7 scale), 95% CI",
-       caption = paste("Within the subgroup the popularity effect goes from +0.22 (p = 0.075) to +0.51 (p = 0.002).",
+       caption = paste(sprintf("Within the subgroup the popularity effect goes from %+.2f (p = %.3f) to %+.2f (p = %.3f).",
+                               pa$estimate, pa$p.value, ps$estimate, ps$p.value),
                        "Caution: slide 6 does not verify that the manipulation was perceived, it asks which cues",
                        "the respondent says they used. This is post-treatment conditioning on a mediator-like",
                        "variable: it shows the null is fragile, it does not overturn it.",
@@ -94,6 +104,10 @@ m_comp <- lmer(y ~ focal * x_f * comp_f + inv_app + inv_dl + inv_cat + (1 | subj
 e3 <- as.data.frame(summary(contrast(emmeans(m_comp, ~ x_f | focal * comp_f), "revpairwise"),
                             infer = c(TRUE, TRUE)))
 e3$focal <- factor(e3$focal, levels = c("brand", "rep", "pop"))
+g3 <- function(f, c) e3$estimate[e3$focal == f & e3$comp_f == c]
+m_c0 <- lmer(y ~ focal * x_f + focal * comp_f + x_f * comp_f + inv_app + inv_dl + inv_cat +
+               (1 | subj_f), data = long, REML = FALSE)
+p3way <- anova(m_c0, m_comp)$`Pr(>Chisq)`[2]
 
 p3 <- ggplot(e3, aes(x = comp_f, y = estimate, colour = focal, group = focal)) +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.4) +
@@ -105,8 +119,11 @@ p3 <- ggplot(e3, aes(x = comp_f, y = estimate, colour = focal, group = focal)) +
   labs(title = "What changes once users can compare several apps",
        subtitle = "Manipulation effect estimated on a single model, not on separate subsamples",
        x = NULL, y = "Difference in ITD (1-7 scale), 95% CI",
-       caption = paste("Brand weakens (1.41 -> 0.90), reputation strengthens (0.69 -> 0.91): they converge, they do not swap.",
-                       "The three-way interaction is not significant (p = 0.11): the pattern is suggestive, not established.",
+       caption = paste(sprintf("Brand weakens (%.2f -> %.2f), reputation strengthens (%.2f -> %.2f): they converge, they do not swap.",
+                               g3("brand", "shown first"), g3("brand", "after other apps"),
+                               g3("rep", "shown first"), g3("rep", "after other apps")),
+                       sprintf("The three-way interaction is not significant (p = %.3f): the pattern is suggestive, not established.",
+                               p3way),
                        sep = "\n")) +
   theme_thesis
 ggsave(file.path(DIR_FIG, "fig_03_comparison.png"), p3,

@@ -10,6 +10,25 @@ source("analysis/R/00_setup.R")
 
 anv <- read_orig("M ANOVA_RM.csv")
 
+# Involvement covariates: taken from the model files, NOT from the ANOVA file.
+# For the 18 respondents with a mean-imputed scale the ANOVA file stores the
+# centred score as -mean (the missing value treated as 0, then centred), which
+# lies outside what a 1-7 scale can produce; the nine model files store 0, the
+# mean imputation the thesis itself used. Found by the independent review
+# (review/verdict.md, problem 1); the check that should have caught it is now
+# section 4b of 02_data_audit.R. Centred here from the raw scores, and asserted
+# equal to the model files' own centred columns.
+m3r <- read_orig("M3_rep.csv")
+inv <- data.frame(lfdn    = m3r$lfdn,
+                  inv_app = m3r$inv_app - mean(m3r$inv_app),
+                  inv_dl  = m3r$inv_dl  - mean(m3r$inv_dl),
+                  inv_cat = m3r$inv_cat - mean(m3r$inv_cat))
+stopifnot(max(abs(inv$inv_app - m3r$inv_app_mc)) < 1e-6,
+          max(abs(inv$inv_dl  - m3r$inv_dl_mc))  < 1e-6,
+          max(abs(inv$inv_cat - m3r$inv_cat_mc)) < 1e-6)
+inv_row <- match(anv$lfdn, inv$lfdn)
+stopifnot(!anyNA(inv_row))
+
 long <- data.frame(
   subject   = anv$lfdn,
   focal     = factor(anv$i_name, levels = c("brand", "rep", "pop")),
@@ -21,9 +40,9 @@ long <- data.frame(
   y_mc      = anv$y_i_mc,                    # centred on the focal variable's mean
   manip_ok  = anv$man_check_i,
   comp      = as.integer(anv$n > 1),         # comparison: shown after other apps
-  inv_app   = anv$inv_app_mc,
-  inv_dl    = anv$inv_dl_mc,
-  inv_cat   = anv$inv_cat_mc
+  inv_app   = inv$inv_app[inv_row],
+  inv_dl    = inv$inv_dl[inv_row],
+  inv_cat   = inv$inv_cat[inv_row]
 )
 long <- long[order(long$subject, long$pos_num), ]
 
