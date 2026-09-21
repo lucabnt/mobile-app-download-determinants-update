@@ -75,7 +75,7 @@ for (v in c("rep","pop","brand")) {
 }
 
 cat("\n## 4b. The involvement covariates, across files and against their own range\n")
-# Added 2026-09-18 after an independent review (review/verdict.md, problem 1)
+# Added 2026-09-18 after an independent re-computation (not published)
 # found what section 4 missed: it compared y, x and comp and stopped there,
 # while every pooled model in this review also uses the three involvement
 # columns of the ANOVA file. Three checks, applied to every centred column:

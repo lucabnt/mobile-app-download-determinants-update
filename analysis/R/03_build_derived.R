@@ -14,8 +14,8 @@ anv <- read_orig("M ANOVA_RM.csv")
 # For the 18 respondents with a mean-imputed scale the ANOVA file stores the
 # centred score as -mean (the missing value treated as 0, then centred), which
 # lies outside what a 1-7 scale can produce; the nine model files store 0, the
-# mean imputation the thesis itself used. Found by the independent review
-# (review/verdict.md, problem 1); the check that should have caught it is now
+# mean imputation the thesis itself used. Found by an independent
+# re-computation (not published); the check that should have caught it is now
 # section 4b of 02_data_audit.R. Centred here from the raw scores, and asserted
 # equal to the model files' own centred columns.
 m3r <- read_orig("M3_rep.csv")

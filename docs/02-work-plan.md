@@ -499,9 +499,9 @@ checkable.
 
 ### 2026-09-18 — A data error found by an independent review, and everything re-run
 
-An independent re-computation of the review (`review/verdict.md`, written without reading the
-scripts) found a real error in this repository's data preparation. The response, with every
-point accepted or contested on the evidence, is `review/response.md`.
+An independent re-computation of the review (not published; written without reading the
+scripts) found a real error in this repository's data preparation. Every point it raised was
+checked on the data before being accepted or contested; what was accepted is below.
 
 **The error.** For the 18 respondents with a mean-imputed involvement scale, `M ANOVA_RM.csv`
 stores the centred score as −mean (the missing value treated as 0), where the nine model files
@@ -534,7 +534,8 @@ carried the 18 values. The cross-file check of the data audit had stopped at `y`
 - Full Bayesian against approximation: largest disagreement 3.9 percentage points, not 2.9.
 - Numbers at the second or third decimal: first-exposure brand − reputation +0.755 (p = 0.031),
   average brand − reputation p = 0.240, three-way χ²(4) = 6.31 (p = 0.177), heterogeneity
-  χ² = 9.47 (p = 0.0088, r = −0.59), and the rest listed in `review/response.md`.
+  χ² = 9.47 (p = 0.0088, r = −0.59). The rest are in the tables under `analysis/outputs/tables/`,
+  and every document now quotes the corrected values.
 
 **Found by the re-run, unrelated to the data error**
 
@@ -554,9 +555,10 @@ carried the 18 values. The cross-file check of the data audit had stopped at `y`
 - `13_demographics_quality.R` needs the private export and was not re-run: §5–6 of the
   new-analyses document, `fig_11`, `fig_12` and the post's sentence on students are still on the old
   covariates, and say so.
-- Whether to version `review/`, and whether to publish anonymised item-level data (scale items,
-  the nine slide-6 boxes) so that claims #37 and #48 become checkable: both are the author's
-  decision.
+- Whether to publish anonymised item-level data (scale items, the nine slide-6 boxes), so that
+  the box coding of slide 6 and Cronbach's α become checkable from the repository: the author's
+  decision. The re-computation itself is kept private (`review/` is in `.gitignore`), and the
+  references to it above say so.
 
 ---
 

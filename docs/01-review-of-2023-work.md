@@ -104,7 +104,7 @@ Replicated focal coefficients:
   yields 0 mismatches on `y`, 0 on `x` and 0 on `comp` for all three focal variables.
   **But not on the involvement covariates — corrected 2026-09-18.** This check stopped at
   `y`, `x` and `comp`, and the first version of this bullet reported it as clean. An
-  independent re-computation (`review/verdict.md`, problem 1) extended it to the three
+  independent re-computation (not published) extended it to the three
   involvement columns and found 18 respondents — exactly the mean-imputed ones of §2.4 —
   where the ANOVA file disagrees with every model file. The model files store the imputed
   score as the mean, so its centred value is 0; the ANOVA file stores it as if the missing
@@ -922,7 +922,7 @@ Environment: R 4.6.1 with `lme4` / `lmerTest`, `emmeans`, `ordinal`, `clubSandwi
 
 Added 2026-09-18. An independent re-computation that did not read the scripts could rebuild
 most numbers here only approximately, because the text described the models in words
-(`review/verdict.md`, problem 2). The words were not enough: they did not say, for instance,
+(an independent re-computation, not published). The words were not enough: they did not say, for instance,
 that the pooled models control for presentation position. Below is every model that produces a
 number in this document, exactly as fitted.
 

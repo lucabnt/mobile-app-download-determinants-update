@@ -36,3 +36,7 @@ data_project_*.csv
 # draft carrying the author's name should not become public as a side effect of
 # publishing the analysis.
 docs/blog/
+
+# Independent re-computation of the review, and the response to it: kept private by the
+# author's choice. Tracked files that mention it say "not published".
+review/
