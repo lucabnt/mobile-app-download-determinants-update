@@ -185,9 +185,9 @@ review first made:
     between cues, and none was tested. The estimand did not require the
     fragmentation: one model with a position interaction delivers it and
     the test together (§3.2);
-  * the ranking was then stated without its scope. 'Brand is the most
-    effective' is supported for the first app seen; it is not supported as
-    an average over the three judgements, where brand and reputation are
+  * the scope was stated -- the abstract says brand loses its edge under
+    comparison -- but neither half was tested. The first-app ranking holds;
+    averaged over the three judgements brand and reputation are
     indistinguishable (+0.20, p = 0.24);
   * M3's x_brand = 1.5028 was read as the effect 'independently from n'.
     With comp_i and its interaction in the model, that coefficient is the

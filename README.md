@@ -33,7 +33,7 @@ stimulus:
 
 | 2023 conclusion | After the review |
 |---|---|
-| Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.76, p = 0.031) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.24). The finding needed its scope |
+| Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.76, p = 0.031) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.24). The thesis stated this scope; it never tested it |
 | Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.45, p = 0.022), it vanishes among respondents who say they looked at downloads (β = 0.49, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
 | Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.42 → 0.89 vs 0.69 → 0.92) |
 | Three-way interaction significant | **Not confirmed** (χ²(4) = 6.31, p = 0.18) once repeated measures are specified correctly |

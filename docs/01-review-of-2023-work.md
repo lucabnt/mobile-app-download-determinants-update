@@ -26,7 +26,7 @@ defects are substantive and change the conclusions.
 | # | Problem | Effect on the conclusions |
 |---|---|---|
 | **A** | The repeated-measures ANOVA does not model repeated measures (`Error(lfdn)` with `lfdn` an integer) | The three-way interaction reported as significant is **not confirmed**: χ²(4) = 6.31, p = 0.18 on the mixed model. The split-plot ANOVA divides that same term between its two strata (p = 0.056 between respondents, p = 0.63 within), so neither of those two numbers is the test on its own — §3.1 |
-| **B** | The brand > reputation > popularity ranking is inferred by eyeballing coefficients estimated on different subsamples, with no test of the difference | It depends on the quantity. Averaged over the three judgements **brand and reputation are indistinguishable** (p = 0.24). On the first app shown — the uncontaminated judgement the design was built to measure — **brand does lead** (+0.76, p = 0.031 Holm; +1.36 log-odds, p = 0.002 in the thesis's own sample). The claim needed a scope, not a burial — §3.2 |
+| **B** | The brand > reputation > popularity ranking is inferred by eyeballing coefficients estimated on different subsamples, with no test of the difference | It depends on the quantity. Averaged over the three judgements **brand and reputation are indistinguishable** (p = 0.24). On the first app shown — the uncontaminated judgement the design was built to measure — **brand does lead** (+0.76, p = 0.031 Holm; +1.36 log-odds, p = 0.002 in the thesis's own sample). The thesis stated that scope itself, in the abstract; it tested neither half — §3.2 |
 | **C** | The "manipulation check" is reported and, by the author's deliberate choice, not used — but it is not a perception check at all, it is a post-treatment self-report | The thesis's most-quoted result, "popularity is surprisingly ineffective", **is fragile**: among respondents who say they looked at downloads the effect goes from +0.22 (p = 0.071) to +0.49 (p = 0.002). This does not overturn it (§3.3), but it removes the null's solidity |
 
 Three further problems concern the calibration of the evidence rather than its direction:
@@ -392,9 +392,10 @@ Three points, in order.
 
 So the honest form of finding (B) is a statement with a scope attached. **At first exposure
 brand leads reputation; averaged over the three judgements the two are indistinguishable.**
-The thesis stated the first and presented it as the second — *"generally the most decisive
-element"* — and the first version of this review did the reverse, reporting the average as if
-it refuted the claim. Neither is right on its own.
+The thesis states both, in the abstract: brand is *"generally the most decisive element, but,
+when comparison between apps is introduced in the model, it loses its effectiveness"*. It tests
+neither: the first half holds, the second is not established (p = 0.10, §6). *(Corrected
+2026-09-21: an earlier version said the thesis had dropped this scope. It had not.)*
 
 Two things follow that the 2023 work did not have:
 
@@ -871,7 +872,7 @@ For a possible erratum or republication:
 |---|---|---|
 | §3.2, ANOVA | *F*(2, 4) = 42.187; *F*(1, 4) = 60.841; *F*(2, 4) = 2.369 | Denominator df = 1,454 |
 | §3.2, ANOVA | Three-way interaction significant (*F*(4) = 2.681, p < 0.05) | Not significant once repeated measures are specified correctly: χ²(4) = 6.31, p = 0.18 |
-| §3.2, Abstract | *"developer's brand is generally the most decisive element"* | True **for the first app shown**, which is what M1 measures (+0.76, p = 0.031); not true as a general statement, where brand and reputation are indistinguishable (p = 0.24). Add the scope |
+| §3.2, Abstract | *"developer's brand is generally the most decisive element"* | True **for the first app shown** (+0.76, p = 0.031); the stated loss under comparison is not established (p = 0.10). Test both halves |
 | §3.2, M3 | *"when accounting for all the observations (independently from n), the developer's brand was the best predictor (β = 1.5028)"* | With `comp_i` and its interaction in the model that coefficient is the effect at `comp_i` = 0, i.e. first exposure — not an effect independent of *n* |
 | §3.2, Abstract | *"popularity [...] unexpectedly ineffective [...] across all models"* | Not a solid null: it vanishes among those who say they looked at downloads, and the low-popularity stimulus is internally impossible. Present as indeterminate, not as an absent effect |
 | §3.2 | *"reversal between brand and reputation"* | Convergence, not reversal |

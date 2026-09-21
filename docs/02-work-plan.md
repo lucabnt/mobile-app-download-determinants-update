@@ -497,6 +497,19 @@ checkable.
 
 ## 6. Change log
 
+### 2026-09-21 — The thesis did state the scope
+
+Re-reading the thesis at the author's request refuted a claim introduced on 2026-09-15: that
+the ranking was "reported without its scope". Abstract, Discussion and Conclusion all qualify
+it (*"but, when comparison between apps is introduced in the model, it loses its
+effectiveness"*). The defect is that neither half was tested: the first-app ranking holds, the
+change under comparison does not (p = 0.10). Corrected in the review (§1 row B, §3.2, §10), the
+README, the log text of `18_first_exposure.R` and the post. The one sentence that does
+generalise remains flagged in §3.2: Model 3's first-app coefficient described as holding
+"independently from *n*".
+
+---
+
 ### 2026-09-18 — A data error found by an independent review, and everything re-run
 
 An independent re-computation of the review (not published; written without reading the
