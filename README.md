@@ -194,20 +194,11 @@ Detailed backlog with priorities and acceptance criteria:
 **To point a reader at the review, link the post rather than this repository.** It states
 every finding in plain language, carries the figures, and links back here for the evidence:
 
-> Bontempi, L. (2026). *I Asked an AI to Review My Thesis. It Found Nothing New, Then Found
-> Everything*. https://lucabontempi.com/blog/reopening-my-thesis
-
-To cite the analysis itself — the code, the logs and the decision rules fixed before the tests
-were run — cite the repository and the commit date:
-
-> Bontempi, L. (2026). *Determinants of Download on Mobile App Stores — review and extension*.
-> GitHub: lucabnt/mobile-app-download-determinants-update.
+> Bontempi, L. (2026). *I Asked an AI to Review My Thesis. It Found Three Mistakes I Could Have Found Myself*. https://lucabontempi.com/blog/reopening-my-thesis
 
 For the original work:
 
-> Bontempi, L. (2023). *Determinants of Download on Mobile App Stores — An Empirical
-> Analysis*. Master's thesis, Chair of Marketing, Eberhard Karls Universität Tübingen /
-> Università di Pavia.
+> Bontempi, L. (2023). *Determinants of Download on Mobile App Stores — An Empirical Analysis*. Master's thesis, Chair of Marketing, Eberhard Karls Universität Tübingen / Università di Pavia.
 
 ---
 
