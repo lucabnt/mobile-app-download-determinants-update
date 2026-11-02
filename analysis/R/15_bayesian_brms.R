@@ -181,7 +181,7 @@ p <- ggplot(dens, aes(value, fill = cue, colour = cue)) +
                           100 * mean(brand > rep_)),
        x = "Effect on intention to download (1-7 scale)", y = NULL,
        caption = paste("Each curve shows every value of the effect that is plausible given the data, not a single estimate.",
-                       "Overlap between two curves is what 'not distinguishable' looks like.", sep = "\n")) +
+                       "Overlap alone does not establish whether two effects differ.", sep = "\n")) +
   theme_minimal(base_size = 11) +
   theme(panel.grid.minor = element_blank(), legend.position = "top",
         axis.text.y = element_blank(),

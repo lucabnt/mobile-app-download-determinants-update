@@ -23,8 +23,9 @@ suppressPackageStartupMessages({
 
 quality_only <- "--demographics-quality-only" %in% commandArgs(trailingOnly = TRUE)
 scale_only <- "--scale-only" %in% commandArgs(trailingOnly = TRUE)
-stopifnot(!(scale_only && quality_only))
-log_name <- if (scale_only) "16_scale_figure.log" else if (quality_only) "16_demographics_quality_figures.log" else "16_figures_extended.log"
+pooling_only <- "--pooling-only" %in% commandArgs(trailingOnly = TRUE)
+stopifnot(sum(c(scale_only, quality_only, pooling_only)) <= 1)
+log_name <- if (pooling_only) "16_pooling_figure.log" else if (scale_only) "16_scale_figure.log" else if (quality_only) "16_demographics_quality_figures.log" else "16_figures_extended.log"
 con <- file(file.path(DIR_LOG, log_name), open = "wt")
 sink(con, split = TRUE); sink(con, type = "message")
 
@@ -56,7 +57,7 @@ cat("=== EXTENDED FIGURES ===\n\n")
 
 if (!quality_only) {
 if (!scale_only) {
-# --- fig 05: what the split sample cost -------------------------------------
+# --- fig 05: first impressions and average effects --------------------------
 cf   <- read.csv(file.path(DIR_TAB, "01_replication_coefficients.csv"))
 fit  <- read.csv(file.path(DIR_TAB, "01_replication_modelfit.csv"))
 pool <- read.csv(file.path(DIR_TAB, "04_effect_by_focal.csv"))
@@ -96,15 +97,21 @@ p5 <- ggplot(d5, aes(estimate, focal, colour = focal, shape = approach)) +
   scale_y_discrete(labels = LAB, limits = rev(levels(d5$focal))) +
   scale_colour_manual(values = PAL, guide = "none") +
   scale_shape_manual(values = c(1, 17, 16), name = NULL) +
-  labs(title = "What the split sample cost, and what it changed",
+  labs(title = "First impressions and average effects",
        subtitle = "The same three effects, estimated three ways",
        x = "Effect on intention to download (1-7 scale), 95% CI", y = NULL,
        caption = paste("Hollow: the thesis - one regression per cue, on its own subsample of first-app answers.",
-                       "Triangle: the same quantity from one model on all 1,473 answers. Same question, more precision.",
-                       "Solid: the average over all three judgements. A different question - and the one where brand and reputation meet.",
+                       "Triangles: first-app effects estimated from a model fitted to all 1,473 answers.",
+                       "Solid: average effects across all three judgements, including those made after seeing other apps.",
                        sep = "\n")) +
   base_theme
 save_fig(p5, "fig_05_pooling_gain.png")
+
+if (pooling_only) {
+  sink(type = "message"); sink(); close(con)
+  cat("Done. Log in", file.path(DIR_LOG, log_name), "\n")
+  quit(save = "no", status = 0)
+}
 
 # --- fig 06: effect by presentation position --------------------------------
 m_pos <- lmer(y ~ focal * x_f * position + inv_app + inv_dl + inv_cat + (1 | subj_f),

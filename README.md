@@ -122,6 +122,9 @@ RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R
 Rscript analysis/R/16_figures_extended.R --demographics-quality-only
 ```
 
+To refresh only the first-app versus average-effects figure, run
+`Rscript analysis/R/16_figures_extended.R --pooling-only`.
+
 To refresh only the response-scale figure after script 12, run
 `Rscript analysis/R/16_figures_extended.R --scale-only`.
 
