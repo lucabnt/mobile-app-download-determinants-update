@@ -7,10 +7,10 @@
 #   fig_06_by_position.png    each cue's effect at each presentation position
 #   fig_07_equivalence.png    null results against the relevance band
 #   fig_08_heterogeneity.png  people differ, and how their baseline relates to it
-#   fig_09_scale_cutpoints.png the 1-7 scale is not a ruler
+#   fig_09_scale_cutpoints.png fitted flexible and equidistant thresholds
 #   fig_10_sequence.png       contrast effects from the apps seen earlier
 #   fig_11_quality.png        robustness to rushed and careless answers
-#   fig_12_demographics.png   cue effects by occupation (needs RAW_EXPORT)
+#   fig_12_demographics.png   cue effects by occupation (aggregate output of script 13)
 #
 # Output: analysis/outputs/figures/
 #         analysis/outputs/logs/16_figures_extended.log
@@ -21,7 +21,11 @@ suppressPackageStartupMessages({
   library(lme4); library(lmerTest); library(emmeans); library(ggplot2)
 })
 
-con <- file(file.path(DIR_LOG, "16_figures_extended.log"), open = "wt")
+quality_only <- "--demographics-quality-only" %in% commandArgs(trailingOnly = TRUE)
+scale_only <- "--scale-only" %in% commandArgs(trailingOnly = TRUE)
+stopifnot(!(scale_only && quality_only))
+log_name <- if (scale_only) "16_scale_figure.log" else if (quality_only) "16_demographics_quality_figures.log" else "16_figures_extended.log"
+con <- file(file.path(DIR_LOG, log_name), open = "wt")
 sink(con, split = TRUE); sink(con, type = "message")
 
 PAL <- c(brand = "#1f4e79", rep = "#c0504d", pop = "#7f7f7f",
@@ -50,6 +54,8 @@ long$x_f      <- factor(long$x, levels = c(0, 1), labels = c("low", "high"))
 
 cat("=== EXTENDED FIGURES ===\n\n")
 
+if (!quality_only) {
+if (!scale_only) {
 # --- fig 05: what the split sample cost -------------------------------------
 cf   <- read.csv(file.path(DIR_TAB, "01_replication_coefficients.csv"))
 fit  <- read.csv(file.path(DIR_TAB, "01_replication_modelfit.csv"))
@@ -176,26 +182,30 @@ p8 <- ggplot(d8, aes(baseline, sensitivity)) +
   base_theme
 save_fig(p8, "fig_08_heterogeneity.png")
 
+}
+
 # --- fig 09: the answer scale -------------------------------------------------
-th <- read.csv(file.path(DIR_TAB, "12_scale_thresholds.csv"))
-eqsp <- seq(min(th$threshold), max(th$threshold), length.out = nrow(th))
-d9 <- rbind(data.frame(boundary = th$boundary, value = th$threshold, kind = "estimated from the data"),
-            data.frame(boundary = th$boundary, value = eqsp, kind = "if the scale were a ruler"))
+th <- read.csv(file.path(DIR_TAB, "12_thresholds_compared.csv"))
+effects9 <- read.csv(file.path(DIR_TAB, "12_threshold_effects.csv"))
+test9 <- read.csv(file.path(DIR_TAB, "12_threshold_comparison.csv"))
+d9 <- rbind(data.frame(boundary = th$boundary, value = th$flexible, kind = "Flexible thresholds"),
+            data.frame(boundary = th$boundary, value = th$equidistant, kind = "Equidistant thresholds"))
 p9 <- ggplot(d9, aes(value, kind, colour = kind)) +
   geom_line(aes(group = kind), colour = "grey70", linewidth = 0.5) +
   geom_point(size = 3) +
   geom_text(aes(label = boundary), vjust = -1.4, size = 3, show.legend = FALSE) +
-  scale_colour_manual(values = c("estimated from the data" = "#1f4e79",
-                                 "if the scale were a ruler" = "#8c8c8c"), guide = "none") +
-  labs(title = "The 1-7 scale is not a ruler",
-       subtitle = "Where each answer boundary sits on the underlying intention scale",
-       x = "Underlying intention (log-odds)", y = NULL,
-       caption = paste("An answer of 6 covers nearly twice as much underlying intention as an answer of 3:",
-                       "respondents stop one short of the ends. Correcting for it changes the effects by about 3 percentage points at most.",
-                       sep = "\n")) +
+  scale_colour_manual(values = c("Flexible thresholds" = "#1f4e79",
+                                 "Equidistant thresholds" = "#8c8c8c"), guide = "none") +
+  labs(title = "Testing equal spacing of latent thresholds",
+       subtitle = sprintf("Same ordinal model; likelihood-ratio chi-squared = %.2f, df = %d, p = %s",
+                          test9$chisq, test9$df, format(test9$p_value, scientific = TRUE, digits = 2)),
+       x = "Latent intention (log-odds)", y = NULL,
+       caption = sprintf("Both rows are fitted models. Largest change in the marginal P(score >= 5) effect: %.2f pp.\nThis checks a threshold restriction, not all assumptions of linear regression.",
+                         max(abs(effects9$difference_pp)))) +
   base_theme + theme(axis.text.y = element_text(size = 9))
 save_fig(p9, "fig_09_scale_cutpoints.png", h = 3.8)
 
+if (!scale_only) {
 # --- fig 10: sequence effects -------------------------------------------------
 sq <- read.csv(file.path(DIR_TAB, "10_sequence_effects.csv"))
 sq <- sq[sq$term %in% c("prior_mean_x", "prev_x"), ]
@@ -225,10 +235,22 @@ p10 <- ggplot(sq, aes(estimate, label)) +
   base_theme + theme(axis.text.y = element_text(size = 8))
 save_fig(p10, "fig_10_sequence.png", h = 3.6)
 
+}
+
+}
+
+if (!scale_only) {
 # --- fig 11: response quality -------------------------------------------------
+summary_file <- file.path(DIR_TAB, "13_quality_summary.csv")
+if (file.exists(summary_file)) {
+  provenance <- read.csv(summary_file)
+  stopifnot(identical(provenance$derived_md5,
+    unname(tools::md5sum(file.path(DIR_DERIV, "long_measures.csv")))))
+}
 qf <- file.path(DIR_TAB, "13_quality.csv")
 if (file.exists(qf)) {
   q <- read.csv(qf)
+  qs <- read.csv(file.path(DIR_TAB, "13_quality_summary.csv"))
   q$focal <- factor(q$focal, levels = c("brand", "rep", "pop"))
   p11 <- ggplot(q, aes(estimate, focal, colour = focal, shape = sample)) +
     geom_vline(xintercept = 0, colour = "grey50", linewidth = 0.4) +
@@ -238,27 +260,24 @@ if (file.exists(qf)) {
     scale_y_discrete(labels = LAB, limits = rev(levels(q$focal))) +
     scale_colour_manual(values = PAL, guide = "none") +
     scale_shape_manual(values = c(16, 1), name = NULL) +
-    labs(title = "Rushed and careless answers change nothing",
-         subtitle = "33 respondents removed: the fastest 5%, and those giving one answer to a whole scale",
+    labs(title = "Cue effects are stable after excluding flagged responses",
+         subtitle = sprintf("%d respondents removed: fast completion or identical scale answers", qs$flagged),
          x = "Effect on intention to download (1-7 scale), 95% CI", y = NULL,
-         caption = "Every effect moves slightly up, as expected when noise is removed, and none moves enough to matter.") +
+         caption = "Pointwise 95% intervals. Response-quality flags do not prove inattention.") +
     base_theme
   save_fig(p11, "fig_11_quality.png", h = 4.2)
 } else cat("  skipped fig_11: run 13_demographics_quality.R first\n")
 
 # --- fig 12: demographics ------------------------------------------------------
-raw <- Sys.getenv("RAW_EXPORT")
-if (raw != "" && file.exists(raw)) {
-  ex <- read.csv(raw, sep = ";", quote = "\"", fileEncoding = "UTF-8", check.names = FALSE)
-  sub <- data.frame(subject = ex$lfdn,
-                    occupation = factor(ifelse(ex$v_4 == 1, "student",
-                                        ifelse(ex$v_4 %in% 2:4, "employed", "other")),
-                                        levels = c("student", "employed", "other")))
-  d <- merge(long, sub, by = "subject")
-  m <- lmer(y ~ focal * x_f * occupation + position + inv_app + inv_dl + inv_cat + (1 | subj_f),
-            data = d, REML = FALSE)
-  e12 <- as.data.frame(summary(contrast(emmeans(m, ~ x_f | focal * occupation), "revpairwise"),
-                               infer = c(TRUE, TRUE)))
+ef <- file.path(DIR_TAB, "13_demographics_effects.csv")
+if (file.exists(ef)) {
+  e12 <- read.csv(ef)
+  e12 <- e12[e12$variable == "occupation", ]
+  e12$occupation <- factor(e12$group, levels = c("student", "employed", "other"))
+  names(e12)[names(e12) == "ci_lo"] <- "lower.CL"
+  names(e12)[names(e12) == "ci_hi"] <- "upper.CL"
+  dem <- read.csv(file.path(DIR_TAB, "13_demographics.csv"))
+  op <- dem[dem$variable == "occupation", ]
   e12$focal <- factor(e12$focal, levels = c("brand", "rep", "pop"))
   p12 <- ggplot(e12, aes(estimate, focal, colour = focal)) +
     geom_vline(xintercept = 0, colour = "grey50", linewidth = 0.4) +
@@ -267,18 +286,18 @@ if (raw != "" && file.exists(raw)) {
     facet_wrap(~ occupation, ncol = 3) +
     scale_y_discrete(labels = LAB, limits = rev(levels(e12$focal))) +
     scale_colour_manual(values = PAL, guide = "none") +
-    labs(title = "Does it depend on who is looking? Not measurably",
-         subtitle = "Cue effects by occupation. The difference between groups is not significant (p = 0.09)",
+    labs(title = "Cue effects by occupation",
+         subtitle = sprintf("Moderation test: p = %.3f; Holm-adjusted p = %.3f", op$p_value, op$p_holm),
          x = "Effect on intention to download (1-7 scale), 95% CI", y = NULL,
-         caption = paste("Students respond to reputation about twice as strongly as employed respondents, and are the",
-                         "only group for whom popularity registers - a tidy story that does not pass its own test.",
-                         sep = "\n")) +
+         caption = "Pointwise 95% intervals. Different subgroup significance levels do not establish different effects.") +
     base_theme
   save_fig(p12, "fig_12_demographics.png", h = 4.2)
-} else cat("  skipped fig_12: RAW_EXPORT not set\n")
+} else cat("  skipped fig_12: run 13_demographics_quality.R first\n")
+
+}
 
 cat("\nfigures now in", DIR_FIG, ":\n")
 print(list.files(DIR_FIG))
 
 sink(type = "message"); sink(); close(con)
-cat("Done. Log in analysis/outputs/logs/16_figures_extended.log\n")
+cat("Done. Log in", file.path(DIR_LOG, log_name), "\n")

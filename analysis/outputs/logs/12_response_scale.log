@@ -6,18 +6,19 @@ observed distribution of answers:
  70 154 159 300 320 297 173 
 
 share of answers at the two extremes (1 or 7): 16.5% | at the midpoint (4): 20.4% 
+There were 18 warnings (use warnings() to see them)
 
 --- Estimated cutpoints of the latent intention scale ---
  boundary threshold    se width_to_next equal_width ratio_to_equal
-      1|2    -4.417 0.235         1.771         1.5          1.179
-      2|3    -2.646 0.190         0.991         1.5          0.660
-      3|4    -1.655 0.178         1.388         1.5          0.924
-      4|5    -0.267 0.171         1.435         1.5          0.955
-      5|6     1.168 0.175         1.925         1.5          1.282
-      6|7     3.093 0.200            NA          NA             NA
+      1|2    -4.437 0.235         1.783        1.51          1.182
+      2|3    -2.654 0.191         0.995        1.51          0.660
+      3|4    -1.659 0.179         1.392        1.51          0.923
+      4|5    -0.267 0.172         1.439        1.51          0.954
+      5|6     1.172 0.175         1.934        1.51          1.282
+      6|7     3.106 0.201            NA          NA             NA
 
 Widest answer category is 1.94 times the narrowest (answer 6 vs answer 3).
-A perfect ruler would give a ratio of 1. The wider a category, the more
+Equidistant latent thresholds give a ratio of 1. The wider a category, the more
 underlying intention has to change before the answer moves by one point.
 
 
@@ -27,13 +28,29 @@ constant by construction.
 Ordinal model: the same quantity implied by the cutpoints, computed for each
 observation at that respondent's own characteristics and then averaged.
 
- focal linear_pp ordinal_pp difference_pp
- brand     25.86      27.14         1.280
-   rep     19.51      22.55         3.037
-   pop      5.98       6.73         0.747
+ focal binary_linear_pp ordinal_conditional_pp difference_pp
+ brand            25.86                  27.08          1.23
+   rep            19.51                  22.48          2.97
+   pop             5.98                   6.76          0.78
 
-Both columns are percentage points. If they agree, the equal-spacing
-assumption is not driving any conclusion of this review.
+Binary linear vs conditional ordinal estimates, in percentage points.
+This comparison does not test equal spacing of the original 1-7 scale.
+There were 11 warnings (use warnings() to see them)
+
+=== FLEXIBLE VS EQUIDISTANT LATENT THRESHOLDS ===
+       model    n parameters   logLik     AIC convergence max_gradient min_hessian_eigenvalue
+    flexible 1473         17 -2488.19 5010.39           0  0.000454274                3.68483
+ equidistant 1473         13 -2518.79 5063.57           0  0.000736391                5.53048
+   chisq df    p_value AIC_flexible AIC_equidistant nAGQ
+ 61.1869  4 1.6332e-12      5010.39         5063.57    7
+
+Marginal P(y >= 5) effects: same covariates, random intercept integrated out.
+ focal flexible_low flexible_high equidistant_low equidistant_high flexible_pp equidistant_pp difference_pp
+ brand      0.51718       0.76865         0.49541          0.74572     25.1472         25.031      0.116323
+   rep      0.32680       0.53344         0.30028          0.51116     20.6640         21.087     -0.423417
+   pop      0.50796       0.56957         0.48600          0.54804      6.1617          6.204     -0.042265
+Differences are descriptive, not confidence intervals or evidence of equivalence.
+This comparison does not validate all OLS findings or prove a ranking between cues.
 
 
 --- Do some respondents simply prefer the extremes? ---

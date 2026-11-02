@@ -363,26 +363,26 @@ the work done while Stan was unavailable was resting on anything — and it was.
 
 ---
 
-### 2.7 Structure of the response scale **[closed 2026-09-12]**
+### 2.7 Structure of the response scale **[corrected and re-run 2026-11-02]**
 
-**Question.** Do respondents use the 1–7 scale uniformly, or do they cluster on focal values
-(4 = neutral, extremes avoided)?
+**Question.** Do flexible versus equidistant latent thresholds alter pooled cue effects
+on the probability of answering at least 5?
 
-**Why it matters.** The ordinal thresholds estimated in Phase 1 are not equally spaced: the
-gap 4|5 → 5|6 is much smaller than 1|2 → 2|3. If the scale is compressed in the middle, OLS
-systematically distorts small effects — precisely the ones on popularity.
+**Method.** Fit two otherwise identical ordinal mixed models with seven-point adaptive
+quadrature; check convergence and the Hessian; compare likelihoods (four restrictions)
+and AIC. Integrate over the fitted normal respondent-intercept distribution and average
+over the same observed covariates to compare probability effects.
 
-**Method.** Compare the estimated thresholds against equal spacing; model with a
-*response style* component (individual tendency to use the extremes) as a random effect.
+**Outcome.** Flexible thresholds fit better: χ²(4) = 61.19, p = 1.63 × 10⁻¹²;
+AIC 5010.39 versus 5063.57. Effects change by +0.12 pp (brand), −0.42 pp (reputation)
+and −0.04 pp (popularity). This is descriptive sensitivity, not an equivalence test.
 
-**Acceptance criterion.** Quantify how much the popularity effect changes between treating
-the scale as interval and as ordinal. From Phase 1 the difference looks small; it needs
-confirming.
-
-**Outcome (2026-09-12).** The scale is demonstrably not a ruler — the widest step between
-cutpoints is 1.95 times the narrowest — and it changes nothing: the effect on the probability of
-answering 5 or more differs by 0.7 to 3.0 percentage points between the two treatments, with the
-ranking intact. See §4 of [`03-new-analyses.md`](03-new-analyses.md).
+**Correction of the original acceptance claim.** The earlier binary-linear versus ordinal
+comparison did not test equal spacing: converting scores to `y >= 5` had already removed
+those distances. It is retained with accurate labels. The new comparison tests a threshold
+restriction within an ordinal model; it does not validate all regressions on scores 1–7.
+Linear–ordinal checks on specific ranking contrasts remain in scripts 07 and 18.
+See §4 of [`03-new-analyses.md`](03-new-analyses.md).
 
 ---
 
@@ -403,8 +403,8 @@ blocks accidental copies.
 | 3.8 | The 18 mean-imputed scores | **Resolved** — exactly the respondents who skipped an item; mechanism documented (review §2.4). Re-estimating without imputation is optional, given the negligible impact |
 | 3.9 | The 11 completed respondents excluded from the thesis | **Closed** — 10 were never shown a whole block (all missed the involvement pages, one also the app screens). The author recalls the exclusions were deliberate and probably test runs, without the specific reason; the export's `tester` flag is 0 for all 502 respondents, so no test run was marked as one (review §2.4) |
 | 3.2 | Reliability and validity of the involvement scales | **Partly done** — α = 0.75 / 0.83 / 0.80. CFA still open, low priority |
-| 3.1 | Heterogeneity by age, gender, occupation, education | **Done 2026-09-12** — no moderation reaches significance (age p = 0.20, gender p = 0.49, education p = 0.16, occupation p = 0.09). With 69% students the sample cannot tell the groups apart, which is a statement about the sample, not about people (§5 of [`03-new-analyses.md`](03-new-analyses.md)) |
-| 3.3 | Response quality (speeding, straight-lining) | **Done 2026-09-12** — 33 respondents flagged (fastest 5%, or an identical answer to all eight items of a scale). Removing them moves every effect slightly up and changes nothing (§6 of [`03-new-analyses.md`](03-new-analyses.md)) |
+| 3.1 | Heterogeneity by age, gender, occupation, education | **Re-run 2026-11-02** — corrected covariates and a test isolating moderation: age p = 0.842, gender p = 0.506, education p = 0.169, occupation p = 0.259 (none significant; Holm adjustment also reported). With 69% students the sample cannot tell the groups apart, which is a statement about the sample, not about people (§5 of [`03-new-analyses.md`](03-new-analyses.md)) |
+| 3.3 | Response quality (speeding, straight-lining) | **Re-run 2026-11-02** — 33 respondents flagged (fastest 5%, or an identical answer to all eight items of a scale). Removing them changes pooled cue effects by at most 0.046 points (§6 of [`03-new-analyses.md`](03-new-analyses.md)) |
 | 3.4 | The respondents who dropped out | **Still blocked** — the export holds only the 502 who reached the end; the 43 who stopped earlier are not in it |
 | 3.5 | Updating the market context (Appendix C) | Unchanged — needs a fresh survey of the Play Store; high priority for the blog post only |
 
@@ -420,7 +420,7 @@ the 2023 one at
 three of my own mistakes"**. It is the most defensible framing and the most readable:
 credibility comes from self-correction, not from defending the result.
 
-**Published title.** *I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything* — the
+**Published title.** *I Asked an AI to Review My Thesis. It Found Three Mistakes I Could Have Found Myself* — the
 AI angle, kept marginal in the body, carries the headline. The body's own framing is
 unchanged: the mistakes are the subject, the reviewer is the hook.
 
@@ -497,6 +497,56 @@ checkable.
 
 ## 6. Change log
 
+### 2026-11-02 — Response-scale comparison corrected
+
+Script 12 now fits flexible and equidistant thresholds with identical data, fixed effects,
+random intercept and seven-point quadrature. Tighter optimizer tolerances were needed to
+pass the gradient check; both fits then converged with positive-definite Hessians.
+The four-restriction likelihood-ratio test rejects equidistance, but marginal cue effects
+on P(score >= 5) change by at most 0.42 percentage points. These marginal predictions
+integrate over random intercepts; the legacy binary-linear/conditional-ordinal table is
+retained separately and relabelled. No equivalence claim is made.
+
+Figure 9 now plots fitted thresholds from both models, rather than comparing estimates
+with an interpolated line. `16_figures_extended.R --scale-only` regenerates it without
+changing the other figures. The broad claim that the scale assumption affects no conclusion
+has been withdrawn from the current summary and replaced by the scoped result in §4.
+
+
+### 2026-11-02 — Demographics and response quality re-run
+
+The private final export was recovered locally and script 03 rebuilt the corrected derived
+data without changing the versioned values. Script 13 verifies involvement covariates against
+the M3 source and checks respondent matching before fitting. The same 33 respondents are
+flagged; pooled effects before/after exclusion are 1.050/1.081 (brand), 0.848/0.894
+(reputation), and 0.221/0.232 (popularity).
+
+A further specification error was corrected: the old demographic likelihood-ratio test
+added group baselines as well as moderation. The new null permits group-specific baselines
+for each cue, testing only differences in manipulation effects. All four tests remain
+non-significant (unadjusted p = 0.169–0.842); Holm-adjusted values are also saved.
+The re-run old omnibus tests are preserved separately, distinguishing the covariate update
+from the change in the test. Group estimates and quality counts are exported as aggregates.
+
+Figures 11 and 12 now consume these tables rather than re-reading the private export;
+`16_figures_extended.R --demographics-quality-only` refreshes just those figures, with a
+separate log and a derived-data fingerprint check. Sections 5–6 of `03-new-analyses.md`
+and the task status above now reflect the executed results. The raw export remains private.
+
+
+### 2026-11-02 — Direct comparisons of the original M1 coefficients
+
+The review overstated the omission: separate regressions do not prevent comparisons.
+Script 20 refits the original M1 models, verifies disjoint respondent samples, and tests
+all three coefficient differences using Welch–Satterthwaite degrees of freedom and Holm
+correction. Brand leads reputation (difference 1.030, adjusted p = 0.0075) and popularity
+(1.168, p = 0.0009); reputation versus popularity is inconclusive (0.138, p = 0.6855).
+These are effects at zero centred involvement, retaining the original OLS assumptions;
+reported 95% intervals are pointwise. M3 needs cross-model covariance because its samples
+overlap. Scripts 18 and 19 and the review now distinguish an omitted test from an
+impossible one. The published title is aligned with the author's supplied title.
+
+
 ### 2026-09-21 — The thesis did state the scope
 
 Re-reading the thesis at the author's request refuted a claim introduced on 2026-09-15: that
@@ -565,7 +615,8 @@ carried the 18 values. The cross-file check of the data audit had stopped at `y`
 
 **Not done here**
 
-- `13_demographics_quality.R` needs the private export and was not re-run: §5–6 of the
+- `13_demographics_quality.R` needed the private export and was not re-run at that time
+  (resolved on 2026-11-02, see the entry above): §5–6 of the
   new-analyses document, `fig_11`, `fig_12` and the post's sentence on students are still on the old
   covariates, and say so.
 - Whether to publish anonymised item-level data (scale items, the nine slide-6 boxes), so that
@@ -677,10 +728,9 @@ protecting an estimand. `analysis/R/18_first_exposure.R` works through what foll
 
 **Unchanged**
 
-- The fragmentation criticism, in a narrower and more specific form: the estimand did not
-  require nine disjoint regressions, and those nine make any contrast between cues
-  untestable. One model with a position interaction returns the same first-exposure estimate
-  and supplies the test.
+- The fragmentation criticism was retained at the time. **Correction, 2026-11-02:**
+  separate M1 regressions do permit contrasts because their samples are independent.
+  The omission was the test, not the choice to fit separate models; script 20 supplies it.
 - The specification curve verdict. Its rule was written about the average across positions and
   returns "keep" for that quantity; the four significant cells are now read as evidence *for*
   the first-exposure ranking rather than as a corner of the curve.
@@ -804,7 +854,8 @@ assuming the reader knows it. New scripts: `10_sequence_effects.R`, `11_heteroge
   enthusiasm (r = −0.61). The prediction of a null result stays in §2.2 as written.
 - **2.6 Bayesian — closed with the authorised fallback.** RTools is absent, so Stan cannot
   compile; the normal approximation to the posterior was used and labelled as such.
-- **2.7 response scale — closed.** The scale is not equally spaced and it does not matter.
+- **2.7 response scale — closed at the time.** The claim that spacing did not matter
+  was broader than the check supported; corrected with a direct threshold comparison on 2026-11-02.
 - **3.1 demographics, 3.3 response quality — done.** Neither changes a conclusion.
 - **A method error of mine, corrected before publication.** The first version of the scale
   comparison evaluated the ordinal effect at one reference respondent, which places each cue at
@@ -1019,7 +1070,7 @@ rather than discovered. All were reviewed and approved on 2026-09-12.
 | Language | English, matching the thesis and the original post |
 | Spelling | Oxford convention, as the thesis uses it: *-ize* verbs with *-our* nouns (randomized, behaviour) |
 | Register | Plainer and shorter than the thesis, but the same voice: few contractions, no jargon left unexplained |
-| Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result. The published title (*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*) leads with the reviewer instead; the body was left as it is |
+| Framing | Self-correction — "three of my own mistakes" — rather than a defence of the original result. The published title (*I Asked an AI to Review My Thesis. It Found Three Mistakes I Could Have Found Myself*) leads with the reviewer instead; the body was left as it is |
 | Figures | Embedded as relative links into `analysis/outputs/figures/`: six in the body, three marked optional in an HTML comment so they can be dropped without hunting for them |
 | PDF render | `pandoc` with `xelatex`, command in `docs/blog/README.md`. The images resolve through `--resource-path=docs/blog`, so the post keeps working both as a file in the repository and as a rendered document |
 | The note on AI assistance | Kept, and extended into the reflection that prompted the project: the curiosity was how an AI would have *written* the thesis, and the useful question turned out to be how it would *review* it |

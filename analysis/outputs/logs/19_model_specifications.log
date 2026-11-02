@@ -1,3 +1,10 @@
+HISTORICAL RUN — interpretation superseded on 2026-11-02.
+The claims below that separate M1 models cannot be compared are incorrect.
+Independent M1 coefficients can be contrasted directly; see
+20_m1_direct_contrasts.log and review section 3.2 for the executed correction.
+The original numerical output is retained. Scripts 18 and 19 have corrected
+wording but were not rerun in this environment (lme4/emmeans unavailable).
+
 === 1. HOW MANY ROWS PER RESPONDENT DOES EACH REGRESSION USE? ===
 
 The review's headline defect (A) is that the repeated measures are not

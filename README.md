@@ -10,7 +10,7 @@ duplicated**: the sole exception is the 11 CSV datasets in
 [`original/data/`](original/data/), which the scripts read directly.
 
 **Read the result first:** the review is written up for a general audience as
-[*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*](https://lucabontempi.com/blog/reopening-my-thesis).
+[*I Asked an AI to Review My Thesis. It Found Three Mistakes I Could Have Found Myself*](https://lucabontempi.com/blog/reopening-my-thesis).
 This repository is the evidence behind it.
 
 **Original work:**
@@ -34,7 +34,7 @@ stimulus:
 | 2023 conclusion | After the review |
 |---|---|
 | Brand is the most effective predictor | **True of the first app shown** — the uncontaminated judgement the design was built to measure (+0.76, p = 0.031) — and not true as a general claim: averaged over the three judgements brand and reputation are **indistinguishable** (p = 0.24). The thesis stated this scope; it never tested it |
-| Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.45, p = 0.022), it vanishes among respondents who say they looked at downloads (β = 0.49, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
+| Popularity is ineffective in all models | **Not a solid null**: it works on the first app shown (+0.45, p = 0.022), a positive effect is also observed among respondents who say they looked at downloads (β = 0.49, p = 0.002), and the low-popularity stimulus showed 10K+ downloads alongside 84K reviews. What happens after the first app this design cannot say |
 | Under comparison, reputation overtakes brand | They **converge**, they do not swap (1.42 → 0.89 vs 0.69 → 0.92) |
 | Three-way interaction significant | **Not confirmed** (χ²(4) = 6.31, p = 0.18) once repeated measures are specified correctly |
 | No interaction between focal variables | **Inconclusive**, not null: the design was blind to effects below 0.76 s.d. — and the terms tested are carryover effects from apps seen earlier, not factorial interactions, since only one cue is manipulated per screen |
@@ -101,13 +101,14 @@ Rscript analysis/R/07_specification_curve.R # every defensible specification of 
 Rscript analysis/R/08_equivalence.R         # equivalence tests on the null results
 Rscript analysis/R/10_sequence_effects.R    # does what came before change what comes next?
 Rscript analysis/R/11_heterogeneity.R       # do people differ in what moves them?
-Rscript analysis/R/12_response_scale.R      # is the 1-7 scale a ruler?
+Rscript analysis/R/12_response_scale.R      # flexible vs equidistant latent thresholds
 Rscript analysis/R/14_posterior_probabilities.R  # p-values restated as probabilities
 Rscript analysis/R/15_bayesian_brms.R       # the same findings as a full Bayesian model
 Rscript analysis/R/16_figures_extended.R    # the explanatory figures
 Rscript analysis/R/17_centering_check.R     # the thesis's mean-centred outcome, assessed
 Rscript analysis/R/18_first_exposure.R      # the first-app-only estimand, and the ranking on it
 Rscript analysis/R/19_model_specifications.R # the thesis's three models, judged one by one
+Rscript analysis/R/20_m1_direct_contrasts.R  # direct comparisons of the original M1 effects (base R only)
 ```
 
 `15_bayesian_brms.R` picks its Stan backend by trying a trivial model first: `cmdstanr` where it
@@ -118,7 +119,15 @@ Two scripts need a private copy of the raw questionnaire export and skip cleanly
 ```bash
 RAW_EXPORT=/path/to/export.csv Rscript analysis/R/09_raw_export_checks.R
 RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R
+Rscript analysis/R/16_figures_extended.R --demographics-quality-only
 ```
+
+To refresh only the response-scale figure after script 12, run
+`Rscript analysis/R/16_figures_extended.R --scale-only`.
+
+The demographics-quality command refreshes figures 11–12 from script 13's aggregate tables; it needs no
+private export. The demographic tests isolate differences in cue effects while allowing
+group-specific baseline ratings, with Holm adjustment across the four tests.
 
 Every script writes a complete log to `analysis/outputs/logs/`. If a number appears in a
 document under `docs/`, the corresponding log contains it.
@@ -139,7 +148,7 @@ document under `docs/`, the corresponding log contains it.
 | `09_raw_export_checks.R` | aggregate checks on the raw survey export (optional) | verifies the chain from raw answers to the thesis datasets; needs a private copy of the export in `RAW_EXPORT`, skips cleanly without it |
 | `10_sequence_effects.R` | contrast and assimilation from the apps seen earlier | the thesis asked this on a third of the data; in long format it uses 982 observations |
 | `11_heterogeneity.R` | random slopes: do respondents differ in cue sensitivity? | an average effect is only useful if it describes people |
-| `12_response_scale.R` | cutpoints of the 1–7 scale, and whether the spacing matters | ordinary regression assumes a ruler; this tests the assumption |
+| `12_response_scale.R` | fitted flexible/equidistant thresholds, fit diagnostics and marginal probability effects | tests a latent-threshold restriction and the sensitivity of pooled effects; the binary-outcome check is reported separately |
 | `13_demographics_quality.R` | demographic moderation and response-quality robustness (optional) | the thesis collected demographics and never used them |
 | `14_posterior_probabilities.R` | the findings restated as probabilities | "89% likely" answers the question a reader asks; a p-value does not |
 | `15_bayesian_brms.R` | the same findings as a full Bayesian model, and a comparison against the approximation | the two agree within 3.9 percentage points, which is how we know the approximation was sound |
@@ -147,6 +156,7 @@ document under `docs/`, the corresponding log contains it.
 | `17_centering_check.R` | what the thesis's mean-centred ITD changes, and what it hides | a choice the review had verified without ever assessing it |
 | `18_first_exposure.R` | the ranking tested on the first app shown, where the 2023 design aimed it | restricting to the first judgement protects it from comparison effects; the review had read the restriction as mere fragmentation |
 | `19_model_specifications.R` | M1, M2, M3 and the ANOVA judged separately, against the purpose each states | "fragmentation" was one word for four different decisions, two of which turn out to be sound |
+| `20_m1_direct_contrasts.R` | direct M1 coefficient contrasts, pointwise intervals and Holm-adjusted p-values | the thesis omitted the comparison; separate regressions do not prevent it |
 
 ---
 
@@ -177,10 +187,10 @@ by reorganisation, verified against the source files in `02_data_audit.R`.
 - [x] **Phase 2, rest** — sequence effects, respondent heterogeneity, response scale, posterior
       probabilities ([`docs/03-new-analyses.md`](docs/03-new-analyses.md))
 - [x] **Phase 3** — raw export recovered (kept private); blocking ambiguities resolved,
-      demographics and response-quality checks done. Still open: the 43 respondents who dropped
+      demographics and response-quality checks re-run on corrected covariates on 2026-11-02. Still open: the 43 respondents who dropped
       out early, who are not in the export
 - [x] **Phase 4** — the update is published on lucabontempi.com:
-      [*I Asked an AI to Review My Thesis. It Found Nothing New, Then Found Everything*](https://lucabontempi.com/blog/reopening-my-thesis).
+      [*I Asked an AI to Review My Thesis. It Found Three Mistakes I Could Have Found Myself*](https://lucabontempi.com/blog/reopening-my-thesis).
       Its draft is deliberately not versioned here: the post belongs on the site, the evidence
       belongs in this repository
 

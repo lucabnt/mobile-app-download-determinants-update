@@ -1,5 +1,8 @@
 === DEMOGRAPHICS AND RESPONSE QUALITY ===
 
+Run date: 2026-11-02
+Derived data MD5: e14644d4d88a733dab03677671b24309
+Covariates verified against the corrected M3 source.
 respondents: 491 
 
 age         
@@ -20,47 +23,67 @@ occupation
 Each row compares a model where the cue effects are common to everybody with
 one where they may differ by group. A small p-value would mean they differ.
 
-  age         chi2 =   8.56 on  6 df, p = 0.2001
-  gender      chi2 =  11.48 on 12 df, p = 0.4886
-  education   chi2 =  23.80 on 18 df, p = 0.1616
-  occupation  chi2 =  18.94 on 12 df, p = 0.0899
+  age         chi2 =   0.83 on  3 df, p = 0.8423
+  gender      chi2 =   5.30 on  6 df, p = 0.5059
+  education   chi2 =  12.86 on  9 df, p = 0.1692
+  occupation  chi2 =   7.72 on  6 df, p = 0.2593
 
-Smallest p-value: occupation. Cue effects within its groups:
-focal = brand, occupation = student:
- contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    1.1403 0.147 1277   0.8528    1.428   7.783 <0.0001
+Holm adjustment across the four moderation tests:
+   variable   chisq df p_value aic_common aic_by_group p_holm
+        age  0.8299  3  0.8423       5262         5268 1.0000
+     gender  5.3001  6  0.5059       5270         5276 1.0000
+  education 12.8564  9  0.1692       5271         5276 0.6768
+ occupation  7.7204  6  0.2593       5265         5269 0.7779
+The previous omnibus test also tested group baselines; retained separately.
 
-focal = rep, occupation = student:
+Smallest p-value: education. Cue effects within its groups:
+focal = brand, education = high school or less:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.9975 0.146 1277   0.7102    1.285   6.813 <0.0001
+ x1 - x0    1.0613 0.198 1293  0.67305    1.449   5.363 <0.0001
 
-focal = pop, occupation = student:
+focal = rep, education = high school or less:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.3275 0.146 1277   0.0404    0.615   2.238  0.0254
+ x1 - x0    0.7851 0.197 1295  0.39827    1.172   3.981 <0.0001
 
-focal = brand, occupation = employed:
+focal = pop, education = high school or less:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.9433 0.231 1276   0.4905    1.396   4.087 <0.0001
+ x1 - x0    0.1389 0.198 1294 -0.24868    0.526   0.703  0.4822
 
-focal = rep, occupation = employed:
+focal = brand, education = bachelor:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.5122 0.231 1276   0.0594    0.965   2.219  0.0267
+ x1 - x0    1.0758 0.198 1289  0.68769    1.464   5.438 <0.0001
 
-focal = pop, occupation = employed:
+focal = rep, education = bachelor:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.0289 0.231 1275  -0.4241    0.482   0.125  0.9004
+ x1 - x0    1.1596 0.198 1290  0.77206    1.547   5.870 <0.0001
 
-focal = brand, occupation = other:
+focal = pop, education = bachelor:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.1067 0.813 1281  -1.4890    1.702   0.131  0.8957
+ x1 - x0    0.3834 0.197 1290 -0.00291    0.770   1.947  0.0517
 
-focal = rep, occupation = other:
+focal = brand, education = master or above:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0    0.2683 0.821 1325  -1.3426    1.879   0.327  0.7439
+ x1 - x0    1.0721 0.273 1291  0.53690    1.607   3.930 <0.0001
 
-focal = pop, occupation = other:
+focal = rep, education = master or above:
  contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
- x1 - x0   -0.6511 0.781 1327  -2.1836    0.881  -0.833  0.4047
+ x1 - x0    0.5049 0.269 1290 -0.02231    1.032   1.879  0.0605
+
+focal = pop, education = master or above:
+ contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
+ x1 - x0    0.0472 0.270 1289 -0.48155    0.576   0.175  0.8609
+
+focal = brand, education = other:
+ contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
+ x1 - x0   -0.7289 0.912 1290 -2.51874    1.061  -0.799  0.4245
+
+focal = rep, education = other:
+ contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
+ x1 - x0   -0.7772 0.912 1295 -2.56581    1.011  -0.852  0.3941
+
+focal = pop, education = other:
+ contrast estimate    SE   df lower.CL upper.CL t.ratio p.value
+ x1 - x0    0.6903 0.913 1294 -1.10028    2.481   0.756  0.4496
 
 Results are averaged over the levels of: position 
 Degrees-of-freedom method: kenward-roger 
@@ -73,12 +96,12 @@ respondents who gave the same answer to all eight items of the category scale: 1
 flagged as low quality (fast OR flat scale): 33 respondents
 
                           sample focal estimate    se   ci_lo ci_hi  p_value
-                 all respondents brand    1.053 0.122  0.8126 1.293 2.32e-17
-                 all respondents   rep    0.842 0.122  0.6024 1.083 9.13e-12
-                 all respondents   pop    0.218 0.122 -0.0218 0.458 7.48e-02
- low-quality respondents removed brand    1.082 0.127  0.8326 1.332 5.25e-17
- low-quality respondents removed   rep    0.891 0.127  0.6420 1.141 3.97e-12
- low-quality respondents removed   pop    0.233 0.127 -0.0160 0.483 6.66e-02
+                 all respondents brand    1.050 0.122  0.8098 1.290 2.75e-17
+                 all respondents   rep    0.848 0.122  0.6076 1.088 6.77e-12
+                 all respondents   pop    0.221 0.122 -0.0186 0.461 7.06e-02
+ low-quality respondents removed brand    1.081 0.127  0.8312 1.330 5.43e-17
+ low-quality respondents removed   rep    0.894 0.127  0.6445 1.143 3.33e-12
+ low-quality respondents removed   pop    0.232 0.127 -0.0170 0.481 6.77e-02
 
 If the two blocks agree, the conclusions do not rest on the respondents who
 rushed or answered flatly.

@@ -384,11 +384,28 @@ Three points, in order.
    (p = 0.0068), and +1.36 log-odds (p = 0.0023) in the ordinal version. The specification
    curve agrees and says where: **all four specifications that put brand significantly ahead
    are first-position ones** (§12.1).
-3. **What was wrong was the fragmentation, not the restriction.** Nine regressions on disjoint
-   subsamples share no parameters, so no contrast between cues can be tested — and none was.
-   One model on all 1,473 answers, with the cue interacted with position, returns the same
-   first-exposure estimate (+0.755 against +1.02, well within one standard error) *and*
-   supplies the test, *and* says what happens afterwards.
+3. **What was missing was the test, not a pooled model.** The three M1 samples are
+   disjoint, so their coefficients can be compared directly: the variance of a difference
+   is the sum of the two coefficient variances. The thesis did not perform this test;
+   the review was wrong to claim that separate regressions made it impossible.
+   [`20_m1_direct_contrasts.R`](../analysis/R/20_m1_direct_contrasts.R) refits the original
+   M1 models and uses two-sided tests with Welch–Satterthwaite degrees of freedom and
+   Holm correction across all three comparisons:
+
+   | Original M1 contrast | Difference | Pointwise 95% CI | p (Holm) |
+   |---|---:|---|---:|
+   | brand − reputation | +1.030 | [0.336, 1.725] | 0.0075 |
+   | brand − popularity | +1.168 | [0.541, 1.795] | 0.0009 |
+   | reputation − popularity | +0.138 | [−0.530, 0.805] | 0.6855 |
+
+   These compare manipulation effects at zero on the three centred involvement covariates,
+   because the original models include involvement interactions. They retain the original
+   OLS variance assumptions; the confidence intervals are not multiplicity-adjusted.
+   Brand's lead at first exposure is supported without replacing the original models;
+   a complete brand > reputation > popularity ordering is not established. The pooled
+   model remains an alternative with shared slopes and variance assumptions, not a
+   prerequisite for the comparison. For M3 the samples overlap, so cross-model covariance
+   must be accounted for rather than assumed zero.
 
 So the honest form of finding (B) is a statement with a scope attached. **At first exposure
 brand leads reputation; averaged over the three judgements the two are indistinguishable.**
@@ -675,8 +692,10 @@ the effect either way. **The precision gain in the third column does not come fr
 positions: it comes from pooling across cues**, which shares the residual variance, the
 respondent variance and the involvement coefficients across all 1,473 answers. So the
 fragmentation that costs something is the one *between cues*, not the one between positions —
-and no version of the thesis's toolkit closes it, because nine regressions produce nine
-coefficient vectors with no covariance between them.
+but pooling is not required to test differences between cues. The independent M1
+coefficients can be compared directly (§3.2); the thesis omitted that test. M3 comparisons
+would instead need to account for the shared respondents. The pooled specification also
+shares involvement slopes, whereas M1 includes cue-specific involvement interactions.
 
 Two caveats on M3 stand. Its `x_i` coefficient was read in the text as the effect
 "independently from *n*", which it is not (§3.2). And `comp_i` merges the second and third
@@ -849,15 +868,16 @@ in question:
 8. **The restriction of Model 1 to the first app shown was motivated**, and the estimand it
    protects — a judgement not conditioned by earlier apps — is the right one for the thesis's
    question. On that quantity the headline ranking holds under every specification tried
-   (§3.2). What does not follow from the estimand is the fragmentation into nine regressions:
-   one model returns the same quantity and can also test it.
+   (§3.2). The missing comparison can be supplied directly from the separate M1
+   regressions. Pooling is useful but is not necessary to establish the brand lead.
 9. **The analytical choices that were checked in detail hold.** The mean-centred outcome of
    Figure 3.1 changes no estimate and could have been used throughout without consequence
    (§2.5); the involvement measures are centred as they should be; the manipulation check was
    collected and deliberately not used, which was the right decision given what it measures
    (§3.3).
 
-The review does not overturn the work. It **flattens** a hierarchy (brand vs reputation),
+The review does not overturn the work. It **confirms the brand lead at first exposure**
+while finding no clear brand–reputation difference averaged over positions,
 **withdraws** a three-way interaction and two moderations, **requalifies** two nulls as
 indeterminacies (popularity; interactions between focal variables) and **flags** two defects
 in the construction of the data. The rest holds.

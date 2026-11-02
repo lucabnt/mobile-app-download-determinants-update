@@ -1,0 +1,16 @@
+=== DIRECT CONTRASTS BETWEEN THE ORIGINAL M1 REGRESSIONS ===
+All three respondent samples are disjoint; no missing model values.
+Estimand: difference between high-minus-low cue effects at zero on all
+three centred involvement covariates (the original reference values).
+These are conditional effects, not automatically population-average effects.
+Two-sided tests; Welch-Satterthwaite df; Holm across all three pairs.
+95% intervals are pointwise, NOT multiplicity-adjusted.
+
+    contrast estimate       se      df statistic ci95_unadjusted_low ci95_unadjusted_high     p_value      p_holm
+ brand - rep 1.030272 0.352746 281.786  2.920717            0.335920             1.724625 0.003774673 0.007549346
+ brand - pop 1.167788 0.318761 313.016  3.663527            0.540604             1.794972 0.000292042 0.000876126
+   rep - pop 0.137516 0.339239 291.230  0.405365           -0.530155             0.805186 0.685506880 0.685506880
+
+A missing test, not an impossible comparison: separate M1 models suffice.
+Do not apply the independence formula to M3: its samples overlap.
+Pooled models remain useful, but impose different sharing assumptions.

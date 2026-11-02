@@ -169,56 +169,67 @@ testing a variance against its lower boundary of zero makes the standard test to
 
 ## 4. Is the 1–7 scale a ruler?
 
-**Question.** Every model treats the answer scale as if the step from 1 to 2 meant the same as
-the step from 6 to 7. Do respondents use it that way?
+**Question.** Does requiring equal distances between the latent thresholds change the
+estimated cue effects? This is a specific restriction within an ordinal model, not a test
+of every assumption of linear regression on scores 1–7.
 
-**Why it is worth asking.** If the middle of the scale is compressed, ordinary regression
-distorts *small* effects most — and the smallest effect in this study is the one the entire
-popularity argument turns on.
+**Method.** Two cumulative-logit mixed models use the same 1,473 observations, predictors
+(`focal * x + position + involvement`) and respondent random intercept. One estimates six
+thresholds freely; the other estimates a first threshold and a common spacing. Both use
+seven-point adaptive quadrature. A likelihood-ratio test compares the four restrictions;
+AIC provides a second fit comparison. Both optimizers converged, maximum absolute gradients
+were below 0.001, and both Hessians were positive definite. The implementation follows the
+[`ordinal` documentation](https://search.r-project.org/CRAN/refmans/ordinal/html/clmm.html).
 
-**Method, from the beginning.** An **ordinal model** makes no assumption about spacing. It
-imagines a single continuous "intention" behind the visible answers and estimates six
-**cutpoints** along it: below the first, a respondent answers 1; between the first and the
-second, 2; and so on. If the scale were a ruler, those cutpoints would be evenly spaced.
-Measuring how uneven they are says how wrong the ruler assumption is; re-estimating the effects
-on a footing that does not depend on the spacing says whether it matters.
+**What came back — flexible thresholds fit better.** Updated on 2026-11-02:
 
-**What came back — the scale is not a ruler.**
+| Model | Parameters | Log likelihood | AIC |
+|---|---:|---:|---:|
+| Flexible thresholds | 17 | −2488.19 | 5010.39 |
+| Equidistant thresholds | 13 | −2518.79 | 5063.57 |
 
-| Cutpoint | Estimate | Gap to the next |
-|---|---|---|
-| 1 \| 2 | −4.42 | 1.77 |
-| 2 \| 3 | −2.65 | 0.99 |
-| 3 \| 4 | −1.66 | 1.39 |
-| 4 \| 5 | −0.27 | 1.44 |
-| 5 \| 6 | 1.17 | 1.93 |
-| 6 \| 7 | 3.09 | — |
+The likelihood-ratio statistic is **χ²(4) = 61.19, p = 1.63 × 10⁻¹²**. Within this
+proportional-odds random-intercept model, equal spacing of the latent thresholds is not
+supported. This does not by itself prove how respondents psychologically use the scale.
 
-The widest answer band is **1.94 times** the narrowest. The range of underlying intention that
-produces an answer of 6 — from the 5 | 6 cutpoint to the 6 | 7 cutpoint — is nearly twice as
-wide as the range that produces a 3. (An earlier version described this as moving a respondent
-"from 2 to 3"; the narrow band is the one that yields a 3, one step further along.) Respondents avoid
-the ends of the scale, exactly as the literature on rating scales expects.
+The flexible thresholds are −4.437, −2.654, −1.659, −0.267, 1.172 and 3.106.
+The widest finite category band is 1.94 times the narrowest (answer 6 versus answer 3).
+The figure now compares **two fitted models**; the equidistant row is no longer a line
+interpolated between the flexible model's endpoints.
 
-![Where each answer boundary sits on the underlying intention scale, against what an equally spaced scale would look like.](../analysis/outputs/figures/fig_09_scale_cutpoints.png)
+![Fitted flexible and equidistant thresholds in the same ordinal model.](../analysis/outputs/figures/fig_09_scale_cutpoints.png)
 
-*Where each answer boundary sits on the underlying intention scale, against what an equally spaced scale would look like.*
+**Does the restriction materially change the estimated effects?** For each cue and model,
+we predict the probability of an answer of at least 5 under low and high manipulation,
+average over the observed covariates for that cue, and integrate over the model's fitted
+normal distribution of respondent intercepts. Both models use the same covariate rows.
+We do not substitute respondent-specific predictions inferred from their observed answers.
 
-**What came back — and it does not matter.** Both models were asked the same practical question:
-by how many percentage points does the strong version of a cue raise the probability of an
-answer of 5 or more? For the ordinal model this is computed for every observation at that
-respondent's own characteristics and then averaged, so that the three cues are compared at
-comparable points of the curve.
+| Cue | Flexible thresholds | Equidistant thresholds | Difference (flexible − equidistant) |
+|---|---:|---:|---:|
+| Brand | 25.15 pp | 25.03 pp | +0.12 pp |
+| Reputation | 20.66 pp | 21.09 pp | −0.42 pp |
+| Popularity | 6.16 pp | 6.20 pp | −0.04 pp |
 
-| Cue | Assuming equal spacing | Without that assumption | Difference |
-|---|---|---|---|
-| Brand | 25.9 pp | 27.1 pp | 1.3 |
-| Reputation | 19.5 pp | 22.6 pp | 3.0 |
-| Popularity | 6.0 pp | 6.7 pp | 0.7 |
+**The point estimates of these probability effects are little changed:** the largest
+absolute shift is 0.42 percentage points, with the same descriptive ordering. These are
+sensitivity results, not an equivalence test or a formal test of the ranking. The models'
+absolute predicted probabilities also differ (saved alongside the effects), so a small
+change in the high-minus-low effect does not imply identical predictions everywhere.
 
-The ranking, the magnitudes and the gap between the first two and the third all survive. **The
-equal-spacing assumption is not driving any conclusion of this review** — which is worth knowing
-precisely because it could have been.
+**Correction to the earlier check.** The old table compared a linear model of the binary
+outcome `y >= 5` with ordinal predictions conditional on fitted respondent intercepts.
+Dichotomising the outcome already discards distances between the original categories;
+that comparison did not test equidistance. It remains in `12_scale_effects.csv`, now clearly
+labelled: binary-linear versus conditional-ordinal effects are 25.86/27.08 pp for brand,
+19.51/22.48 pp for reputation, and 5.98/6.76 pp for popularity. These conditional ordinal
+numbers have a different averaging procedure from the marginal effects above.
+
+The previous claim that equal spacing “is not driving any conclusion of this review” is
+withdrawn. The narrower finding concerns the pooled probability effects above. For the
+brand–reputation contrast and its change after comparison, script 07 separately compares
+linear and ordinal specifications; script 18 addresses the first-exposure contrast. Those
+checks support only their respective comparisons, not a blanket validation of OLS.
 
 **A caution about one number.** 22.6% of respondents never used an extreme answer and 17.3% used
 one every time. A model allowing sensitivity to depend on that tendency finds a large interaction,
@@ -230,13 +241,9 @@ on it.
 
 ## 5. Does it depend on who is looking?
 
-> **Not yet re-run on the corrected covariates (2026-09-18).** This section comes from
-> `13_demographics_quality.R`, which needs the private questionnaire export and was not part
-> of the re-run that followed the involvement-covariate correction (review §2.2). Its numbers
-> are still the pre-correction ones. Every other section of this document has been
-> re-run. Command, for whoever holds the export:
-> `RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R`, then the
-> same for `16_figures_extended.R`, which draws `fig_11` and `fig_12` from its output.
+> **Updated 2026-11-02.** Re-run with corrected involvement covariates verified against
+> the per-model files. The demographic test now isolates differences in cue effects;
+> the earlier omnibus test also tested differences in group baselines.
 
 **Question.** Do age, gender, education or occupation change how much each cue matters?
 
@@ -246,80 +253,78 @@ questionnaire export (review §2.4).
 
 **Method.** Categories are collapsed first, because the originals are too thin: age becomes under
 25 against 25 or older, occupation becomes student, employed or other, and so on. For each
-variable, a model in which the cue effects are common to everybody is compared with one in which
-they may differ by group. A likelihood-ratio test asks whether the second earns its extra
-parameters.
+variable, both models allow baseline ratings to differ by group and cue. Only the full
+model allows manipulation effects to differ by group. A likelihood-ratio test isolates
+those moderation terms; Holm adjusts the four demographic tests together. The previous
+omnibus comparison also tested baseline differences; its re-run results are preserved
+in `13_demographics_omnibus.csv`.
 
-**What came back — nothing significant.**
+**What came back — no moderation established.**
 
-| Variable | χ² | df | p |
-|---|---|---|---|
-| Age | 8.56 | 6 | 0.200 |
-| Gender | 11.48 | 12 | 0.489 |
-| Education | 23.80 | 18 | 0.162 |
-| Occupation | 18.94 | 12 | 0.090 |
+| Variable | χ² | df | p | p (Holm) |
+|---|---|---|---|---|
+| Age | 0.83 | 3 | 0.842 | 1.000 |
+| Gender | 5.30 | 6 | 0.506 | 1.000 |
+| Education | 12.86 | 9 | 0.169 | 0.677 |
+| Occupation | 7.72 | 6 | 0.259 | 0.778 |
 
-Occupation comes closest, and the pattern behind it is at least coherent:
+Education has the smallest p-value, but no test reaches significance even before adjustment.
+For continuity, the occupation breakdown remains a **descriptive illustration**:
 
 | Group | Brand | Reputation | Popularity |
 |---|---|---|---|
-| Students (69% of the sample) | 1.14 *** | 1.00 *** | 0.33 * |
-| Employed | 0.94 *** | 0.51 * | 0.03 |
-| Other | 0.11 | 0.27 | −0.65 |
+| Students (341 respondents) | 1.146 | 0.999 | 0.327 |
+| Employed (137) | 0.920 | 0.516 | 0.035 |
+| Other (13) | 0.128 | 0.384 | −0.598 |
 
-**How to read it.** Students respond to reputation about twice as strongly as employed
-respondents do, and they are the only group for whom popularity registers at all. It is a tidy
-story and it does not pass its own test (p = 0.090 before any correction for having tried four
-variables). The "other" group is small enough that its estimates carry standard errors around
-0.8 and say nothing.
+**How to read it.** The reputation point estimate is larger for students than for employed
+respondents. Different subgroup point estimates or significance levels do not establish
+different effects. The occupation moderation test is p = 0.259 (Holm-adjusted p = 0.778).
+The small “other” group has standard errors around 0.8.
 
 The more important point is what this cannot show. With 69% students, the sample has very little
 room to detect differences between occupations, and none of these tests should be read as
 evidence that the cue effects are the same for everyone. They are evidence that *this sample*
 cannot tell them apart.
 
-![Cue effects by occupation. A coherent pattern that does not pass its own test.](../analysis/outputs/figures/fig_12_demographics.png)
+![Cue effects by occupation, with pointwise 95% intervals. Group differences are not established.](../analysis/outputs/figures/fig_12_demographics.png)
 
-*Cue effects by occupation. A coherent pattern that does not pass its own test.*
+*Cue effects by occupation, with pointwise 95% intervals. Group differences are not established.*
 
 ---
 
 ## 6. Does response quality change anything?
 
-> **Not yet re-run on the corrected covariates (2026-09-18).** This section comes from
-> `13_demographics_quality.R`, which needs the private questionnaire export and was not part
-> of the re-run that followed the involvement-covariate correction (review §2.2). Its numbers
-> are still the pre-correction ones; for the full-sample column below the corrected values are 1.050, 0.848 and 0.221. Every other section of this document has been
-> re-run. Command, for whoever holds the export:
-> `RAW_EXPORT=/path/to/export.csv Rscript analysis/R/13_demographics_quality.R`, then the
-> same for `16_figures_extended.R`, which draws `fig_11` and `fig_12` from its output.
+> **Updated 2026-11-02.** Re-run with the corrected involvement covariates.
+> The same 33 respondents are flagged; 458 remain after exclusion.
 
 **Question.** Some respondents rushed, and some gave the same answer to every item of a scale.
 Do the conclusions depend on keeping them?
 
 **Method.** Two flags, both computed from the raw export: completion time in the fastest 5%
 (under 97 seconds, against a median of 190), and giving an identical answer to all eight items of
-the category-involvement scale — a classic sign of someone clicking straight down the page. 33
+the category-involvement scale — a possible sign of straight-lining, not proof of inattention. 33
 respondents are flagged by one or the other; 11 by the flat-scale rule.
 
 **What came back.**
 
 | Cue | All respondents | Flagged respondents removed |
 |---|---|---|
-| Brand | 1.053 | 1.082 |
-| Reputation | 0.842 | 0.891 |
-| Popularity | 0.218 | 0.233 |
+| Brand | 1.050 | 1.081 |
+| Reputation | 0.848 | 0.894 |
+| Popularity | 0.221 | 0.232 |
 
-Every effect moves slightly *up*, which is the expected direction if careless answers add noise,
-and none moves enough to change anything. Popularity remains short of significance either way.
+Every effect moves slightly up: the largest change is 0.046 points for reputation.
+Popularity remains short of the 5% significance threshold (p = 0.071 in the full sample,
+p = 0.068 after exclusion). This does not establish a zero effect.
 
-**Conclusion.** The conclusions of this review do not rest on the respondents who rushed or
-answered flatly. This is the cheapest robustness check in the whole project and it is the kind
-that is most often skipped.
+**Conclusion.** The pooled cue-effect estimates are stable under this particular exclusion
+rule. The check supports robustness to these flags; it does not prove that all responses
+are attentive or validate every conclusion of the review.
 
-![Removing the 33 flagged respondents moves every effect slightly up and changes nothing.](../analysis/outputs/figures/fig_11_quality.png)
+![Removing the 33 flagged respondents changes the pooled cue effects only slightly.](../analysis/outputs/figures/fig_11_quality.png)
 
-*Removing the 33 flagged respondents moves every effect slightly up and changes nothing.*
+*Removing the 33 flagged respondents changes the pooled cue effects only slightly.*
 
 ---
 
@@ -407,9 +412,10 @@ Nothing in the review's conclusions is overturned here. Three things are added:
 1. **People differ in how much the cues move them** (§3), and the ones easiest to move are the
    ones least inclined to download anything anyway. This is new, significant, and contradicts the
    expectation recorded before the test was run.
-2. **The conclusions are robust to the technical choices that could have undermined them**: the
-   equal-spacing assumption of the answer scale (§4), the demographic composition of the sample
-   (§5) and the presence of careless respondents (§6).
+2. **Specific sensitivity checks are reassuring, within their scope**: the pooled probability
+   effects change little under the latent-threshold restriction (§4) or the response-quality
+   exclusion (§6). Demographic moderation is not established (§5); this does not prove that
+   all groups respond alike.
 3. **The ranking is position-dependent, and now quantified as a probability** (§7): near-certain
    before comparison, a coin toss after it.
 

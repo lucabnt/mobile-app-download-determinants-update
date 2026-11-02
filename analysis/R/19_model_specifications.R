@@ -14,7 +14,7 @@
 # What this script checks, because the answers change the verdict:
 #   1. how many observations each regression takes from each respondent;
 #   2. whether M1 and M3 estimate the same quantity, and what M3 adds;
-#   3. what pooling across cues adds that no per-cue model can have;
+#   3. how direct M1 contrasts and pooled comparisons differ;
 #   4. what M2's interaction terms actually mean, and on how much data;
 #   5. what M3's two-level comp_i collapses.
 #
@@ -91,11 +91,13 @@ cat("\nThe precision gain comes from pooling across CUES, not across positions:\
 cat("one model shares the residual variance, the respondent variance and the\n")
 cat("involvement coefficients across all 1,473 answers.\n")
 
-cat("\n\n=== 3. WHAT ONLY A POOLED MODEL CAN DO ===\n\n")
-cat("Nine regressions produce nine coefficient vectors with no covariance\n")
-cat("between them. Any statement of the form 'cue A beats cue B' needs that\n")
-cat("covariance. This is the whole of the gap, and it is not a matter of taste:\n")
-cat("it is what makes the thesis's central claim untestable as written.\n\n")
+cat("\n\n=== 3. DIRECT AND POOLED COMPARISONS ===\n\n")
+cat("The thesis omitted a direct comparison; separate regressions do not prevent it.\n")
+cat("M1 samples are disjoint, so the variance of a coefficient difference is the\n")
+cat("sum of its two variances. Script 20 refits M1 and tests all three pairs with\n")
+cat("Welch-Satterthwaite df and Holm correction, at zero centred involvement.\n")
+cat("M3 samples overlap and require cross-model covariance instead.\n")
+cat("Below is the pooled alternative, with shared involvement slopes and variance.\n\n")
 long <- read.csv(file.path(DIR_DERIV, "long_measures.csv"))
 long$focal    <- factor(long$focal, levels = c("brand", "rep", "pop"))
 long$position <- factor(long$position, levels = c("first", "second", "third"))
@@ -108,7 +110,7 @@ pw <- summary(contrast(emmeans(m_sat, ~ x_f * focal | position),
               by = "position", adjust = "holm")
 pw <- as.data.frame(pw)
 print(pw[pw$position == "first", c(2, 3, 4, 7, 8)], digits = 4, row.names = FALSE)
-cat("\nSame quantity M1 targets, plus the comparison M1 cannot make.\n")
+cat("\nFirst-exposure contrasts under the pooled specification; direct M1 contrasts are in script 20.\n")
 
 cat("\n\n=== 4. WHAT M2'S INTERACTIONS ACTUALLY ASK ===\n\n")
 cat("x_j and x_k are not two more attributes of the app being judged. They are\n")
@@ -165,9 +167,9 @@ cat("    the only one that got it wrong. Its stated role is preliminary -- 'may\
 cat("    help in understanding if some effects exist' -- but its three-way\n")
 cat("    interaction was then used as 'further foundations for subsequent\n")
 cat("    analyses', which is more weight than a screening device can carry.\n\n")
-cat("What none of the three can do, individually or together, is compare one cue\n")
-cat("with another. That is the finding of this review, and it is a statement\n")
-cat("about the SET of models, not about any one of them.\n")
+cat("The thesis did not test differences between cues. For M1, this is a repairable\n")
+cat("omission: direct comparisons preserve its original separate regressions.\n")
+cat("Pooling is useful, but is not a prerequisite for testing the ranking.\n")
 
 sink(type = "message"); sink(); close(con)
 cat("Done. Log in analysis/outputs/logs/19_model_specifications.log\n")

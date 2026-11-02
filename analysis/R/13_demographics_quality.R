@@ -41,6 +41,14 @@ long <- read.csv(file.path(DIR_DERIV, "long_measures.csv"))
 long$focal    <- factor(long$focal, levels = c("brand", "rep", "pop"))
 long$position <- factor(long$position, levels = c("first", "second", "third"))
 long$subj_f   <- factor(long$subject)
+# Match the covariates to the corrected per-model source before fitting.
+inv_source <- read_orig("M3_rep.csv")
+inv_idx <- match(long$subject, inv_source$lfdn)
+stopifnot(!anyNA(inv_idx), !anyNA(ex$lfdn), !anyDuplicated(ex$lfdn),
+          all(long$subject %in% ex$lfdn))
+for (v in c("inv_app", "inv_dl", "inv_cat")) {
+  stopifnot(max(abs(long[[v]] - inv_source[[paste0(v, "_mc")]][inv_idx])) < 1e-6)
+}
 
 # --- background variables, collapsed ----------------------------------------
 inv_items <- paste0("v_", 168:175)
@@ -65,6 +73,9 @@ d <- merge(long, sub, by = "subject")
 stopifnot(nrow(d) == nrow(long))
 
 cat("=== DEMOGRAPHICS AND RESPONSE QUALITY ===\n\n")
+cat(sprintf("Run date: %s\n", Sys.Date()))
+cat(sprintf("Derived data MD5: %s\n", unname(tools::md5sum(file.path(DIR_DERIV, "long_measures.csv")))))
+cat("Covariates verified against the corrected M3 source.\n")
 cat("respondents:", length(unique(d$subject)), "\n\n")
 for (v in c("age", "gender", "education", "occupation")) {
   one <- d[!duplicated(d$subject), ]
@@ -78,17 +89,38 @@ cat("one where they may differ by group. A small p-value would mean they differ.
 
 base_rhs <- "focal * x + position + inv_app + inv_dl + inv_cat + (1 | subj_f)"
 m_base <- lmer(as.formula(paste("y ~", base_rhs)), data = d, REML = FALSE)
-rows <- list()
+rows <- list(); omnibus <- list(); group_effects <- list()
 for (v in c("age", "gender", "education", "occupation")) {
   m_int <- lmer(as.formula(paste("y ~ focal * x *", v, "+ position + inv_app + inv_dl + inv_cat + (1 | subj_f)")),
                 data = d, REML = FALSE)
-  a <- anova(m_base, m_int)
+  # Allow group-specific baseline ratings under the null too: only the
+  # manipulation-by-group terms should distinguish a moderation test.
+  m_common <- lmer(as.formula(paste("y ~ focal * x + focal *", v,
+                     "+ position + inv_app + inv_dl + inv_cat + (1 | subj_f)")),
+                   data = d, REML = FALSE)
+  stopifnot(nobs(m_common) == nobs(m_int), nobs(m_int) == nrow(d))
+  old <- anova(m_base, m_int)
+  omnibus[[v]] <- data.frame(variable = v, chisq = old$Chisq[2], df = old$Df[2],
+                             p_value = old$`Pr(>Chisq)`[2])
+  a <- anova(m_common, m_int)
   rows[[v]] <- data.frame(variable = v, chisq = a$Chisq[2], df = a$Df[2],
-                          p_value = a$`Pr(>Chisq)`[2], aic_common = AIC(m_base),
+                          p_value = a$`Pr(>Chisq)`[2], aic_common = AIC(m_common),
                           aic_by_group = AIC(m_int))
+  e <- as.data.frame(summary(contrast(emmeans(m_int,
+       as.formula(paste("~ x | focal *", v)), at = list(x = c(0, 1))), "revpairwise"),
+       infer = c(TRUE, TRUE)))
+  group_effects[[v]] <- data.frame(variable = v, group = e[[v]], focal = e$focal,
+       estimate = e$estimate, se = e$SE, ci_lo = e$lower.CL,
+       ci_hi = e$upper.CL, p_value = e$p.value)
   cat(sprintf("  %-11s chi2 = %6.2f on %2d df, p = %.4f\n", v, a$Chisq[2], a$Df[2], a$`Pr(>Chisq)`[2]))
 }
 dem <- do.call(rbind, rows)
+dem$p_holm <- p.adjust(dem$p_value, "holm")
+write.csv(do.call(rbind, omnibus), file.path(DIR_TAB, "13_demographics_omnibus.csv"), row.names = FALSE)
+write.csv(do.call(rbind, group_effects), file.path(DIR_TAB, "13_demographics_effects.csv"), row.names = FALSE)
+cat("\nHolm adjustment across the four moderation tests:\n")
+print(dem, digits = 4, row.names = FALSE)
+cat("The previous omnibus test also tested group baselines; retained separately.\n")
 write.csv(dem, file.path(DIR_TAB, "13_demographics.csv"), row.names = FALSE)
 
 best <- dem$variable[which.min(dem$p_value)]
@@ -96,7 +128,7 @@ cat(sprintf("\nSmallest p-value: %s. Cue effects within its groups:\n", best))
 m_best <- lmer(as.formula(paste("y ~ focal * x *", best,
                                 "+ position + inv_app + inv_dl + inv_cat + (1 | subj_f)")),
                data = d, REML = FALSE)
-print(summary(contrast(emmeans(m_best, as.formula(paste("~ x | focal *", best))), "revpairwise"),
+print(summary(contrast(emmeans(m_best, as.formula(paste("~ x | focal *", best)), at = list(x = c(0, 1))), "revpairwise"),
               infer = c(TRUE, TRUE)), digits = 3)
 
 # --- 3.3 response quality ----------------------------------------------------
@@ -114,11 +146,18 @@ cat("flagged as low quality (fast OR flat scale):", sum(!duplicated(d$subject) &
 
 eff <- function(dat, tag) {
   m <- lmer(as.formula(paste("y ~", base_rhs)), data = dat, REML = FALSE)
-  e <- as.data.frame(summary(contrast(emmeans(m, ~ x | focal), "revpairwise"),
+  e <- as.data.frame(summary(contrast(emmeans(m, ~ x | focal, at = list(x = c(0, 1))), "revpairwise"),
                              infer = c(TRUE, TRUE)))
   data.frame(sample = tag, focal = e$focal, estimate = e$estimate, se = e$SE,
              ci_lo = e$lower.CL, ci_hi = e$upper.CL, p_value = e$p.value)
 }
+quality_summary <- data.frame(derived_md5 = unname(tools::md5sum(file.path(DIR_DERIV, "long_measures.csv"))),
+  respondents = nrow(one),
+  flagged = sum(!duplicated(d$subject) & d$low_quality),
+  fast_cut_seconds = fast_cut,
+  median_seconds = median(one$duration[one$duration > 0]),
+  flat_scale = sum(one$flat_scale))
+write.csv(quality_summary, file.path(DIR_TAB, "13_quality_summary.csv"), row.names = FALSE)
 q <- rbind(eff(d, "all respondents"),
            eff(d[!d$low_quality, ], "low-quality respondents removed"))
 print(q, digits = 3, row.names = FALSE)

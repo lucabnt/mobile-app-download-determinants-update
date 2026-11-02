@@ -1,21 +1,13 @@
 # 12_response_scale.R --------------------------------------------------------
 # Work plan task 2.7 — is the 1-7 answer scale used as if it were a ruler?
 #
-# QUESTION. Every model in the thesis treats the intention scale as if the step
-# from 1 to 2 meant the same as the step from 6 to 7. Respondents may not use it
-# that way: people often avoid the extremes and crowd around the middle.
-#
-# WHY IT MATTERS. If the middle of the scale is compressed, ordinary regression
-# distorts SMALL effects most - and the smallest effect in this study is exactly
-# the one the whole popularity argument turns on.
-#
-# METHOD, IN PLAIN TERMS. An ordinal model does not assume the spacing. It
-# imagines one continuous "intention" behind the answers and estimates six
-# CUTPOINTS on it: below the first cutpoint a respondent answers 1, between the
-# first and the second they answer 2, and so on. If the scale were a ruler, the
-# cutpoints would be equally spaced. Measuring how unequal they are tells us how
-# far the ruler assumption is from the data; re-estimating the effects on a
-# scale that does not depend on the spacing tells us whether it matters.
+# Compare flexible and equidistant thresholds within the same proportional-odds
+# random-intercept model. This tests a latent threshold restriction, not every
+# assumption of OLS on scores 1-7. Separately retain the binary-outcome check.
+# Practical sensitivity is measured on P(y >= 5), averaged over the observed
+# covariates and integrated over each model's fitted random-intercept distribution.
+# These are descriptive point-estimate differences, not equivalence tests.
+# Documentation: https://search.r-project.org/CRAN/refmans/ordinal/html/clmm.html
 #
 # Output: analysis/outputs/tables/12_scale_thresholds.csv
 #         analysis/outputs/tables/12_scale_effects.csv
@@ -43,7 +35,8 @@ cat("\nshare of answers at the two extremes (1 or 7):",
 
 # --- 1. the cutpoints --------------------------------------------------------
 m_ord <- clmm(y_ord ~ focal * x + position + inv_app + inv_dl + inv_cat + (1 | subj_f),
-              data = long, link = "logit")
+              data = long, link = "logit", threshold = "flexible", nAGQ = 7, Hess = TRUE,
+              control = clmm.control(gradTol = 1e-7, rel.tol = 1e-11, iter.max = 500, eval.max = 1000))
 th   <- m_ord$Theta
 if (is.matrix(th)) th <- as.numeric(th[1, ]) else th <- as.numeric(th)
 names(th) <- paste0(1:6, "|", 2:7)
@@ -64,14 +57,13 @@ write.csv(tab, file.path(DIR_TAB, "12_scale_thresholds.csv"), row.names = FALSE)
 # step off.
 cat(sprintf("\nWidest answer category is %.2f times the narrowest (answer %d vs answer %d).\n",
             max(widths) / min(widths), which.max(widths) + 1L, which.min(widths) + 1L))
-cat("A perfect ruler would give a ratio of 1. The wider a category, the more\n")
+cat("Equidistant latent thresholds give a ratio of 1. The wider a category, the more\n")
 cat("underlying intention has to change before the answer moves by one point.\n")
 
-# --- 2. does the spacing change the conclusions? -----------------------------
-# Two ways of asking "how much does the manipulation move intention", one that
-# assumes equal spacing and one that does not, put on a common footing: the
-# effect on the probability of answering 5 or more (a "would probably download"
-# answer), for an average respondent.
+# --- 2. Binary-outcome check, retained separately ----------------------------
+# This is NOT a test of equal spacing: dichotomising y already discards it.
+# The ordinal estimates here condition on fitted respondent modes for continuity
+# with the earlier report. The threshold comparison below integrates them out.
 cat("\n\n--- Effect on the probability of answering 5 or more ---\n")
 cat("Linear model: the manipulation effect on a 0/1 indicator (y >= 5), which is\n")
 cat("constant by construction.\n")
@@ -110,13 +102,78 @@ p_high  <- 1 - plogis(cut45 - (eta0 + cue))
 ord_eff <- tapply(p_high - p_low, long$focal, mean)[c("brand", "rep", "pop")]
 
 eff <- data.frame(focal = names(lin_eff),
-                  linear_pp = 100 * lin_eff,
-                  ordinal_pp = 100 * ord_eff,
+                  binary_linear_pp = 100 * lin_eff,
+                  ordinal_conditional_pp = 100 * ord_eff,
                   difference_pp = 100 * (ord_eff - lin_eff))
 print(eff, digits = 3, row.names = FALSE)
 write.csv(eff, file.path(DIR_TAB, "12_scale_effects.csv"), row.names = FALSE)
-cat("\nBoth columns are percentage points. If they agree, the equal-spacing\n")
-cat("assumption is not driving any conclusion of this review.\n")
+cat("\nBinary linear vs conditional ordinal estimates, in percentage points.\n")
+cat("This comparison does not test equal spacing of the original 1-7 scale.\n")
+
+# --- 2b. Direct test of equidistant thresholds -------------------------------
+m_equal <- update(m_ord, threshold = "equidistant")
+thresholds <- function(m) {
+  z <- as.numeric(m$Theta)
+  stopifnot(length(z) == 6L, all(is.finite(z)), all(diff(z) > 0))
+  z
+}
+fits <- list(flexible = m_ord, equidistant = m_equal)
+diag <- do.call(rbind, lapply(names(fits), function(nm) {
+  m <- fits[[nm]]
+  grad <- max(abs(m$gradient))
+  eig <- eigen(m$Hessian, symmetric = TRUE, only.values = TRUE)$values
+  code <- m$optRes$convergence
+  stopifnot(length(code) == 1L, code == 0L, is.finite(grad), grad < 1e-3,
+            all(is.finite(eig)), min(eig) > 0)
+  data.frame(model = nm, n = nobs(m), parameters = attr(logLik(m), "df"),
+             logLik = as.numeric(logLik(m)), AIC = AIC(m),
+             convergence = code, max_gradient = grad, min_hessian_eigenvalue = min(eig))
+}))
+stopifnot(nobs(m_ord) == nobs(m_equal), nobs(m_ord) == nrow(long),
+          identical(rownames(model.frame(m_ord)), rownames(model.frame(m_equal))),
+          max(abs(diff(thresholds(m_equal)) - mean(diff(thresholds(m_equal))))) < 1e-8)
+lrt <- 2 * (as.numeric(logLik(m_ord)) - as.numeric(logLik(m_equal)))
+df_lrt <- attr(logLik(m_ord), "df") - attr(logLik(m_equal), "df")
+stopifnot(lrt >= 0, df_lrt == 4)
+test <- data.frame(chisq = lrt, df = df_lrt, p_value = pchisq(lrt, df_lrt, lower.tail = FALSE),
+                   AIC_flexible = AIC(m_ord), AIC_equidistant = AIC(m_equal),
+                   nAGQ = 7)
+cat("\n=== FLEXIBLE VS EQUIDISTANT LATENT THRESHOLDS ===\n")
+print(diag, digits = 6, row.names = FALSE)
+print(test, digits = 6, row.names = FALSE)
+write.csv(diag, file.path(DIR_TAB, "12_threshold_diagnostics.csv"), row.names = FALSE)
+write.csv(test, file.path(DIR_TAB, "12_threshold_comparison.csv"), row.names = FALSE)
+write.csv(data.frame(boundary = names(th), flexible = thresholds(m_ord),
+                     equidistant = thresholds(m_equal)),
+          file.path(DIR_TAB, "12_thresholds_compared.csv"), row.names = FALSE)
+
+# Standardise over the same observed rows for each cue. Integrate a N(0, sd^2)
+# intercept rather than inserting outcome-informed respondent predictions.
+marginal_top <- function(m, dat, level, tol = 1e-8) {
+  dat$x <- level
+  X <- model.matrix(~ focal * x + position + inv_app + inv_dl + inv_cat, dat)
+  eta <- drop(X[, names(m$beta), drop = FALSE] %*% m$beta)
+  cut <- thresholds(m)[4]
+  sd_u <- as.numeric(m$ST[[1]][1, 1])
+  integrate(function(z) vapply(z, function(u)
+    mean(plogis(eta + sd_u * u - cut)) * dnorm(u), numeric(1)),
+    lower = -Inf, upper = Inf, rel.tol = tol, abs.tol = tol)$value
+}
+practical <- do.call(rbind, lapply(levels(long$focal), function(f) {
+  dat <- long[long$focal == f, ]
+  probs <- lapply(fits, function(m) vapply(0:1, function(x) marginal_top(m, dat, x), numeric(1)))
+  stopifnot(all(unlist(probs) >= 0), all(unlist(probs) <= 1))
+  data.frame(focal = f, flexible_low = probs$flexible[1], flexible_high = probs$flexible[2],
+             equidistant_low = probs$equidistant[1], equidistant_high = probs$equidistant[2],
+             flexible_pp = 100 * diff(probs$flexible),
+             equidistant_pp = 100 * diff(probs$equidistant),
+             difference_pp = 100 * (diff(probs$flexible) - diff(probs$equidistant)))
+}))
+cat("\nMarginal P(y >= 5) effects: same covariates, random intercept integrated out.\n")
+print(practical, digits = 5, row.names = FALSE)
+cat("Differences are descriptive, not confidence intervals or evidence of equivalence.\n")
+cat("This comparison does not validate all OLS findings or prove a ranking between cues.\n")
+write.csv(practical, file.path(DIR_TAB, "12_threshold_effects.csv"), row.names = FALSE)
 
 # --- 3. response style -------------------------------------------------------
 cat("\n\n--- Do some respondents simply prefer the extremes? ---\n")
